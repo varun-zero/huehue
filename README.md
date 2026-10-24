@@ -84,21 +84,21 @@ If you are on a different computer, run any of these in **PowerShell**:
 
 ### Download `helper.py` and run:
 ```powershell
-irm https://raw.githubusercontent.com/varun2507027108-oss/huehue/main/helper.py -OutFile helper.py; python helper.py aoa 1
+irm https://raw.githubusercontent.com/varun-zero/huehue/main/helper.py -OutFile helper.py; python helper.py aoa 1
 ```
 
 ### Run `helper.py` straight from memory (no files saved):
 ```powershell
-irm https://raw.githubusercontent.com/varun2507027108-oss/huehue/main/helper.py | python - aoa 1
+irm https://raw.githubusercontent.com/varun-zero/huehue/main/helper.py | python - aoa 1
 ```
 
 ### Pure Zero-Install One-Liner (No Node, No Python needed):
 ```powershell
-(irm https://raw.githubusercontent.com/varun2507027108-oss/huehue/main/data.json).aoa."1".code
+(irm https://raw.githubusercontent.com/varun-zero/huehue/main/data.json).aoa."1".code
 ```
 *(Copy directly to clipboard:)*
 ```powershell
-(irm https://raw.githubusercontent.com/varun2507027108-oss/huehue/main/data.json).aoa."1".code | Set-Clipboard
+(irm https://raw.githubusercontent.com/varun-zero/huehue/main/data.json).aoa."1".code | Set-Clipboard
 ```
 
 
