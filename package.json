@@ -1,0 +1,21 @@
+{
+  "name": "helper-cli",
+  "version": "1.0.0",
+  "description": "Offline CLI study helper tool for AOA lab C programs and study subjects",
+  "main": "bin/helper.js",
+  "bin": {
+    "helper": "./bin/helper.js"
+  },
+  "scripts": {
+    "test": "node ./bin/helper.js aoa 1"
+  },
+  "keywords": [
+    "aoa",
+    "c",
+    "algorithms",
+    "helper",
+    "cli"
+  ],
+  "author": "",
+  "license": "ISC"
+}
