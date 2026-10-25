@@ -179,14 +179,15 @@ int main() {
     scanf("%d", &n);
 
     for (int i = 0; i < n; i++) {
-        printf("Item %d (Profit Weight): ", i + 1);
-        scanf("%f %f", &p[i], &w[i]);
+        printf("Item %d profit: ", i + 1);
+        scanf("%f", &p[i]);
+        printf("Item %d weight: ", i + 1);
+        scanf("%f", &w[i]);
         r[i] = p[i] / w[i];
     }
     printf("Enter knapsack capacity: ");
     scanf("%f", &capacity);
 
-    // Sort items descending by profit/weight ratio
     for (int i = 0; i < n - 1; i++) {
         for (int j = i + 1; j < n; j++) {
             if (r[i] < r[j]) {
@@ -197,7 +198,6 @@ int main() {
         }
     }
 
-    // Greedily fill capacity
     for (int i = 0; i < n; i++) {
         if (w[i] <= capacity) {
             totalProfit += p[i];
@@ -274,7 +274,6 @@ int main() {
         for (int j = 0; j < n; j++)
             scanf("%d", &d[i][j]);
 
-    // Floyd-Warshall DP updates
     for (int k = 0; k < n; k++) {
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
@@ -316,11 +315,9 @@ void findSubsets(int idx, int currentSum) {
     }
     if (idx == n || currentSum > target) return;
 
-    // Include set[idx]
     inc[idx] = 1;
     findSubsets(idx + 1, currentSum + set[idx]);
 
-    // Exclude set[idx] (Backtrack)
     inc[idx] = 0;
     findSubsets(idx + 1, currentSum);
 }
