@@ -36,45 +36,80 @@
 ```c
 #include <stdio.h>
 
-void insertionSort(int a[], int n) {
-    for (int i = 1; i < n; i++) {
-        int key = a[i], j = i - 1;
-        while (j >= 0 && a[j] > key) {
+void insertionSort(int a[], int n)
+{
+    int i, j, key;
+
+    for (i = 1; i < n; i++)
+    {
+        key = a[i];
+        j = i - 1;
+
+        while (j >= 0 && a[j] > key)
+        {
             a[j + 1] = a[j];
             j--;
         }
+
         a[j + 1] = key;
     }
 }
 
-void selectionSort(int a[], int n) {
-    for (int i = 0; i < n - 1; i++) {
-        int minIdx = i;
-        for (int j = i + 1; j < n; j++) {
-            if (a[j] < a[minIdx]) minIdx = j;
+void selectionSort(int a[], int n)
+{
+    int i, j, min, temp;
+
+    for (i = 0; i < n - 1; i++)
+    {
+        min = i;
+
+        for (j = i + 1; j < n; j++)
+        {
+            if (a[j] < a[min])
+            {
+                min = j;
+            }
         }
-        int temp = a[i];
-        a[i] = a[minIdx];
-        a[minIdx] = temp;
+
+        temp = a[i];
+        a[i] = a[min];
+        a[min] = temp;
     }
 }
 
-int main() {
-    int n, choice, a[50];
+int main()
+{
+    int n, choice, i;
+    int a[50];
+
     printf("Enter number of elements: ");
     scanf("%d", &n);
+
     printf("Enter %d integers: ", n);
-    for (int i = 0; i < n; i++) scanf("%d", &a[i]);
+    for (i = 0; i < n; i++)
+    {
+        scanf("%d", &a[i]);
+    }
 
     printf("Choose (1 for Insertion Sort, 2 for Selection Sort): ");
     scanf("%d", &choice);
 
-    if (choice == 1) insertionSort(a, n);
-    else selectionSort(a, n);
+    if (choice == 1)
+    {
+        insertionSort(a, n);
+    }
+    else
+    {
+        selectionSort(a, n);
+    }
 
     printf("Sorted array: ");
-    for (int i = 0; i < n; i++) printf("%d ", a[i]);
+    for (i = 0; i < n; i++)
+    {
+        printf("%d ", a[i]);
+    }
     printf("\n");
+
     return 0;
 }
 ```
@@ -98,35 +133,58 @@ Sorted array: 11 12 22 25 64
 ```c
 #include <stdio.h>
 
-int binarySearch(int a[], int low, int high, int key) {
-    if (low <= high) {
-        int mid = (low + high) / 2;
-        if (a[mid] == key)
-            return mid;
-        else if (key < a[mid])
-            return binarySearch(a, low, mid - 1, key);
-        else
-            return binarySearch(a, mid + 1, high, key);
+int binarySearch(int a[], int low, int high, int key)
+{
+    int mid;
+
+    if (low > high)
+    {
+        return -1;
     }
-    return -1;
+
+    mid = (low + high) / 2;
+
+    if (a[mid] == key)
+    {
+        return mid;
+    }
+    else if (a[mid] > key)
+    {
+        return binarySearch(a, low, mid - 1, key);
+    }
+    else
+    {
+        return binarySearch(a, mid + 1, high, key);
+    }
 }
 
-int main() {
-    int n, key, a[50];
+int main()
+{
+    int n, i, key, pos;
+    int a[50];
+
     printf("Enter number of elements: ");
     scanf("%d", &n);
 
     printf("Enter %d sorted elements: ", n);
-    for (int i = 0; i < n; i++) scanf("%d", &a[i]);
+    for (i = 0; i < n; i++)
+    {
+        scanf("%d", &a[i]);
+    }
 
     printf("Enter element to search: ");
     scanf("%d", &key);
 
-    int pos = binarySearch(a, 0, n - 1, key);
+    pos = binarySearch(a, 0, n - 1, key);
+
     if (pos != -1)
+    {
         printf("Success: %d found at index %d (position %d).\n", key, pos, pos + 1);
+    }
     else
+    {
         printf("Element %d not found in the array.\n", key);
+    }
 
     return 0;
 }
@@ -151,45 +209,71 @@ Success: 50 found at index 3 (position 4).
 ```c
 #include <stdio.h>
 
-void swap(int *x, int *y) {
-    int temp = *x;
-    *x = *y;
-    *y = temp;
+void swap(int *a, int *b)
+{
+    int temp;
+
+    temp = *a;
+    *a = *b;
+    *b = temp;
 }
 
-int partition(int a[], int low, int high) {
-    int pivot = a[high];
-    int i = low - 1;
-    for (int j = low; j < high; j++) {
-        if (a[j] < pivot) {
+int partition(int a[], int low, int high)
+{
+    int pivot, i, j;
+
+    pivot = a[high];
+    i = low - 1;
+
+    for (j = low; j < high; j++)
+    {
+        if (a[j] < pivot)
+        {
             i++;
             swap(&a[i], &a[j]);
         }
     }
+
     swap(&a[i + 1], &a[high]);
+
     return i + 1;
 }
 
-void quickSort(int a[], int low, int high) {
-    if (low < high) {
-        int pi = partition(a, low, high);
-        quickSort(a, low, pi - 1);
-        quickSort(a, pi + 1, high);
+void quickSort(int a[], int low, int high)
+{
+    int pivot;
+
+    if (low < high)
+    {
+        pivot = partition(a, low, high);
+        quickSort(a, low, pivot - 1);
+        quickSort(a, pivot + 1, high);
     }
 }
 
-int main() {
-    int n, a[50];
+int main()
+{
+    int n, i;
+    int a[50];
+
     printf("Enter number of elements: ");
     scanf("%d", &n);
+
     printf("Enter %d elements: ", n);
-    for (int i = 0; i < n; i++) scanf("%d", &a[i]);
+    for (i = 0; i < n; i++)
+    {
+        scanf("%d", &a[i]);
+    }
 
     quickSort(a, 0, n - 1);
 
     printf("Sorted array (Quick Sort): ");
-    for (int i = 0; i < n; i++) printf("%d ", a[i]);
+    for (i = 0; i < n; i++)
+    {
+        printf("%d ", a[i]);
+    }
     printf("\n");
+
     return 0;
 }
 ```
@@ -212,43 +296,67 @@ Sorted array (Quick Sort): 7 14 19 28 32 45
 ```c
 #include <stdio.h>
 
-int main() {
-    int n;
-    float p[20], w[20], r[20], capacity, totalProfit = 0.0;
+void swap(float *a, float *b)
+{
+    float temp;
+
+    temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+int main()
+{
+    int n, i, j;
+    float profit[20], weight[20], ratio[20];
+    float capacity, total = 0;
 
     printf("Enter number of items: ");
     scanf("%d", &n);
 
-    for (int i = 0; i < n; i++) {
+    for (i = 0; i < n; i++)
+    {
         printf("Item %d profit: ", i + 1);
-        scanf("%f", &p[i]);
+        scanf("%f", &profit[i]);
+
         printf("Item %d weight: ", i + 1);
-        scanf("%f", &w[i]);
-        r[i] = p[i] / w[i];
+        scanf("%f", &weight[i]);
+
+        ratio[i] = profit[i] / weight[i];
     }
+
     printf("Enter knapsack capacity: ");
     scanf("%f", &capacity);
 
-    for (int i = 0; i < n - 1; i++) {
-        for (int j = i + 1; j < n; j++) {
-            if (r[i] < r[j]) {
-                float tr = r[i]; r[i] = r[j]; r[j] = tr;
-                float tp = p[i]; p[i] = p[j]; p[j] = tp;
-                float tw = w[i]; w[i] = w[j]; w[j] = tw;
+    for (i = 0; i < n - 1; i++)
+    {
+        for (j = i + 1; j < n; j++)
+        {
+            if (ratio[i] < ratio[j])
+            {
+                swap(&ratio[i], &ratio[j]);
+                swap(&profit[i], &profit[j]);
+                swap(&weight[i], &weight[j]);
             }
         }
     }
 
-    for (int i = 0; i < n; i++) {
-        if (w[i] <= capacity) {
-            totalProfit += p[i];
-            capacity -= w[i];
-        } else {
-            totalProfit += p[i] * (capacity / w[i]);
+    for (i = 0; i < n; i++)
+    {
+        if (weight[i] <= capacity)
+        {
+            total += profit[i];
+            capacity -= weight[i];
+        }
+        else
+        {
+            total += profit[i] * (capacity / weight[i]);
             break;
         }
     }
-    printf("Maximum Profit = %.2f\n", totalProfit);
+
+    printf("Maximum Profit = %.2f\n", total);
+
     return 0;
 }
 ```
@@ -278,40 +386,63 @@ Maximum Profit = 31.50
 #include <stdio.h>
 #define INF 9999
 
-int main() {
-    int n, cost[20][20], visited[20] = {0}, totalCost = 0;
+int main()
+{
+    int n, i, j, k;
+    int cost[20][20];
+    int visited[20] = {0};
+    int total = 0;
+    int min, u, v;
 
     printf("Enter number of vertices: ");
     scanf("%d", &n);
 
     printf("Enter cost matrix (use 0 for self/no edge):\n");
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
+    for (i = 0; i < n; i++)
+    {
+        for (j = 0; j < n; j++)
+        {
             scanf("%d", &cost[i][j]);
-            if (cost[i][j] == 0) cost[i][j] = INF;
+
+            if (cost[i][j] == 0)
+            {
+                cost[i][j] = INF;
+            }
         }
     }
 
     visited[0] = 1;
     printf("\nSelected MST Edges:\n");
 
-    for (int edgeCount = 0; edgeCount < n - 1; edgeCount++) {
-        int min = INF, u = 0, v = 0;
-        for (int i = 0; i < n; i++) {
-            if (visited[i]) {
-                for (int j = 0; j < n; j++) {
-                    if (!visited[j] && cost[i][j] < min) {
+    for (k = 0; k < n - 1; k++)
+    {
+        min = INF;
+        u = 0;
+        v = 0;
+
+        for (i = 0; i < n; i++)
+        {
+            if (visited[i])
+            {
+                for (j = 0; j < n; j++)
+                {
+                    if (!visited[j] && cost[i][j] < min)
+                    {
                         min = cost[i][j];
-                        u = i; v = j;
+                        u = i;
+                        v = j;
                     }
                 }
             }
         }
+
         visited[v] = 1;
-        printf("Edge %d: (%d -> %d) with Cost = %d\n", edgeCount + 1, u, v, min);
-        totalCost += min;
+        printf("Edge %d: (%d -> %d) with Cost = %d\n", k + 1, u, v, min);
+        total += min;
     }
-    printf("Total MST Cost = %d\n", totalCost);
+
+    printf("Total MST Cost = %d\n", total);
+
     return 0;
 }
 ```
@@ -344,33 +475,54 @@ Total MST Cost = 10
 #include <stdio.h>
 #define INF 999
 
-int main() {
-    int n, d[20][20];
+int main()
+{
+    int n, i, j, k;
+    int dist[20][20];
+
     printf("Enter number of vertices: ");
     scanf("%d", &n);
 
     printf("Enter weighted matrix (use 999 for INF):\n");
-    for (int i = 0; i < n; i++)
-        for (int j = 0; j < n; j++)
-            scanf("%d", &d[i][j]);
+    for (i = 0; i < n; i++)
+    {
+        for (j = 0; j < n; j++)
+        {
+            scanf("%d", &dist[i][j]);
+        }
+    }
 
-    for (int k = 0; k < n; k++) {
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                if (d[i][k] + d[k][j] < d[i][j])
-                    d[i][j] = d[i][k] + d[k][j];
+    for (k = 0; k < n; k++)
+    {
+        for (i = 0; i < n; i++)
+        {
+            for (j = 0; j < n; j++)
+            {
+                if (dist[i][k] + dist[k][j] < dist[i][j])
+                {
+                    dist[i][j] = dist[i][k] + dist[k][j];
+                }
             }
         }
     }
 
     printf("\nAll-Pairs Shortest Distance Matrix:\n");
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-            if (d[i][j] >= INF) printf("INF\t");
-            else printf("%d\t", d[i][j]);
+    for (i = 0; i < n; i++)
+    {
+        for (j = 0; j < n; j++)
+        {
+            if (dist[i][j] >= INF)
+            {
+                printf("INF\t");
+            }
+            else
+            {
+                printf("%d\t", dist[i][j]);
+            }
         }
         printf("\n");
     }
+
     return 0;
 }
 ```
@@ -402,39 +554,66 @@ All-Pairs Shortest Distance Matrix:
 ```c
 #include <stdio.h>
 
-int set[20], inc[20], n, target, found = 0;
+int set[20], chosen[20];
+int n, target, found = 0;
 
-void findSubsets(int idx, int currentSum) {
-    if (currentSum == target) {
+void findSubsets(int index, int sum)
+{
+    int i;
+
+    if (sum == target)
+    {
         found = 1;
         printf("{ ");
-        for (int i = 0; i < idx; i++) {
-            if (inc[i]) printf("%d ", set[i]);
+
+        for (i = 0; i < index; i++)
+        {
+            if (chosen[i])
+            {
+                printf("%d ", set[i]);
+            }
         }
+
         printf("}\n");
         return;
     }
-    if (idx == n || currentSum > target) return;
 
-    inc[idx] = 1;
-    findSubsets(idx + 1, currentSum + set[idx]);
+    if (index == n || sum > target)
+    {
+        return;
+    }
 
-    inc[idx] = 0;
-    findSubsets(idx + 1, currentSum);
+    chosen[index] = 1;
+    findSubsets(index + 1, sum + set[index]);
+
+    chosen[index] = 0;
+    findSubsets(index + 1, sum);
 }
 
-int main() {
+int main()
+{
+    int i;
+
     printf("Enter number of elements: ");
     scanf("%d", &n);
+
     printf("Enter %d positive integers: ", n);
-    for (int i = 0; i < n; i++) scanf("%d", &set[i]);
+    for (i = 0; i < n; i++)
+    {
+        scanf("%d", &set[i]);
+    }
+
     printf("Enter target sum: ");
     scanf("%d", &target);
 
     printf("\nSubsets summing to %d:\n", target);
     findSubsets(0, 0);
 
-    if (!found) printf("No subset found with target sum.\n");
+    if (!found)
+    {
+        printf("No subset found with target sum.\n");
+    }
+
     return 0;
 }
 ```
@@ -462,43 +641,81 @@ Subsets summing to 9:
 #include <stdio.h>
 #include <stdlib.h>
 
-int board[20], n;
+int board[20];
+int n;
 
-int isSafe(int row, int col) {
-    for (int i = 0; i < row; i++) {
+int isSafe(int row, int col)
+{
+    int i;
+
+    for (i = 0; i < row; i++)
+    {
         if (board[i] == col || abs(board[i] - col) == abs(i - row))
+        {
             return 0;
+        }
     }
+
     return 1;
 }
 
-int solveNQueens(int row) {
-    if (row == n) return 1;
-    for (int col = 0; col < n; col++) {
-        if (isSafe(row, col)) {
+int solve(int row)
+{
+    int col;
+
+    if (row == n)
+    {
+        return 1;
+    }
+
+    for (col = 0; col < n; col++)
+    {
+        if (isSafe(row, col))
+        {
             board[row] = col;
-            if (solveNQueens(row + 1)) return 1;
+
+            if (solve(row + 1))
+            {
+                return 1;
+            }
         }
     }
+
     return 0;
 }
 
-int main() {
+int main()
+{
+    int i, j;
+
     printf("Enter number of Queens (N): ");
     scanf("%d", &n);
 
-    if (solveNQueens(0)) {
+    if (solve(0))
+    {
         printf("\nSolution board placement:\n");
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                if (board[i] == j) printf("Q ");
-                else printf(". ");
+
+        for (i = 0; i < n; i++)
+        {
+            for (j = 0; j < n; j++)
+            {
+                if (board[i] == j)
+                {
+                    printf("Q ");
+                }
+                else
+                {
+                    printf(". ");
+                }
             }
             printf("\n");
         }
-    } else {
+    }
+    else
+    {
         printf("No valid placement exists for N = %d.\n", n);
     }
+
     return 0;
 }
 ```
@@ -529,41 +746,68 @@ Q . . .
 #define D 256
 #define Q 101
 
-int main() {
-    char txt[100], pat[50];
-    int pHash = 0, tHash = 0, h = 1, found = 0;
+int main()
+{
+    char text[100], pattern[50];
+    int n, m, i, j;
+    int patternHash = 0, textHash = 0, h = 1;
+    int found = 0;
 
     printf("Enter text string (no spaces): ");
-    scanf("%s", txt);
+    scanf("%s", text);
+
     printf("Enter pattern to search: ");
-    scanf("%s", pat);
+    scanf("%s", pattern);
 
-    int n = strlen(txt), m = strlen(pat);
+    n = strlen(text);
+    m = strlen(pattern);
 
-    for (int i = 0; i < m - 1; i++) h = (h * D) % Q;
-
-    for (int i = 0; i < m; i++) {
-        pHash = (D * pHash + pat[i]) % Q;
-        tHash = (D * tHash + txt[i]) % Q;
+    for (i = 0; i < m - 1; i++)
+    {
+        h = (h * D) % Q;
     }
 
-    for (int i = 0; i <= n - m; i++) {
-        if (pHash == tHash) {
-            int j;
-            for (j = 0; j < m; j++) {
-                if (txt[i + j] != pat[j]) break;
+    for (i = 0; i < m; i++)
+    {
+        patternHash = (D * patternHash + pattern[i]) % Q;
+        textHash = (D * textHash + text[i]) % Q;
+    }
+
+    for (i = 0; i <= n - m; i++)
+    {
+        if (patternHash == textHash)
+        {
+            for (j = 0; j < m; j++)
+            {
+                if (text[i + j] != pattern[j])
+                {
+                    break;
+                }
             }
-            if (j == m) {
+
+            if (j == m)
+            {
                 printf("Pattern found at index %d\n", i);
                 found = 1;
             }
         }
-        if (i < n - m) {
-            tHash = (D * (tHash - txt[i] * h) + txt[i + m]) % Q;
-            if (tHash < 0) tHash += Q;
+
+        if (i < n - m)
+        {
+            textHash = (D * (textHash - text[i] * h) + text[i + m]) % Q;
+
+            if (textHash < 0)
+            {
+                textHash += Q;
+            }
         }
     }
-    if (!found) printf("Pattern not found in text.\n");
+
+    if (!found)
+    {
+        printf("Pattern not found in text.\n");
+    }
+
     return 0;
 }
 ```
@@ -588,38 +832,76 @@ Pattern found at index 12
 ```c
 #include <stdio.h>
 
-void getMinMax(int a[], int low, int high, int *min, int *max) {
-    if (low == high) {
-        *min = *max = a[low];
+void findMinMax(int a[], int low, int high, int *min, int *max)
+{
+    int mid;
+    int leftMin, leftMax, rightMin, rightMax;
+
+    if (low == high)
+    {
+        *min = a[low];
+        *max = a[low];
         return;
     }
-    if (high == low + 1) {
-        if (a[low] < a[high]) { *min = a[low]; *max = a[high]; }
-        else { *min = a[high]; *max = a[low]; }
+
+    if (high == low + 1)
+    {
+        if (a[low] < a[high])
+        {
+            *min = a[low];
+            *max = a[high];
+        }
+        else
+        {
+            *min = a[high];
+            *max = a[low];
+        }
         return;
     }
 
-    int mid = (low + high) / 2;
-    int min1, max1, min2, max2;
+    mid = (low + high) / 2;
 
-    getMinMax(a, low, mid, &min1, &max1);
-    getMinMax(a, mid + 1, high, &min2, &max2);
+    findMinMax(a, low, mid, &leftMin, &leftMax);
+    findMinMax(a, mid + 1, high, &rightMin, &rightMax);
 
-    *min = (min1 < min2) ? min1 : min2;
-    *max = (max1 > max2) ? max1 : max2;
+    if (leftMin < rightMin)
+    {
+        *min = leftMin;
+    }
+    else
+    {
+        *min = rightMin;
+    }
+
+    if (leftMax > rightMax)
+    {
+        *max = leftMax;
+    }
+    else
+    {
+        *max = rightMax;
+    }
 }
 
-int main() {
-    int n, a[50], minVal, maxVal;
+int main()
+{
+    int n, i, min, max;
+    int a[50];
+
     printf("Enter number of elements: ");
     scanf("%d", &n);
+
     printf("Enter %d elements: ", n);
-    for (int i = 0; i < n; i++) scanf("%d", &a[i]);
+    for (i = 0; i < n; i++)
+    {
+        scanf("%d", &a[i]);
+    }
 
-    getMinMax(a, 0, n - 1, &minVal, &maxVal);
+    findMinMax(a, 0, n - 1, &min, &max);
 
-    printf("Minimum element = %d\n", minVal);
-    printf("Maximum element = %d\n", maxVal);
+    printf("Minimum element = %d\n", min);
+    printf("Maximum element = %d\n", max);
+
     return 0;
 }
 ```
