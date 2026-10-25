@@ -14,12 +14,13 @@ npm install -g .
 
 ## How to Get Only Code in the Terminal
 
-To print **purely and strictly the C code** (with no headers, notes, or dividers):
+To print **purely and strictly the code** (with no headers, notes, or dividers):
 
 ```bash
 # By experiment number:
 helper aoa 1
 helper coa 1
+helper coa 3
 
 # Or with 'exp' prefix:
 helper aoa exp2
@@ -27,17 +28,20 @@ helper coa exp3
 helper aoa exp10
 ```
 
-### Get only the 8086 assembly code (COA Exp 3, 4, 8, 9):
+COA experiments **3, 4, 8, and 9** print their 8086 assembly directly.
+
+### Get only the 8086 assembly code:
 ```bash
 helper asm coa 3
 # or:
 python helper.py asm coa 3
 ```
 
-### Save directly into a `.c` file:
+### Save directly into a source file:
 ```bash
 helper aoa 1 > solution.c
 helper coa 1 > coa_exp1.c
+helper coa 3 > coa_exp3.asm
 ```
 
 ### Copy directly to clipboard:
@@ -68,16 +72,17 @@ helper write coa 3
 
 ## COA Assembly Programs
 
-COA experiments **3, 4, 8, and 9** include a reference 8086 MASM assembly program in addition to the C program.
+COA experiments **3, 4, 8, and 9** are **assembly-only**. The other COA experiments use C.
 
 ```bash
-# Print the C program (default):
+# Print the assembly program directly:
 python helper.py coa 3
 
-# Print only the assembly program:
+# The asm command also works:
 python helper.py asm coa 3
 
-# Save the assembly program:
+# Save the assembly program (write picks .asm automatically):
+python helper.py write coa 3
 python helper.py asm coa 3 > coa_exp3.asm
 
 # Copy the assembly program to clipboard:

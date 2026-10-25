@@ -885,32 +885,6 @@ int main()
             "title": "Exp 03: Basic Arithmetic Operations on 8-Bit Data",
             "notes": "Aim: Perform addition, subtraction, multiplication, and division on 8-bit data. | Category: ALU Arithmetic Operations",
             "code": r"""
-#include <stdio.h>
-
-int main()
-{
-    unsigned int a, b;
-
-    printf("Enter first 8-bit number (0-255): ");
-    scanf("%u", &a);
-
-    printf("Enter second 8-bit number (1-255): ");
-    scanf("%u", &b);
-
-    a &= 0xFF;
-    b &= 0xFF;
-
-    printf("\n--- 8-Bit Arithmetic Results ---\n");
-    printf("Addition       (AL + BL) = %u (0x%02X)\n", (a + b) & 0xFF, (a + b) & 0xFF);
-    printf("Subtraction    (AL - BL) = %u (0x%02X)\n", (a - b) & 0xFF, (a - b) & 0xFF);
-    printf("Multiplication (AL * BL) = %u (0x%04X in AX)\n", a * b, a * b);
-    printf("Division Quotient  (AL)  = %u (0x%02X)\n", a / b, a / b);
-    printf("Division Remainder (AH)  = %u (0x%02X)\n", a % b, a % b);
-
-    return 0;
-}
-""",
-            "asm": r"""
 .MODEL SMALL
 .DATA
     NUM1 DB 14H
@@ -944,60 +918,12 @@ MAIN PROC
 MAIN ENDP
 END MAIN
 """,
+            "code_type": "asm",
         },
         "4": {
             "title": "Exp 04: Basic Logical Operations (AND, OR, XOR, NOT) on 8-Bit Data",
             "notes": "Aim: Perform AND, OR, XOR, and NOT on 8-bit data. | Category: ALU Logical Operations",
             "code": r"""
-#include <stdio.h>
-
-void printBits(unsigned int x)
-{
-    int i;
-
-    for (i = 7; i >= 0; i--)
-    {
-        printf("%d", (x >> i) & 1);
-    }
-}
-
-int main()
-{
-    unsigned int a, b;
-    unsigned int andRes, orRes, xorRes, notRes;
-
-    printf("Enter first 8-bit Hex operand (e.g., 92): ");
-    scanf("%x", &a);
-
-    printf("Enter second 8-bit Hex operand (e.g., 6A): ");
-    scanf("%x", &b);
-
-    a &= 0xFF;
-    b &= 0xFF;
-
-    andRes = (a & b) & 0xFF;
-    orRes = (a | b) & 0xFF;
-    xorRes = (a ^ b) & 0xFF;
-    notRes = (~a) & 0xFF;
-
-    printf("\nOperation   Hex Result   8-Bit Binary\n");
-    printf("AND         %02XH          ", andRes);
-    printBits(andRes);
-    printf("\n");
-    printf("OR          %02XH          ", orRes);
-    printBits(orRes);
-    printf("\n");
-    printf("XOR         %02XH          ", xorRes);
-    printBits(xorRes);
-    printf("\n");
-    printf("NOT (Op1)   %02XH          ", notRes);
-    printBits(notRes);
-    printf("\n");
-
-    return 0;
-}
-""",
-            "asm": r"""
 .MODEL SMALL
 .DATA
     OP1     DB 92H
@@ -1027,6 +953,7 @@ MAIN PROC
 MAIN ENDP
 END MAIN
 """,
+            "code_type": "asm",
         },
         "5": {
             "title": "Exp 05: Signed 8-Bit Multiplication using Booth's Algorithm",
@@ -1193,46 +1120,6 @@ int main()
             "title": "Exp 08: Sorting an Array of 8-Bit Numbers in Ascending Order",
             "notes": "Aim: Sort an array of 8-bit numbers in ascending order using Bubble Sort. | Category: Data Manipulation / Sorting",
             "code": r"""
-#include <stdio.h>
-
-int main()
-{
-    int n, arr[30];
-    int i, j, temp;
-
-    printf("Enter count of 8-bit numbers: ");
-    scanf("%d", &n);
-
-    printf("Enter %d numbers: ", n);
-    for (i = 0; i < n; i++)
-    {
-        scanf("%d", &arr[i]);
-    }
-
-    for (i = 0; i < n - 1; i++)
-    {
-        for (j = 0; j < n - i - 1; j++)
-        {
-            if (arr[j] > arr[j + 1])
-            {
-                temp = arr[j];
-                arr[j] = arr[j + 1];
-                arr[j + 1] = temp;
-            }
-        }
-    }
-
-    printf("Sorted Array (Ascending): ");
-    for (i = 0; i < n; i++)
-    {
-        printf("%d ", arr[i]);
-    }
-    printf("\n");
-
-    return 0;
-}
-""",
-            "asm": r"""
 .MODEL SMALL
 .DATA
     ARRAY DB 45H, 12H, 78H, 34H
@@ -1261,49 +1148,12 @@ NO_SWAP:
 MAIN ENDP
 END MAIN
 """,
+            "code_type": "asm",
         },
         "9": {
             "title": "Exp 09: Block Transfer using Index Registers (SI and DI)",
             "notes": "Aim: Transfer a block of data using the SI and DI index registers. | Category: Memory Block Transfer",
             "code": r"""
-#include <stdio.h>
-
-int main()
-{
-    int n, src[20], dest[20] = {0};
-    int i, cx;
-    int *SI, *DI;
-
-    printf("Enter number of bytes in block: ");
-    scanf("%d", &n);
-
-    printf("Enter %d elements for Source Block: ", n);
-    for (i = 0; i < n; i++)
-    {
-        scanf("%d", &src[i]);
-    }
-
-    SI = src;
-    DI = dest;
-
-    for (cx = n; cx > 0; cx--)
-    {
-        *DI = *SI;
-        SI++;
-        DI++;
-    }
-
-    printf("Destination Block after Transfer: ");
-    for (i = 0; i < n; i++)
-    {
-        printf("%d ", dest[i]);
-    }
-    printf("\n");
-
-    return 0;
-}
-""",
-            "asm": r"""
 .MODEL SMALL
 .DATA
     SRC_BLK  DB 10H, 20H, 30H, 40H, 50H
@@ -1324,6 +1174,7 @@ MAIN PROC
 MAIN ENDP
 END MAIN
 """,
+            "code_type": "asm",
         },
         "10": {
             "title": "Exp 10: Basic File Operations in C (Create, Write, Append, Read)",
@@ -1608,12 +1459,19 @@ def cmd_list(args):
     for num in _valid_topics(s):
         title = topics[num]["title"]
         prefix = f"Exp {int(num):02d}" if is_experiment else f"{num:>2}"
-        print(f"  [{prefix}]  {title}")
+        suffix = " [ASM]" if topics[num].get("code_type") == "asm" else ""
+        print(f"  [{prefix}]  {title}{suffix}")
     print(DIVIDER)
 
 
+def _asm_code(topic):
+    if topic.get("code_type") == "asm":
+        return topic.get("code", "")
+    return topic.get("asm", "")
+
+
 def _print_asm(topic):
-    asm = (topic.get("asm") or "").strip()
+    asm = _asm_code(topic).strip()
     if asm:
         print(asm)
     else:
@@ -1671,7 +1529,8 @@ def cmd_write(args):
         filename = args[2]
     else:
         if s in ("aoa", "coa"):
-            filename = f"{s}_exp_{t}.c"
+            ext = ".asm" if topic.get("code_type") == "asm" else ".c"
+            filename = f"{s}_exp_{t}{ext}"
         else:
             filename = f"{s}_topic_{t}.py"
 
@@ -1699,7 +1558,7 @@ def cmd_copy(args):
     t = _resolve_topic(s, raw_topic) if s else raw_topic
     topic = _get_topic(raw_subject, raw_topic)
     copy_asm = len(args) >= 3 and args[2].lower() in ("asm", "assembly")
-    code = (topic.get("asm") or "") if copy_asm else topic["code"]
+    code = _asm_code(topic) if copy_asm else topic["code"]
 
     is_experiment = s in ("aoa", "coa")
     item_label = "experiment" if is_experiment else "topic"

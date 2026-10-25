@@ -143,13 +143,14 @@ function cmdList(args) {
   for (const num of validTopics(s)) {
     const title = SUBJECTS[s][num].title;
     const prefix = isExperiment ? `Exp ${String(num).padStart(2, '0')}` : String(num).padStart(2, ' ');
-    console.log(`  [${prefix}]  ${title}`);
+    const suffix = SUBJECTS[s][num].code_type === 'asm' ? ' [ASM]' : '';
+    console.log(`  [${prefix}]  ${title}${suffix}`);
   }
   console.log(DIVIDER);
 }
 
 function printAsm(data) {
-  const asm = (data.asm || '').trim();
+  const asm = ((data.code_type === 'asm' ? data.code : data.asm) || '').trim();
   if (asm) {
     console.log(asm);
   } else {
@@ -201,7 +202,8 @@ function cmdWrite(args) {
 
   const { subject, topicNum, data } = getTopic(args[0], args[1]);
   const isExperiment = ['aoa', 'coa'].includes(subject);
-  const defaultFile = isExperiment ? `${subject}_exp_${topicNum}.c` : `${subject}_topic_${topicNum}.py`;
+  const ext = data.code_type === 'asm' ? '.asm' : '.c';
+  const defaultFile = isExperiment ? `${subject}_exp_${topicNum}${ext}` : `${subject}_topic_${topicNum}.py`;
   const filename = (args.length >= 3) ? args[2] : defaultFile;
 
   try {
@@ -223,7 +225,8 @@ function cmdCopy(args) {
 
   const { subject, topicNum, data } = getTopic(args[0], args[1]);
   const copyAsm = args.length >= 3 && ['asm', 'assembly'].includes(args[2].toLowerCase());
-  const code = (copyAsm ? (data.asm || '') : (data.code || '')).trim();
+  const asmCode = data.code_type === 'asm' ? data.code : data.asm;
+  const code = ((copyAsm ? asmCode : data.code) || '').trim();
   const isExperiment = ['aoa', 'coa'].includes(subject);
   const label = isExperiment ? 'experiment' : 'topic';
 
@@ -265,7 +268,7 @@ Examples:
   helper aoa 1 > sort.c    # Redirect output directly to a .c file
   helper copy aoa 1        # Copy Exp 01 code to clipboard
 
-COA experiments 3, 4, 8, and 9 include 8086 assembly programs.
+COA experiments 3, 4, 8, and 9 are assembly-only. The rest use C.
 
 Available subjects: ${validSubjects().join(', ')}
 `;

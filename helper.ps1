@@ -24,7 +24,8 @@ if ($Arg1 -eq "list") {
         Write-Host "============================================================"
         foreach ($prop in $data.$targetSub.PSObject.Properties) {
             $item = $prop.Value
-            Write-Host ("  [Exp {0:D2}]  {1}" -f [int]$prop.Name, $item.title)
+            $suffix = if ($item.code_type -eq "asm") { " [ASM]" } else { "" }
+            Write-Host ("  [Exp {0:D2}]  {1}{2}" -f [int]$prop.Name, $item.title, $suffix)
         }
         Write-Host "============================================================"
     } else {
@@ -52,8 +53,9 @@ if ($Arg1 -eq "asm") {
 if (-not $sub -or -not $topicRaw) {
     Write-Host "Usage: .\helper.ps1 <subject> <experiment_number>"
     Write-Host "       .\helper.ps1 asm <subject> <experiment_number>"
+    Write-Host "COA 3, 4, 8, 9 are assembly-only."
     Write-Host "Example: .\helper.ps1 coa 1"
-    Write-Host "         .\helper.ps1 asm coa 3"
+    Write-Host "         .\helper.ps1 coa 3"
     exit 1
 }
 
@@ -78,6 +80,10 @@ if ($data.PSObject.Properties[$sub]) {
         if ($isAsm) {
             if ($found.asm) {
                 Write-Output $found.asm.Trim()
+                exit 0
+            }
+            if ($found.code_type -eq "asm") {
+                Write-Output $found.code.Trim()
                 exit 0
             }
             Write-Error "No assembly program for this experiment."
