@@ -275,11 +275,8 @@ int main()
 
     for (i = 0; i < n; i++)
     {
-        printf("Item %d profit: ", i + 1);
-        scanf("%f", &profit[i]);
-
-        printf("Item %d weight: ", i + 1);
-        scanf("%f", &weight[i]);
+        printf("Item %d (Profit Weight): ", i + 1);
+        scanf("%f %f", &profit[i], &weight[i]);
 
         ratio[i] = profit[i] / weight[i];
     }

@@ -316,11 +316,8 @@ int main()
 
     for (i = 0; i < n; i++)
     {
-        printf("Item %d profit: ", i + 1);
-        scanf("%f", &profit[i]);
-
-        printf("Item %d weight: ", i + 1);
-        scanf("%f", &weight[i]);
+        printf("Item %d (Profit Weight): ", i + 1);
+        scanf("%f %f", &profit[i], &weight[i]);
 
         ratio[i] = profit[i] / weight[i];
     }
@@ -364,12 +361,9 @@ int main()
 ### Sample Input & Output
 ```text
 Enter number of items: 3
-Item 1 profit: 25
-Item 1 weight: 18
-Item 2 profit: 24
-Item 2 weight: 15
-Item 3 profit: 15
-Item 3 weight: 10
+Item 1 (Profit Weight): 25 18
+Item 2 (Profit Weight): 24 15
+Item 3 (Profit Weight): 15 10
 Enter knapsack capacity: 20
 Maximum Profit = 31.50
 ```
