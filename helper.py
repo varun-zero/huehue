@@ -833,47 +833,49 @@ int main()
         },
         "2": {
             "title": "Exp 02: 2's Complement of a Binary Number",
-            "notes": "Aim: Find the 1's and 2's complement of a binary number. | Category: Signed Binary Representation",
+            "notes": "Aim: Find the 2's complement of a binary number. | Category: Signed Binary Representation",
             "code": r"""
 #include <stdio.h>
 #include <string.h>
 
 int main()
 {
-    char bin[50], ones[50], twos[50];
-    int carry = 1, len, i;
+    char binary[100];
+    int i, len;
 
     printf("Enter a binary number: ");
-    scanf("%s", bin);
+    scanf("%s", binary);
 
-    len = strlen(bin);
-
-    for (i = 0; i < len; i++)
-    {
-        ones[i] = (bin[i] == '0') ? '1' : '0';
-    }
-    ones[len] = '\0';
+    len = strlen(binary);
 
     for (i = len - 1; i >= 0; i--)
     {
-        if (ones[i] == '1' && carry == 1)
+        if (binary[i] == '1')
         {
-            twos[i] = '0';
-        }
-        else if (ones[i] == '0' && carry == 1)
-        {
-            twos[i] = '1';
-            carry = 0;
-        }
-        else
-        {
-            twos[i] = ones[i];
+            break;
         }
     }
-    twos[len] = '\0';
 
-    printf("1's Complement = %s\n", ones);
-    printf("2's Complement = %s\n", twos);
+    if (i == -1)
+    {
+        printf("2's Complement: 1%s\n", binary);
+    }
+    else
+    {
+        for (i = i - 1; i >= 0; i--)
+        {
+            if (binary[i] == '1')
+            {
+                binary[i] = '0';
+            }
+            else
+            {
+                binary[i] = '1';
+            }
+        }
+
+        printf("2's Complement: %s\n", binary);
+    }
 
     return 0;
 }

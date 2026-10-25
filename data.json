@@ -59,8 +59,8 @@
     },
     "2": {
       "title": "Exp 02: 2's Complement of a Binary Number",
-      "notes": "Aim: Find the 1's and 2's complement of a binary number. | Category: Signed Binary Representation",
-      "code": "\n#include <stdio.h>\n#include <string.h>\n\nint main()\n{\n    char bin[50], ones[50], twos[50];\n    int carry = 1, len, i;\n\n    printf(\"Enter a binary number: \");\n    scanf(\"%s\", bin);\n\n    len = strlen(bin);\n\n    for (i = 0; i < len; i++)\n    {\n        ones[i] = (bin[i] == '0') ? '1' : '0';\n    }\n    ones[len] = '\\0';\n\n    for (i = len - 1; i >= 0; i--)\n    {\n        if (ones[i] == '1' && carry == 1)\n        {\n            twos[i] = '0';\n        }\n        else if (ones[i] == '0' && carry == 1)\n        {\n            twos[i] = '1';\n            carry = 0;\n        }\n        else\n        {\n            twos[i] = ones[i];\n        }\n    }\n    twos[len] = '\\0';\n\n    printf(\"1's Complement = %s\\n\", ones);\n    printf(\"2's Complement = %s\\n\", twos);\n\n    return 0;\n}\n"
+      "notes": "Aim: Find the 2's complement of a binary number. | Category: Signed Binary Representation",
+      "code": "\n#include <stdio.h>\n#include <string.h>\n\nint main()\n{\n    char binary[100];\n    int i, len;\n\n    printf(\"Enter a binary number: \");\n    scanf(\"%s\", binary);\n\n    len = strlen(binary);\n\n    for (i = len - 1; i >= 0; i--)\n    {\n        if (binary[i] == '1')\n        {\n            break;\n        }\n    }\n\n    if (i == -1)\n    {\n        printf(\"2's Complement: 1%s\\n\", binary);\n    }\n    else\n    {\n        for (i = i - 1; i >= 0; i--)\n        {\n            if (binary[i] == '1')\n            {\n                binary[i] = '0';\n            }\n            else\n            {\n                binary[i] = '1';\n            }\n        }\n\n        printf(\"2's Complement: %s\\n\", binary);\n    }\n\n    return 0;\n}\n"
     },
     "3": {
       "title": "Exp 03: Basic Arithmetic Operations on 8-Bit Data",
