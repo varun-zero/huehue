@@ -1016,18 +1016,20 @@ int main()
 
 int main()
 {
-    int Q, M, A = 0, n = 8;
+    int Q, M;
+    int A = 0;
+    int n = 8;
     int i;
 
-    printf("Enter Unsigned Dividend (Q): ");
+    printf("Enter Dividend (Q): ");
     scanf("%d", &Q);
 
-    printf("Enter Unsigned Divisor (M): ");
+    printf("Enter Divisor (M): ");
     scanf("%d", &M);
 
     if (M == 0)
     {
-        printf("Error: Division by zero!\n");
+        printf("Error: Division by zero is not allowed.\n");
         return 0;
     }
 
@@ -1035,6 +1037,7 @@ int main()
     {
         A = (A << 1) | ((Q >> (n - 1)) & 1);
         Q = (Q << 1) & 0xFF;
+
         A = A - M;
 
         if (A < 0)
@@ -1047,9 +1050,8 @@ int main()
         }
     }
 
-    printf("\nResult after %d iterations:\n", n);
-    printf("Quotient (Q)  = %d\n", Q);
-    printf("Remainder (A) = %d\n", A);
+    printf("\nQuotient = %d\n", Q);
+    printf("Remainder = %d\n", A);
 
     return 0;
 }
