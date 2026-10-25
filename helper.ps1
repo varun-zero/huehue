@@ -18,16 +18,17 @@ $data = Get-Content $dataPath -Raw | ConvertFrom-Json
 if ($Arg1 -eq "list") {
     $targetSub = if ($Arg2) { $Arg2.ToLower() } else { $null }
     if ($targetSub -and $data.PSObject.Properties[$targetSub]) {
+        $label = if ($targetSub -in @("aoa", "coa")) { "Experiments" } else { "Topics" }
         Write-Host "============================================================"
-        Write-Host "  Experiments in '$targetSub'"
+        Write-Host "  $label in '$targetSub'"
         Write-Host "============================================================"
         foreach ($prop in $data.$targetSub.PSObject.Properties) {
             $item = $prop.Value
-            Write-Host ("  [{0}]  {1}" -f $item.id, $item.title)
+            Write-Host ("  [Exp {0:D2}]  {1}" -f [int]$prop.Name, $item.title)
         }
         Write-Host "============================================================"
     } else {
-        Write-Host "Available subjects: aoa, subject2, subject3"
+        Write-Host "Available subjects: aoa, coa"
     }
     exit 0
 }
@@ -35,19 +36,31 @@ if ($Arg1 -eq "list") {
 # Resolve subject and topic
 $sub = $Arg1
 $topicRaw = $Arg2
+$isAsm = $false
 
-if ($Arg1 -in @("show", "code", "get")) {
+if ($Arg1 -eq "asm") {
     $sub = $Arg2
     $topicRaw = $Arg3
+    $isAsm = $true
+} elseif ($Arg1 -in @("show", "code", "get")) {
+    $sub = $Arg2
+    $topicRaw = $Arg3
+} elseif ($Arg3 -eq "asm") {
+    $isAsm = $true
 }
 
 if (-not $sub -or -not $topicRaw) {
     Write-Host "Usage: .\helper.ps1 <subject> <experiment_number>"
-    Write-Host "Example: .\helper.ps1 aoa 1"
+    Write-Host "       .\helper.ps1 asm <subject> <experiment_number>"
+    Write-Host "Example: .\helper.ps1 coa 1"
+    Write-Host "         .\helper.ps1 asm coa 3"
     exit 1
 }
 
 $sub = $sub.ToLower()
+if ($sub -in @("subject2", "sub2", "s2")) {
+    $sub = "coa"
+}
 $expNum = $topicRaw -replace '[^0-9]', ''
 if (-not $expNum) { $expNum = $topicRaw }
 
@@ -62,6 +75,14 @@ if ($data.PSObject.Properties[$sub]) {
         }
     }
     if ($found) {
+        if ($isAsm) {
+            if ($found.asm) {
+                Write-Output $found.asm.Trim()
+                exit 0
+            }
+            Write-Error "No assembly program for this experiment."
+            exit 1
+        }
         Write-Output $found.code.Trim()
         exit 0
     }

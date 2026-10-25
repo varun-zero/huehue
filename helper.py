@@ -758,65 +758,606 @@ int main()
         },
     },
 
-    "subject2": {
+    "coa": {
         "1": {
-            "title": "Topic 1 Title",
-            "notes": "Core logic and steps for subject2 topic 1.",
-            "code": """\
+            "title": "Exp 01: Decimal and Hexadecimal to Binary Conversion",
+            "notes": "Aim: Convert a decimal number and a hexadecimal number into binary. | Category: Number System Conversion",
+            "code": r"""
+#include <stdio.h>
+#include <ctype.h>
+
+void decimalToBinary(int n)
+{
+    int bits[32], idx = 0, i;
+
+    if (n == 0)
+    {
+        printf("0\n");
+        return;
+    }
+
+    while (n > 0)
+    {
+        bits[idx] = n % 2;
+        idx++;
+        n /= 2;
+    }
+
+    for (i = idx - 1; i >= 0; i--)
+    {
+        printf("%d", bits[i]);
+    }
+
+    printf("\n");
+}
+
+void hexToBinary(char hex[])
+{
+    int i, b, val;
+    char c;
+
+    for (i = 0; hex[i] != '\0'; i++)
+    {
+        c = toupper(hex[i]);
+        val = (c >= '0' && c <= '9') ? (c - '0') : (c - 'A' + 10);
+
+        for (b = 3; b >= 0; b--)
+        {
+            printf("%d", (val >> b) & 1);
+        }
+    }
+
+    printf("\n");
+}
+
+int main()
+{
+    int dec;
+    char hex[20];
+
+    printf("Enter a Decimal number: ");
+    scanf("%d", &dec);
+
+    printf("Binary of Decimal %d = ", dec);
+    decimalToBinary(dec);
+
+    printf("\nEnter a Hexadecimal number: ");
+    scanf("%s", hex);
+
+    printf("Binary of Hexadecimal %s = ", hex);
+    hexToBinary(hex);
+
+    return 0;
+}
 """,
         },
         "2": {
-            "title": "Topic 2 Title",
-            "notes": "Core logic and steps for subject2 topic 2.",
-            "code": """\
+            "title": "Exp 02: 2's Complement of a Binary Number",
+            "notes": "Aim: Find the 1's and 2's complement of a binary number. | Category: Signed Binary Representation",
+            "code": r"""
+#include <stdio.h>
+#include <string.h>
+
+int main()
+{
+    char bin[50], ones[50], twos[50];
+    int carry = 1, len, i;
+
+    printf("Enter a binary number: ");
+    scanf("%s", bin);
+
+    len = strlen(bin);
+
+    for (i = 0; i < len; i++)
+    {
+        ones[i] = (bin[i] == '0') ? '1' : '0';
+    }
+    ones[len] = '\0';
+
+    for (i = len - 1; i >= 0; i--)
+    {
+        if (ones[i] == '1' && carry == 1)
+        {
+            twos[i] = '0';
+        }
+        else if (ones[i] == '0' && carry == 1)
+        {
+            twos[i] = '1';
+            carry = 0;
+        }
+        else
+        {
+            twos[i] = ones[i];
+        }
+    }
+    twos[len] = '\0';
+
+    printf("1's Complement = %s\n", ones);
+    printf("2's Complement = %s\n", twos);
+
+    return 0;
+}
 """,
         },
         "3": {
-            "title": "Topic 3 Title",
-            "notes": "Core logic and steps for subject2 topic 3.",
-            "code": """\
+            "title": "Exp 03: Basic Arithmetic Operations on 8-Bit Data",
+            "notes": "Aim: Perform addition, subtraction, multiplication, and division on 8-bit data. | Category: ALU Arithmetic Operations",
+            "code": r"""
+#include <stdio.h>
+
+int main()
+{
+    unsigned int a, b;
+
+    printf("Enter first 8-bit number (0-255): ");
+    scanf("%u", &a);
+
+    printf("Enter second 8-bit number (1-255): ");
+    scanf("%u", &b);
+
+    a &= 0xFF;
+    b &= 0xFF;
+
+    printf("\n--- 8-Bit Arithmetic Results ---\n");
+    printf("Addition       (AL + BL) = %u (0x%02X)\n", (a + b) & 0xFF, (a + b) & 0xFF);
+    printf("Subtraction    (AL - BL) = %u (0x%02X)\n", (a - b) & 0xFF, (a - b) & 0xFF);
+    printf("Multiplication (AL * BL) = %u (0x%04X in AX)\n", a * b, a * b);
+    printf("Division Quotient  (AL)  = %u (0x%02X)\n", a / b, a / b);
+    printf("Division Remainder (AH)  = %u (0x%02X)\n", a % b, a % b);
+
+    return 0;
+}
+""",
+            "asm": r"""
+.MODEL SMALL
+.DATA
+    NUM1 DB 14H
+    NUM2 DB 06H
+    SUM  DB ?
+    DIFF DB ?
+    PROD DW ?
+    QUOT DB ?
+    REM  DB ?
+.CODE
+MAIN PROC
+    MOV AX, @DATA
+    MOV DS, AX
+    MOV AL, NUM1
+    ADD AL, NUM2
+    MOV SUM, AL
+    MOV AL, NUM1
+    SUB AL, NUM2
+    MOV DIFF, AL
+    MOV AL, NUM1
+    MOV BL, NUM2
+    MUL BL
+    MOV PROD, AX
+    MOV AX, 0000H
+    MOV AL, NUM1
+    DIV BL
+    MOV QUOT, AL
+    MOV REM, AH
+    MOV AH, 4CH
+    INT 21H
+MAIN ENDP
+END MAIN
 """,
         },
         "4": {
-            "title": "Topic 4 Title",
-            "notes": "Core logic and steps for subject2 topic 4.",
-            "code": """\
+            "title": "Exp 04: Basic Logical Operations (AND, OR, XOR, NOT) on 8-Bit Data",
+            "notes": "Aim: Perform AND, OR, XOR, and NOT on 8-bit data. | Category: ALU Logical Operations",
+            "code": r"""
+#include <stdio.h>
+
+void printBits(unsigned int x)
+{
+    int i;
+
+    for (i = 7; i >= 0; i--)
+    {
+        printf("%d", (x >> i) & 1);
+    }
+}
+
+int main()
+{
+    unsigned int a, b;
+    unsigned int andRes, orRes, xorRes, notRes;
+
+    printf("Enter first 8-bit Hex operand (e.g., 92): ");
+    scanf("%x", &a);
+
+    printf("Enter second 8-bit Hex operand (e.g., 6A): ");
+    scanf("%x", &b);
+
+    a &= 0xFF;
+    b &= 0xFF;
+
+    andRes = (a & b) & 0xFF;
+    orRes = (a | b) & 0xFF;
+    xorRes = (a ^ b) & 0xFF;
+    notRes = (~a) & 0xFF;
+
+    printf("\nOperation   Hex Result   8-Bit Binary\n");
+    printf("AND         %02XH          ", andRes);
+    printBits(andRes);
+    printf("\n");
+    printf("OR          %02XH          ", orRes);
+    printBits(orRes);
+    printf("\n");
+    printf("XOR         %02XH          ", xorRes);
+    printBits(xorRes);
+    printf("\n");
+    printf("NOT (Op1)   %02XH          ", notRes);
+    printBits(notRes);
+    printf("\n");
+
+    return 0;
+}
+""",
+            "asm": r"""
+.MODEL SMALL
+.DATA
+    OP1     DB 92H
+    OP2     DB 6AH
+    RES_AND DB ?
+    RES_OR  DB ?
+    RES_XOR DB ?
+    RES_NOT DB ?
+.CODE
+MAIN PROC
+    MOV AX, @DATA
+    MOV DS, AX
+    MOV AL, OP1
+    AND AL, OP2
+    MOV RES_AND, AL
+    MOV AL, OP1
+    OR  AL, OP2
+    MOV RES_OR, AL
+    MOV AL, OP1
+    XOR AL, OP2
+    MOV RES_XOR, AL
+    MOV AL, OP1
+    NOT AL
+    MOV RES_NOT, AL
+    MOV AH, 4CH
+    INT 21H
+MAIN ENDP
+END MAIN
 """,
         },
         "5": {
-            "title": "Topic 5 Title",
-            "notes": "Core logic and steps for subject2 topic 5.",
-            "code": """\
+            "title": "Exp 05: Signed 8-Bit Multiplication using Booth's Algorithm",
+            "notes": "Aim: Multiply two signed 8-bit numbers using Booth's Algorithm. | Category: Signed Multiplication Algorithm",
+            "code": r"""
+#include <stdio.h>
+
+int main()
+{
+    int M, Q, A = 0, Q_1 = 0, n = 8;
+    int step, Q0, signA, product;
+
+    printf("Enter signed Multiplicand (M): ");
+    scanf("%d", &M);
+
+    printf("Enter signed Multiplier (Q): ");
+    scanf("%d", &Q);
+
+    M &= 0xFF;
+    Q &= 0xFF;
+
+    for (step = 1; step <= n; step++)
+    {
+        Q0 = Q & 1;
+
+        if (Q0 == 0 && Q_1 == 1)
+        {
+            A = (A + M) & 0xFF;
+        }
+        else if (Q0 == 1 && Q_1 == 0)
+        {
+            A = (A - M) & 0xFF;
+        }
+
+        signA = A & 0x80;
+        Q_1 = Q & 1;
+        Q = (Q >> 1) | ((A & 1) << 7);
+        A = (A >> 1) | signA;
+    }
+
+    product = (A << 8) | Q;
+
+    if (product & 0x8000)
+    {
+        product -= 0x10000;
+    }
+
+    printf("Final 16-bit Register [A:Q] = 0x%04X\n", (A << 8) | Q);
+    printf("Signed Product = %d\n", product);
+
+    return 0;
+}
 """,
         },
         "6": {
-            "title": "Topic 6 Title",
-            "notes": "Core logic and steps for subject2 topic 6.",
-            "code": """\
+            "title": "Exp 06: Unsigned 8-Bit Division using Restoring Division Algorithm",
+            "notes": "Aim: Divide two unsigned 8-bit numbers using the Restoring Division Algorithm. | Category: Unsigned Division Algorithm",
+            "code": r"""
+#include <stdio.h>
+
+int main()
+{
+    int Q, M, A = 0, n = 8;
+    int i;
+
+    printf("Enter Unsigned Dividend (Q): ");
+    scanf("%d", &Q);
+
+    printf("Enter Unsigned Divisor (M): ");
+    scanf("%d", &M);
+
+    if (M == 0)
+    {
+        printf("Error: Division by zero!\n");
+        return 0;
+    }
+
+    for (i = 0; i < n; i++)
+    {
+        A = (A << 1) | ((Q >> (n - 1)) & 1);
+        Q = (Q << 1) & 0xFF;
+        A = A - M;
+
+        if (A < 0)
+        {
+            A = A + M;
+        }
+        else
+        {
+            Q = Q | 1;
+        }
+    }
+
+    printf("\nResult after %d iterations:\n", n);
+    printf("Quotient (Q)  = %d\n", Q);
+    printf("Remainder (A) = %d\n", A);
+
+    return 0;
+}
 """,
         },
         "7": {
-            "title": "Topic 7 Title",
-            "notes": "Core logic and steps for subject2 topic 7.",
-            "code": """\
+            "title": "Exp 07: Direct Mapping Technique of Cache Memory",
+            "notes": "Aim: Simulate the Direct Mapping Technique of cache memory. | Category: Cache Memory Organization",
+            "code": r"""
+#include <stdio.h>
+
+int main()
+{
+    int numLines, numReq, cache[32];
+    int hits = 0, misses = 0;
+    int i, block, line;
+
+    printf("Enter number of Cache Lines: ");
+    scanf("%d", &numLines);
+
+    for (i = 0; i < numLines; i++)
+    {
+        cache[i] = -1;
+    }
+
+    printf("Enter number of Memory Block requests: ");
+    scanf("%d", &numReq);
+
+    printf("Enter %d Memory Block numbers: ", numReq);
+    for (i = 0; i < numReq; i++)
+    {
+        scanf("%d", &block);
+        line = block % numLines;
+
+        if (cache[line] == block)
+        {
+            hits++;
+            printf("Access Block %d -> Line %d : CACHE HIT\n", block, line);
+        }
+        else
+        {
+            misses++;
+            cache[line] = block;
+            printf("Access Block %d -> Line %d : CACHE MISS (Loaded Block %d)\n", block, line, block);
+        }
+    }
+
+    printf("\nFinal Cache Table:\n");
+    for (i = 0; i < numLines; i++)
+    {
+        if (cache[i] != -1)
+        {
+            printf("Line %d : Block %d\n", i, cache[i]);
+        }
+        else
+        {
+            printf("Line %d : Empty\n", i);
+        }
+    }
+
+    printf("Total Hits = %d | Total Misses = %d\n", hits, misses);
+
+    return 0;
+}
 """,
         },
         "8": {
-            "title": "Topic 8 Title",
-            "notes": "Core logic and steps for subject2 topic 8.",
-            "code": """\
+            "title": "Exp 08: Sorting an Array of 8-Bit Numbers in Ascending Order",
+            "notes": "Aim: Sort an array of 8-bit numbers in ascending order using Bubble Sort. | Category: Data Manipulation / Sorting",
+            "code": r"""
+#include <stdio.h>
+
+int main()
+{
+    int n, arr[30];
+    int i, j, temp;
+
+    printf("Enter count of 8-bit numbers: ");
+    scanf("%d", &n);
+
+    printf("Enter %d numbers: ", n);
+    for (i = 0; i < n; i++)
+    {
+        scanf("%d", &arr[i]);
+    }
+
+    for (i = 0; i < n - 1; i++)
+    {
+        for (j = 0; j < n - i - 1; j++)
+        {
+            if (arr[j] > arr[j + 1])
+            {
+                temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+    }
+
+    printf("Sorted Array (Ascending): ");
+    for (i = 0; i < n; i++)
+    {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+
+    return 0;
+}
+""",
+            "asm": r"""
+.MODEL SMALL
+.DATA
+    ARRAY DB 45H, 12H, 78H, 34H
+    COUNT EQU 4
+.CODE
+MAIN PROC
+    MOV AX, @DATA
+    MOV DS, AX
+    MOV CX, COUNT - 1
+OUTER:
+    MOV DX, CX
+    LEA SI, ARRAY
+INNER:
+    MOV AL, [SI]
+    CMP AL, [SI + 1]
+    JBE NO_SWAP
+    XCHG AL, [SI + 1]
+    MOV [SI], AL
+NO_SWAP:
+    INC SI
+    DEC DX
+    JNZ INNER
+    LOOP OUTER
+    MOV AH, 4CH
+    INT 21H
+MAIN ENDP
+END MAIN
 """,
         },
         "9": {
-            "title": "Topic 9 Title",
-            "notes": "Core logic and steps for subject2 topic 9.",
-            "code": """\
+            "title": "Exp 09: Block Transfer using Index Registers (SI and DI)",
+            "notes": "Aim: Transfer a block of data using the SI and DI index registers. | Category: Memory Block Transfer",
+            "code": r"""
+#include <stdio.h>
+
+int main()
+{
+    int n, src[20], dest[20] = {0};
+    int i, cx;
+    int *SI, *DI;
+
+    printf("Enter number of bytes in block: ");
+    scanf("%d", &n);
+
+    printf("Enter %d elements for Source Block: ", n);
+    for (i = 0; i < n; i++)
+    {
+        scanf("%d", &src[i]);
+    }
+
+    SI = src;
+    DI = dest;
+
+    for (cx = n; cx > 0; cx--)
+    {
+        *DI = *SI;
+        SI++;
+        DI++;
+    }
+
+    printf("Destination Block after Transfer: ");
+    for (i = 0; i < n; i++)
+    {
+        printf("%d ", dest[i]);
+    }
+    printf("\n");
+
+    return 0;
+}
+""",
+            "asm": r"""
+.MODEL SMALL
+.DATA
+    SRC_BLK  DB 10H, 20H, 30H, 40H, 50H
+    DEST_BLK DB 5 DUP(0)
+    COUNT    EQU 5
+.CODE
+MAIN PROC
+    MOV AX, @DATA
+    MOV DS, AX
+    MOV ES, AX
+    LEA SI, SRC_BLK
+    LEA DI, DEST_BLK
+    MOV CX, COUNT
+    CLD
+    REP MOVSB
+    MOV AH, 4CH
+    INT 21H
+MAIN ENDP
+END MAIN
 """,
         },
         "10": {
-            "title": "Topic 10 Title",
-            "notes": "Core logic and steps for subject2 topic 10.",
-            "code": """\
+            "title": "Exp 10: Basic File Operations in C (Create, Write, Append, Read)",
+            "notes": "Aim: Create, write, append, and read a file using user input. | Category: Secondary Storage / File I/O",
+            "code": r"""
+#include <stdio.h>
+
+int main()
+{
+    FILE *fp;
+    char line1[100], line2[100], buffer[100];
+
+    printf("Enter initial line to write to file: ");
+    fgets(line1, sizeof(line1), stdin);
+
+    fp = fopen("coa_record.txt", "w");
+    fprintf(fp, "%s", line1);
+    fclose(fp);
+
+    printf("Enter second line to append to file: ");
+    fgets(line2, sizeof(line2), stdin);
+
+    fp = fopen("coa_record.txt", "a");
+    fprintf(fp, "%s", line2);
+    fclose(fp);
+
+    printf("\n--- Contents Read from coa_record.txt ---\n");
+    fp = fopen("coa_record.txt", "r");
+    while (fgets(buffer, sizeof(buffer), fp) != NULL)
+    {
+        printf("%s", buffer);
+    }
+    fclose(fp);
+
+    return 0;
+}
 """,
         },
     },
@@ -916,6 +1457,10 @@ def _resolve_subject(raw):
     if raw_str in ("subject1", "sub1", "s1"):
         if "aoa" in SUBJECTS:
             return "aoa"
+    # Backward-compatible alias for subject2
+    if raw_str in ("subject2", "sub2", "s2"):
+        if "coa" in SUBJECTS:
+            return "coa"
     return None
 
 
@@ -964,9 +1509,10 @@ def _get_topic(subject, topic_num):
         sys.exit(1)
     t = _resolve_topic(s, topic_num)
     if t is None:
-        label = "experiment" if s == "aoa" else "topic"
+        is_experiment = s in ("aoa", "coa")
+        label = "experiment" if is_experiment else "topic"
         print(f"[error] Unknown {label} identifier: '{topic_num}' for subject '{s}'")
-        valid_items = [f"exp{k}" if s == "aoa" else k for k in _valid_topics(s)]
+        valid_items = [f"exp{k}" if is_experiment else k for k in _valid_topics(s)]
         print(f"        Valid {label}s: {', '.join(valid_items)} (or 1..{len(valid_items)})")
         sys.exit(1)
     return SUBJECTS[s][t]
@@ -1036,6 +1582,8 @@ def cmd_list(args):
         for s in _valid_subjects():
             if s == "aoa":
                 print(f"  * {s:<10} (Analysis of Algorithms -- 10 Experiments)")
+            elif s == "coa":
+                print(f"  * {s:<10} (Computer Organization & Architecture -- 10 Experiments)")
             else:
                 print(f"  * {s}")
         print(DIVIDER)
@@ -1049,17 +1597,25 @@ def cmd_list(args):
         sys.exit(1)
 
     topics = SUBJECTS[s]
-    is_aoa = (s == "aoa")
-    label = "Experiments" if is_aoa else "Topics"
+    is_experiment = s in ("aoa", "coa")
+    label = "Experiments" if is_experiment else "Topics"
 
     print(DIVIDER)
     print(f"  {label} in '{s}'")
     print(DIVIDER)
     for num in _valid_topics(s):
         title = topics[num]["title"]
-        prefix = f"Exp {int(num):02d}" if is_aoa else f"{num:>2}"
+        prefix = f"Exp {int(num):02d}" if is_experiment else f"{num:>2}"
         print(f"  [{prefix}]  {title}")
     print(DIVIDER)
+
+
+def _print_asm(topic):
+    asm = (topic.get("asm") or "").strip()
+    if asm:
+        print(asm)
+    else:
+        print("No assembly program for this experiment.")
 
 
 def cmd_show(args):
@@ -1072,11 +1628,28 @@ def cmd_show(args):
 
     raw_subject, raw_topic = args[0], args[1]
     topic = _get_topic(raw_subject, raw_topic)
+
+    if len(args) >= 3 and args[2].lower() in ("asm", "assembly"):
+        _print_asm(topic)
+        return
+
     code = topic["code"].strip()
     if code:
         print(code)
     else:
         print("// (no code yet)")
+
+
+def cmd_asm(args):
+    """asm <subject> <topic_num> -- Outputs ONLY the assembly code."""
+    args = _normalize_args(args)
+    if len(args) < 2:
+        print("[error] Usage: python helper.py asm <subject> <topic_num>")
+        print(f"        Valid subjects: {', '.join(_valid_subjects())}")
+        sys.exit(1)
+
+    topic = _get_topic(args[0], args[1])
+    _print_asm(topic)
 
 
 def cmd_write(args):
@@ -1095,8 +1668,8 @@ def cmd_write(args):
     if len(args) >= 3:
         filename = args[2]
     else:
-        if s == "aoa":
-            filename = f"aoa_exp_{t}.c"
+        if s in ("aoa", "coa"):
+            filename = f"{s}_exp_{t}.c"
         else:
             filename = f"{s}_topic_{t}.py"
 
@@ -1123,15 +1696,17 @@ def cmd_copy(args):
     s = _resolve_subject(raw_subject)
     t = _resolve_topic(s, raw_topic) if s else raw_topic
     topic = _get_topic(raw_subject, raw_topic)
-    code = topic["code"]
+    copy_asm = len(args) >= 3 and args[2].lower() in ("asm", "assembly")
+    code = (topic.get("asm") or "") if copy_asm else topic["code"]
 
-    item_label = "experiment" if s == "aoa" else "topic"
+    is_experiment = s in ("aoa", "coa")
+    item_label = "experiment" if is_experiment else "topic"
     if not code.strip():
         print(f"[warn] The code block for this {item_label} is empty - nothing to copy.")
         return
 
     success = _copy_to_clipboard(code.strip() + "\n")
-    display_id = f"Exp {int(t):02d}" if (s == "aoa" and t and str(t).isdigit()) else t
+    display_id = f"Exp {int(t):02d}" if (is_experiment and t and str(t).isdigit()) else t
 
     if success:
         print(f"[ok] Code for '{s}' {item_label} {display_id} copied to clipboard.")
@@ -1152,10 +1727,12 @@ Usage:
   python helper.py list
   python helper.py list <subject>
   python helper.py show  <subject> <topic_or_exp>
+  python helper.py asm   <subject> <topic_or_exp>
   python helper.py write <subject> <topic_or_exp> [filename]
-  python helper.py copy  <subject> <topic_or_exp>
+  python helper.py copy  <subject> <topic_or_exp> [asm]
 
-For AOA experiments, you can specify '1', 'exp1', or 'exp 1'.
+For AOA and COA experiments, you can specify '1', 'exp1', or 'exp 1'.
+COA experiments 3, 4, 8, and 9 also include an 8086 assembly program.
 
 Available subjects: {subjects}
 """
@@ -1163,6 +1740,7 @@ Available subjects: {subjects}
 COMMANDS = {
     "list":  cmd_list,
     "show":  cmd_show,
+    "asm":   cmd_asm,
     "write": cmd_write,
     "copy":  cmd_copy,
 }

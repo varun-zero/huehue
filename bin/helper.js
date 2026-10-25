@@ -29,6 +29,9 @@ function resolveSubject(raw) {
   if (['subject1', 'sub1', 's1'].includes(rawStr)) {
     if (SUBJECTS['aoa']) return 'aoa';
   }
+  if (['subject2', 'sub2', 's2'].includes(rawStr)) {
+    if (SUBJECTS['coa']) return 'coa';
+  }
   return null;
 }
 
@@ -74,9 +77,10 @@ function getTopic(subject, topicNum) {
   }
   const t = resolveTopic(s, topicNum);
   if (!t) {
-    const label = (s === 'aoa') ? 'experiment' : 'topic';
+    const isExperiment = ['aoa', 'coa'].includes(s);
+    const label = isExperiment ? 'experiment' : 'topic';
     console.error(`[error] Unknown ${label} identifier: '${topicNum}' for subject '${s}'`);
-    const validItems = validTopics(s).map(k => (s === 'aoa' ? `exp${k}` : k));
+    const validItems = validTopics(s).map(k => (isExperiment ? `exp${k}` : k));
     console.error(`        Valid ${label}s: ${validItems.join(', ')} (or 1..${validItems.length})`);
     process.exit(1);
   }
@@ -114,6 +118,8 @@ function cmdList(args) {
     for (const s of validSubjects()) {
       if (s === 'aoa') {
         console.log(`  * ${s.padEnd(10)} (Analysis of Algorithms -- 10 Experiments)`);
+      } else if (s === 'coa') {
+        console.log(`  * ${s.padEnd(10)} (Computer Organization & Architecture -- 10 Experiments)`);
       } else {
         console.log(`  * ${s}`);
       }
@@ -129,17 +135,26 @@ function cmdList(args) {
     process.exit(1);
   }
 
-  const isAoa = (s === 'aoa');
-  const label = isAoa ? 'Experiments' : 'Topics';
+  const isExperiment = ['aoa', 'coa'].includes(s);
+  const label = isExperiment ? 'Experiments' : 'Topics';
   console.log(DIVIDER);
   console.log(`  ${label} in '${s}'`);
   console.log(DIVIDER);
   for (const num of validTopics(s)) {
     const title = SUBJECTS[s][num].title;
-    const prefix = isAoa ? `Exp ${String(num).padStart(2, '0')}` : String(num).padStart(2, ' ');
+    const prefix = isExperiment ? `Exp ${String(num).padStart(2, '0')}` : String(num).padStart(2, ' ');
     console.log(`  [${prefix}]  ${title}`);
   }
   console.log(DIVIDER);
+}
+
+function printAsm(data) {
+  const asm = (data.asm || '').trim();
+  if (asm) {
+    console.log(asm);
+  } else {
+    console.log('No assembly program for this experiment.');
+  }
 }
 
 function cmdShow(args) {
@@ -151,6 +166,10 @@ function cmdShow(args) {
   }
 
   const { data } = getTopic(args[0], args[1]);
+  if (args.length >= 3 && ['asm', 'assembly'].includes(args[2].toLowerCase())) {
+    printAsm(data);
+    return;
+  }
   const code = (data.code || '').trim();
   if (code) {
     // Print ONLY the code - nothing else!
@@ -158,6 +177,18 @@ function cmdShow(args) {
   } else {
     console.log('// (no code yet)');
   }
+}
+
+function cmdAsm(args) {
+  args = normalizeArgs(args);
+  if (args.length < 2) {
+    console.error('[error] Usage: helper asm <subject> <topic_num>');
+    console.error(`        Valid subjects: ${validSubjects().join(', ')}`);
+    process.exit(1);
+  }
+
+  const { data } = getTopic(args[0], args[1]);
+  printAsm(data);
 }
 
 function cmdWrite(args) {
@@ -169,8 +200,8 @@ function cmdWrite(args) {
   }
 
   const { subject, topicNum, data } = getTopic(args[0], args[1]);
-  const defaultExt = (subject === 'aoa') ? '.c' : '.py';
-  const defaultFile = (subject === 'aoa') ? `aoa_exp_${topicNum}.c` : `${subject}_topic_${topicNum}.py`;
+  const isExperiment = ['aoa', 'coa'].includes(subject);
+  const defaultFile = isExperiment ? `${subject}_exp_${topicNum}.c` : `${subject}_topic_${topicNum}.py`;
   const filename = (args.length >= 3) ? args[2] : defaultFile;
 
   try {
@@ -191,8 +222,10 @@ function cmdCopy(args) {
   }
 
   const { subject, topicNum, data } = getTopic(args[0], args[1]);
-  const code = (data.code || '').trim();
-  const label = (subject === 'aoa') ? 'experiment' : 'topic';
+  const copyAsm = args.length >= 3 && ['asm', 'assembly'].includes(args[2].toLowerCase());
+  const code = (copyAsm ? (data.asm || '') : (data.code || '')).trim();
+  const isExperiment = ['aoa', 'coa'].includes(subject);
+  const label = isExperiment ? 'experiment' : 'topic';
 
   if (!code) {
     console.log(`[warn] The code block for this ${label} is empty - nothing to copy.`);
@@ -200,7 +233,7 @@ function cmdCopy(args) {
   }
 
   const success = copyToClipboard(code + '\n');
-  const displayId = (subject === 'aoa' && /^\d+$/.test(topicNum)) ? `Exp ${String(topicNum).padStart(2, '0')}` : topicNum;
+  const displayId = (isExperiment && /^\d+$/.test(topicNum)) ? `Exp ${String(topicNum).padStart(2, '0')}` : topicNum;
 
   if (success) {
     console.log(`[ok] Code for '${subject}' ${label} ${displayId} copied to clipboard.`);
@@ -217,17 +250,22 @@ helper -- offline CLI study helper tool
 Usage:
   helper <subject> <exp_or_topic>          # Prints ONLY the code directly to terminal!
   helper show  <subject> <exp_or_topic>    # Prints ONLY the code
+  helper asm   <subject> <exp_or_topic>    # Prints ONLY the assembly code
   helper list                              # List all subjects
   helper list  <subject>                   # List all experiments/topics in subject
   helper write <subject> <exp_or_topic> [file] # Save code directly to file
-  helper copy  <subject> <exp_or_topic>    # Copy code directly to clipboard
+  helper copy  <subject> <exp_or_topic> [asm]  # Copy code directly to clipboard
 
 Examples:
   helper aoa 1             # Outputs only Exp 01 C code
   helper aoa exp2          # Outputs only Exp 02 C code
   helper aoa exp 3         # Outputs only Exp 03 C code
+  helper coa exp1          # Outputs only COA Exp 01 C code
+  helper asm coa 3         # Outputs only COA Exp 03 assembly code
   helper aoa 1 > sort.c    # Redirect output directly to a .c file
   helper copy aoa 1        # Copy Exp 01 code to clipboard
+
+COA experiments 3, 4, 8, and 9 include 8086 assembly programs.
 
 Available subjects: ${validSubjects().join(', ')}
 `;
@@ -247,6 +285,8 @@ function main() {
     cmdList(rest);
   } else if (['show', 'code', 'get'].includes(first)) {
     cmdShow(rest);
+  } else if (first === 'asm') {
+    cmdAsm(rest);
   } else if (first === 'write') {
     cmdWrite(rest);
   } else if (first === 'copy') {
@@ -256,7 +296,7 @@ function main() {
     cmdShow([first, ...rest]);
   } else {
     console.error(`[error] Unknown command or subject: '${first}'`);
-    console.error(`        Valid commands: list, show, write, copy`);
+    console.error('        Valid commands: list, show, asm, write, copy');
     console.error(`        Valid subjects: ${validSubjects().join(', ')}`);
     console.log();
     console.log(USAGE);

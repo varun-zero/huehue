@@ -51,56 +51,60 @@
       "code": "\n#include <stdio.h>\n\nvoid findMinMax(int a[], int low, int high, int *min, int *max)\n{\n    int mid;\n    int leftMin, leftMax, rightMin, rightMax;\n\n    if (low == high)\n    {\n        *min = a[low];\n        *max = a[low];\n        return;\n    }\n\n    if (high == low + 1)\n    {\n        if (a[low] < a[high])\n        {\n            *min = a[low];\n            *max = a[high];\n        }\n        else\n        {\n            *min = a[high];\n            *max = a[low];\n        }\n        return;\n    }\n\n    mid = (low + high) / 2;\n\n    findMinMax(a, low, mid, &leftMin, &leftMax);\n    findMinMax(a, mid + 1, high, &rightMin, &rightMax);\n\n    if (leftMin < rightMin)\n    {\n        *min = leftMin;\n    }\n    else\n    {\n        *min = rightMin;\n    }\n\n    if (leftMax > rightMax)\n    {\n        *max = leftMax;\n    }\n    else\n    {\n        *max = rightMax;\n    }\n}\n\nint main()\n{\n    int n, i, min, max;\n    int a[50];\n\n    printf(\"Enter number of elements: \");\n    scanf(\"%d\", &n);\n\n    printf(\"Enter %d elements: \", n);\n    for (i = 0; i < n; i++)\n    {\n        scanf(\"%d\", &a[i]);\n    }\n\n    findMinMax(a, 0, n - 1, &min, &max);\n\n    printf(\"Minimum element = %d\\n\", min);\n    printf(\"Maximum element = %d\\n\", max);\n\n    return 0;\n}\n"
     }
   },
-  "subject2": {
+  "coa": {
     "1": {
-      "title": "Topic 1 Title",
-      "notes": "Core logic and steps for subject2 topic 1.",
-      "code": ""
+      "title": "Exp 01: Decimal and Hexadecimal to Binary Conversion",
+      "notes": "Aim: Convert a decimal number and a hexadecimal number into binary. | Category: Number System Conversion",
+      "code": "\n#include <stdio.h>\n#include <ctype.h>\n\nvoid decimalToBinary(int n)\n{\n    int bits[32], idx = 0, i;\n\n    if (n == 0)\n    {\n        printf(\"0\\n\");\n        return;\n    }\n\n    while (n > 0)\n    {\n        bits[idx] = n % 2;\n        idx++;\n        n /= 2;\n    }\n\n    for (i = idx - 1; i >= 0; i--)\n    {\n        printf(\"%d\", bits[i]);\n    }\n\n    printf(\"\\n\");\n}\n\nvoid hexToBinary(char hex[])\n{\n    int i, b, val;\n    char c;\n\n    for (i = 0; hex[i] != '\\0'; i++)\n    {\n        c = toupper(hex[i]);\n        val = (c >= '0' && c <= '9') ? (c - '0') : (c - 'A' + 10);\n\n        for (b = 3; b >= 0; b--)\n        {\n            printf(\"%d\", (val >> b) & 1);\n        }\n    }\n\n    printf(\"\\n\");\n}\n\nint main()\n{\n    int dec;\n    char hex[20];\n\n    printf(\"Enter a Decimal number: \");\n    scanf(\"%d\", &dec);\n\n    printf(\"Binary of Decimal %d = \", dec);\n    decimalToBinary(dec);\n\n    printf(\"\\nEnter a Hexadecimal number: \");\n    scanf(\"%s\", hex);\n\n    printf(\"Binary of Hexadecimal %s = \", hex);\n    hexToBinary(hex);\n\n    return 0;\n}\n"
     },
     "2": {
-      "title": "Topic 2 Title",
-      "notes": "Core logic and steps for subject2 topic 2.",
-      "code": ""
+      "title": "Exp 02: 2's Complement of a Binary Number",
+      "notes": "Aim: Find the 1's and 2's complement of a binary number. | Category: Signed Binary Representation",
+      "code": "\n#include <stdio.h>\n#include <string.h>\n\nint main()\n{\n    char bin[50], ones[50], twos[50];\n    int carry = 1, len, i;\n\n    printf(\"Enter a binary number: \");\n    scanf(\"%s\", bin);\n\n    len = strlen(bin);\n\n    for (i = 0; i < len; i++)\n    {\n        ones[i] = (bin[i] == '0') ? '1' : '0';\n    }\n    ones[len] = '\\0';\n\n    for (i = len - 1; i >= 0; i--)\n    {\n        if (ones[i] == '1' && carry == 1)\n        {\n            twos[i] = '0';\n        }\n        else if (ones[i] == '0' && carry == 1)\n        {\n            twos[i] = '1';\n            carry = 0;\n        }\n        else\n        {\n            twos[i] = ones[i];\n        }\n    }\n    twos[len] = '\\0';\n\n    printf(\"1's Complement = %s\\n\", ones);\n    printf(\"2's Complement = %s\\n\", twos);\n\n    return 0;\n}\n"
     },
     "3": {
-      "title": "Topic 3 Title",
-      "notes": "Core logic and steps for subject2 topic 3.",
-      "code": ""
+      "title": "Exp 03: Basic Arithmetic Operations on 8-Bit Data",
+      "notes": "Aim: Perform addition, subtraction, multiplication, and division on 8-bit data. | Category: ALU Arithmetic Operations",
+      "code": "\n#include <stdio.h>\n\nint main()\n{\n    unsigned int a, b;\n\n    printf(\"Enter first 8-bit number (0-255): \");\n    scanf(\"%u\", &a);\n\n    printf(\"Enter second 8-bit number (1-255): \");\n    scanf(\"%u\", &b);\n\n    a &= 0xFF;\n    b &= 0xFF;\n\n    printf(\"\\n--- 8-Bit Arithmetic Results ---\\n\");\n    printf(\"Addition       (AL + BL) = %u (0x%02X)\\n\", (a + b) & 0xFF, (a + b) & 0xFF);\n    printf(\"Subtraction    (AL - BL) = %u (0x%02X)\\n\", (a - b) & 0xFF, (a - b) & 0xFF);\n    printf(\"Multiplication (AL * BL) = %u (0x%04X in AX)\\n\", a * b, a * b);\n    printf(\"Division Quotient  (AL)  = %u (0x%02X)\\n\", a / b, a / b);\n    printf(\"Division Remainder (AH)  = %u (0x%02X)\\n\", a % b, a % b);\n\n    return 0;\n}\n",
+      "asm": "\n.MODEL SMALL\n.DATA\n    NUM1 DB 14H\n    NUM2 DB 06H\n    SUM  DB ?\n    DIFF DB ?\n    PROD DW ?\n    QUOT DB ?\n    REM  DB ?\n.CODE\nMAIN PROC\n    MOV AX, @DATA\n    MOV DS, AX\n    MOV AL, NUM1\n    ADD AL, NUM2\n    MOV SUM, AL\n    MOV AL, NUM1\n    SUB AL, NUM2\n    MOV DIFF, AL\n    MOV AL, NUM1\n    MOV BL, NUM2\n    MUL BL\n    MOV PROD, AX\n    MOV AX, 0000H\n    MOV AL, NUM1\n    DIV BL\n    MOV QUOT, AL\n    MOV REM, AH\n    MOV AH, 4CH\n    INT 21H\nMAIN ENDP\nEND MAIN\n"
     },
     "4": {
-      "title": "Topic 4 Title",
-      "notes": "Core logic and steps for subject2 topic 4.",
-      "code": ""
+      "title": "Exp 04: Basic Logical Operations (AND, OR, XOR, NOT) on 8-Bit Data",
+      "notes": "Aim: Perform AND, OR, XOR, and NOT on 8-bit data. | Category: ALU Logical Operations",
+      "code": "\n#include <stdio.h>\n\nvoid printBits(unsigned int x)\n{\n    int i;\n\n    for (i = 7; i >= 0; i--)\n    {\n        printf(\"%d\", (x >> i) & 1);\n    }\n}\n\nint main()\n{\n    unsigned int a, b;\n    unsigned int andRes, orRes, xorRes, notRes;\n\n    printf(\"Enter first 8-bit Hex operand (e.g., 92): \");\n    scanf(\"%x\", &a);\n\n    printf(\"Enter second 8-bit Hex operand (e.g., 6A): \");\n    scanf(\"%x\", &b);\n\n    a &= 0xFF;\n    b &= 0xFF;\n\n    andRes = (a & b) & 0xFF;\n    orRes = (a | b) & 0xFF;\n    xorRes = (a ^ b) & 0xFF;\n    notRes = (~a) & 0xFF;\n\n    printf(\"\\nOperation   Hex Result   8-Bit Binary\\n\");\n    printf(\"AND         %02XH          \", andRes);\n    printBits(andRes);\n    printf(\"\\n\");\n    printf(\"OR          %02XH          \", orRes);\n    printBits(orRes);\n    printf(\"\\n\");\n    printf(\"XOR         %02XH          \", xorRes);\n    printBits(xorRes);\n    printf(\"\\n\");\n    printf(\"NOT (Op1)   %02XH          \", notRes);\n    printBits(notRes);\n    printf(\"\\n\");\n\n    return 0;\n}\n",
+      "asm": "\n.MODEL SMALL\n.DATA\n    OP1     DB 92H\n    OP2     DB 6AH\n    RES_AND DB ?\n    RES_OR  DB ?\n    RES_XOR DB ?\n    RES_NOT DB ?\n.CODE\nMAIN PROC\n    MOV AX, @DATA\n    MOV DS, AX\n    MOV AL, OP1\n    AND AL, OP2\n    MOV RES_AND, AL\n    MOV AL, OP1\n    OR  AL, OP2\n    MOV RES_OR, AL\n    MOV AL, OP1\n    XOR AL, OP2\n    MOV RES_XOR, AL\n    MOV AL, OP1\n    NOT AL\n    MOV RES_NOT, AL\n    MOV AH, 4CH\n    INT 21H\nMAIN ENDP\nEND MAIN\n"
     },
     "5": {
-      "title": "Topic 5 Title",
-      "notes": "Core logic and steps for subject2 topic 5.",
-      "code": ""
+      "title": "Exp 05: Signed 8-Bit Multiplication using Booth's Algorithm",
+      "notes": "Aim: Multiply two signed 8-bit numbers using Booth's Algorithm. | Category: Signed Multiplication Algorithm",
+      "code": "\n#include <stdio.h>\n\nint main()\n{\n    int M, Q, A = 0, Q_1 = 0, n = 8;\n    int step, Q0, signA, product;\n\n    printf(\"Enter signed Multiplicand (M): \");\n    scanf(\"%d\", &M);\n\n    printf(\"Enter signed Multiplier (Q): \");\n    scanf(\"%d\", &Q);\n\n    M &= 0xFF;\n    Q &= 0xFF;\n\n    for (step = 1; step <= n; step++)\n    {\n        Q0 = Q & 1;\n\n        if (Q0 == 0 && Q_1 == 1)\n        {\n            A = (A + M) & 0xFF;\n        }\n        else if (Q0 == 1 && Q_1 == 0)\n        {\n            A = (A - M) & 0xFF;\n        }\n\n        signA = A & 0x80;\n        Q_1 = Q & 1;\n        Q = (Q >> 1) | ((A & 1) << 7);\n        A = (A >> 1) | signA;\n    }\n\n    product = (A << 8) | Q;\n\n    if (product & 0x8000)\n    {\n        product -= 0x10000;\n    }\n\n    printf(\"Final 16-bit Register [A:Q] = 0x%04X\\n\", (A << 8) | Q);\n    printf(\"Signed Product = %d\\n\", product);\n\n    return 0;\n}\n"
     },
     "6": {
-      "title": "Topic 6 Title",
-      "notes": "Core logic and steps for subject2 topic 6.",
-      "code": ""
+      "title": "Exp 06: Unsigned 8-Bit Division using Restoring Division Algorithm",
+      "notes": "Aim: Divide two unsigned 8-bit numbers using the Restoring Division Algorithm. | Category: Unsigned Division Algorithm",
+      "code": "\n#include <stdio.h>\n\nint main()\n{\n    int Q, M, A = 0, n = 8;\n    int i;\n\n    printf(\"Enter Unsigned Dividend (Q): \");\n    scanf(\"%d\", &Q);\n\n    printf(\"Enter Unsigned Divisor (M): \");\n    scanf(\"%d\", &M);\n\n    if (M == 0)\n    {\n        printf(\"Error: Division by zero!\\n\");\n        return 0;\n    }\n\n    for (i = 0; i < n; i++)\n    {\n        A = (A << 1) | ((Q >> (n - 1)) & 1);\n        Q = (Q << 1) & 0xFF;\n        A = A - M;\n\n        if (A < 0)\n        {\n            A = A + M;\n        }\n        else\n        {\n            Q = Q | 1;\n        }\n    }\n\n    printf(\"\\nResult after %d iterations:\\n\", n);\n    printf(\"Quotient (Q)  = %d\\n\", Q);\n    printf(\"Remainder (A) = %d\\n\", A);\n\n    return 0;\n}\n"
     },
     "7": {
-      "title": "Topic 7 Title",
-      "notes": "Core logic and steps for subject2 topic 7.",
-      "code": ""
+      "title": "Exp 07: Direct Mapping Technique of Cache Memory",
+      "notes": "Aim: Simulate the Direct Mapping Technique of cache memory. | Category: Cache Memory Organization",
+      "code": "\n#include <stdio.h>\n\nint main()\n{\n    int numLines, numReq, cache[32];\n    int hits = 0, misses = 0;\n    int i, block, line;\n\n    printf(\"Enter number of Cache Lines: \");\n    scanf(\"%d\", &numLines);\n\n    for (i = 0; i < numLines; i++)\n    {\n        cache[i] = -1;\n    }\n\n    printf(\"Enter number of Memory Block requests: \");\n    scanf(\"%d\", &numReq);\n\n    printf(\"Enter %d Memory Block numbers: \", numReq);\n    for (i = 0; i < numReq; i++)\n    {\n        scanf(\"%d\", &block);\n        line = block % numLines;\n\n        if (cache[line] == block)\n        {\n            hits++;\n            printf(\"Access Block %d -> Line %d : CACHE HIT\\n\", block, line);\n        }\n        else\n        {\n            misses++;\n            cache[line] = block;\n            printf(\"Access Block %d -> Line %d : CACHE MISS (Loaded Block %d)\\n\", block, line, block);\n        }\n    }\n\n    printf(\"\\nFinal Cache Table:\\n\");\n    for (i = 0; i < numLines; i++)\n    {\n        if (cache[i] != -1)\n        {\n            printf(\"Line %d : Block %d\\n\", i, cache[i]);\n        }\n        else\n        {\n            printf(\"Line %d : Empty\\n\", i);\n        }\n    }\n\n    printf(\"Total Hits = %d | Total Misses = %d\\n\", hits, misses);\n\n    return 0;\n}\n"
     },
     "8": {
-      "title": "Topic 8 Title",
-      "notes": "Core logic and steps for subject2 topic 8.",
-      "code": ""
+      "title": "Exp 08: Sorting an Array of 8-Bit Numbers in Ascending Order",
+      "notes": "Aim: Sort an array of 8-bit numbers in ascending order using Bubble Sort. | Category: Data Manipulation / Sorting",
+      "code": "\n#include <stdio.h>\n\nint main()\n{\n    int n, arr[30];\n    int i, j, temp;\n\n    printf(\"Enter count of 8-bit numbers: \");\n    scanf(\"%d\", &n);\n\n    printf(\"Enter %d numbers: \", n);\n    for (i = 0; i < n; i++)\n    {\n        scanf(\"%d\", &arr[i]);\n    }\n\n    for (i = 0; i < n - 1; i++)\n    {\n        for (j = 0; j < n - i - 1; j++)\n        {\n            if (arr[j] > arr[j + 1])\n            {\n                temp = arr[j];\n                arr[j] = arr[j + 1];\n                arr[j + 1] = temp;\n            }\n        }\n    }\n\n    printf(\"Sorted Array (Ascending): \");\n    for (i = 0; i < n; i++)\n    {\n        printf(\"%d \", arr[i]);\n    }\n    printf(\"\\n\");\n\n    return 0;\n}\n",
+      "asm": "\n.MODEL SMALL\n.DATA\n    ARRAY DB 45H, 12H, 78H, 34H\n    COUNT EQU 4\n.CODE\nMAIN PROC\n    MOV AX, @DATA\n    MOV DS, AX\n    MOV CX, COUNT - 1\nOUTER:\n    MOV DX, CX\n    LEA SI, ARRAY\nINNER:\n    MOV AL, [SI]\n    CMP AL, [SI + 1]\n    JBE NO_SWAP\n    XCHG AL, [SI + 1]\n    MOV [SI], AL\nNO_SWAP:\n    INC SI\n    DEC DX\n    JNZ INNER\n    LOOP OUTER\n    MOV AH, 4CH\n    INT 21H\nMAIN ENDP\nEND MAIN\n"
     },
     "9": {
-      "title": "Topic 9 Title",
-      "notes": "Core logic and steps for subject2 topic 9.",
-      "code": ""
+      "title": "Exp 09: Block Transfer using Index Registers (SI and DI)",
+      "notes": "Aim: Transfer a block of data using the SI and DI index registers. | Category: Memory Block Transfer",
+      "code": "\n#include <stdio.h>\n\nint main()\n{\n    int n, src[20], dest[20] = {0};\n    int i, cx;\n    int *SI, *DI;\n\n    printf(\"Enter number of bytes in block: \");\n    scanf(\"%d\", &n);\n\n    printf(\"Enter %d elements for Source Block: \", n);\n    for (i = 0; i < n; i++)\n    {\n        scanf(\"%d\", &src[i]);\n    }\n\n    SI = src;\n    DI = dest;\n\n    for (cx = n; cx > 0; cx--)\n    {\n        *DI = *SI;\n        SI++;\n        DI++;\n    }\n\n    printf(\"Destination Block after Transfer: \");\n    for (i = 0; i < n; i++)\n    {\n        printf(\"%d \", dest[i]);\n    }\n    printf(\"\\n\");\n\n    return 0;\n}\n",
+      "asm": "\n.MODEL SMALL\n.DATA\n    SRC_BLK  DB 10H, 20H, 30H, 40H, 50H\n    DEST_BLK DB 5 DUP(0)\n    COUNT    EQU 5\n.CODE\nMAIN PROC\n    MOV AX, @DATA\n    MOV DS, AX\n    MOV ES, AX\n    LEA SI, SRC_BLK\n    LEA DI, DEST_BLK\n    MOV CX, COUNT\n    CLD\n    REP MOVSB\n    MOV AH, 4CH\n    INT 21H\nMAIN ENDP\nEND MAIN\n"
     },
     "10": {
-      "title": "Topic 10 Title",
-      "notes": "Core logic and steps for subject2 topic 10.",
-      "code": ""
+      "title": "Exp 10: Basic File Operations in C (Create, Write, Append, Read)",
+      "notes": "Aim: Create, write, append, and read a file using user input. | Category: Secondary Storage / File I/O",
+      "code": "\n#include <stdio.h>\n\nint main()\n{\n    FILE *fp;\n    char line1[100], line2[100], buffer[100];\n\n    printf(\"Enter initial line to write to file: \");\n    fgets(line1, sizeof(line1), stdin);\n\n    fp = fopen(\"coa_record.txt\", \"w\");\n    fprintf(fp, \"%s\", line1);\n    fclose(fp);\n\n    printf(\"Enter second line to append to file: \");\n    fgets(line2, sizeof(line2), stdin);\n\n    fp = fopen(\"coa_record.txt\", \"a\");\n    fprintf(fp, \"%s\", line2);\n    fclose(fp);\n\n    printf(\"\\n--- Contents Read from coa_record.txt ---\\n\");\n    fp = fopen(\"coa_record.txt\", \"r\");\n    while (fgets(buffer, sizeof(buffer), fp) != NULL)\n    {\n        printf(\"%s\", buffer);\n    }\n    fclose(fp);\n\n    return 0;\n}\n"
     }
   },
   "subject3": {

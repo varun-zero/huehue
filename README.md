@@ -1,6 +1,6 @@
 # Helper CLI
 
-Offline CLI study helper tool for AOA lab C programs and study subjects.
+Offline CLI study helper tool for AOA and COA lab programs and study subjects.
 
 ## Installation via npm
 
@@ -19,15 +19,25 @@ To print **purely and strictly the C code** (with no headers, notes, or dividers
 ```bash
 # By experiment number:
 helper aoa 1
+helper coa 1
 
 # Or with 'exp' prefix:
 helper aoa exp2
+helper coa exp3
 helper aoa exp10
+```
+
+### Get only the 8086 assembly code (COA Exp 3, 4, 8, 9):
+```bash
+helper asm coa 3
+# or:
+python helper.py asm coa 3
 ```
 
 ### Save directly into a `.c` file:
 ```bash
 helper aoa 1 > solution.c
+helper coa 1 > coa_exp1.c
 ```
 
 ### Copy directly to clipboard:
@@ -44,14 +54,34 @@ helper aoa 1 | clip
 ## Other Useful Commands
 
 ```bash
-# List all experiments in AOA:
+# List all experiments in AOA or COA:
 helper list aoa
+helper list coa
 
 # List all subjects:
 helper list
 
 # Write directly to default file name:
 helper write aoa 1
+helper write coa 3
+```
+
+## COA Assembly Programs
+
+COA experiments **3, 4, 8, and 9** include a reference 8086 MASM assembly program in addition to the C program.
+
+```bash
+# Print the C program (default):
+python helper.py coa 3
+
+# Print only the assembly program:
+python helper.py asm coa 3
+
+# Save the assembly program:
+python helper.py asm coa 3 > coa_exp3.asm
+
+# Copy the assembly program to clipboard:
+python helper.py copy coa 3 asm
 ```
 
 ## Running Without npm
@@ -61,6 +91,7 @@ If `npm` or `node` is **not installed** on the computer, you have 3 ready option
 ### Option 1: Direct Python (Recommended if Python is installed)
 ```bash
 python helper.py aoa 1
+python helper.py coa 1
 # or: py helper.py aoa 1
 ```
 
@@ -84,21 +115,21 @@ If you are on a different computer, run any of these in **PowerShell**:
 
 ### Download `helper.py` and run:
 ```powershell
-irm https://raw.githubusercontent.com/varun-zero/huehue/main/helper.py -OutFile helper.py; python helper.py aoa 1
+irm https://raw.githubusercontent.com/varun-zero/huehue/main/helper.py -OutFile helper.py; python helper.py coa 1
 ```
 
 ### Run `helper.py` straight from memory (no files saved):
 ```powershell
-irm https://raw.githubusercontent.com/varun-zero/huehue/main/helper.py | python - aoa 1
+irm https://raw.githubusercontent.com/varun-zero/huehue/main/helper.py | python - coa 1
 ```
 
 ### Pure Zero-Install One-Liner (No Node, No Python needed):
 ```powershell
-(irm https://raw.githubusercontent.com/varun-zero/huehue/main/data.json).aoa."1".code
+(irm https://raw.githubusercontent.com/varun-zero/huehue/main/data.json).coa."1".code
 ```
 *(Copy directly to clipboard:)*
 ```powershell
-(irm https://raw.githubusercontent.com/varun-zero/huehue/main/data.json).aoa."1".code | Set-Clipboard
+(irm https://raw.githubusercontent.com/varun-zero/huehue/main/data.json).coa."1".code | Set-Clipboard
 ```
 
 

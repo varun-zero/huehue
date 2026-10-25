@@ -1,7 +1,7 @@
 {
   "name": "helper-cli",
   "version": "1.0.0",
-  "description": "Offline CLI study helper tool for AOA lab C programs and study subjects",
+  "description": "Offline CLI study helper tool for AOA and COA lab programs",
   "main": "bin/helper.js",
   "bin": {
     "helper": "./bin/helper.js"
