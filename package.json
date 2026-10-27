@@ -1,7 +1,7 @@
 {
   "name": "helper-cli",
   "version": "1.0.0",
-  "description": "Offline CLI study helper tool for AOA and COA lab programs",
+  "description": "Offline CLI study helper tool for AOA, COA and FSJP lab programs",
   "main": "bin/helper.js",
   "bin": {
     "helper": "./bin/helper.js"
@@ -11,6 +11,9 @@
   },
   "keywords": [
     "aoa",
+    "coa",
+    "fsjp",
+    "java",
     "c",
     "algorithms",
     "helper",
