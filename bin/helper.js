@@ -32,6 +32,9 @@ function resolveSubject(raw) {
   if (['subject2', 'sub2', 's2'].includes(rawStr)) {
     if (SUBJECTS['coa']) return 'coa';
   }
+  if (['subject3', 'sub3', 's3'].includes(rawStr)) {
+    if (SUBJECTS['fsjp']) return 'fsjp';
+  }
   return null;
 }
 
@@ -77,7 +80,7 @@ function getTopic(subject, topicNum) {
   }
   const t = resolveTopic(s, topicNum);
   if (!t) {
-    const isExperiment = ['aoa', 'coa'].includes(s);
+    const isExperiment = ['aoa', 'coa', 'fsjp'].includes(s);
     const label = isExperiment ? 'experiment' : 'topic';
     console.error(`[error] Unknown ${label} identifier: '${topicNum}' for subject '${s}'`);
     const validItems = validTopics(s).map(k => (isExperiment ? `exp${k}` : k));
@@ -120,6 +123,8 @@ function cmdList(args) {
         console.log(`  * ${s.padEnd(10)} (Analysis of Algorithms -- 10 Experiments)`);
       } else if (s === 'coa') {
         console.log(`  * ${s.padEnd(10)} (Computer Organization & Architecture -- 10 Experiments)`);
+      } else if (s === 'fsjp') {
+        console.log(`  * ${s.padEnd(10)} (Full Stack Java Programming -- ${validTopics(s).length} Experiments)`);
       } else {
         console.log(`  * ${s}`);
       }
@@ -135,7 +140,7 @@ function cmdList(args) {
     process.exit(1);
   }
 
-  const isExperiment = ['aoa', 'coa'].includes(s);
+  const isExperiment = ['aoa', 'coa', 'fsjp'].includes(s);
   const label = isExperiment ? 'Experiments' : 'Topics';
   console.log(DIVIDER);
   console.log(`  ${label} in '${s}'`);
@@ -166,7 +171,12 @@ function cmdShow(args) {
     process.exit(1);
   }
 
-  const { data } = getTopic(args[0], args[1]);
+  const { subject, topicNum, data } = getTopic(args[0], args[1]);
+  if (Array.isArray(data.files) && data.files.length > 1) {
+    console.error('[error] This experiment has multiple files. Use helper.py:');
+    console.error(`        python helper.py show ${subject} ${topicNum}`);
+    process.exit(1);
+  }
   if (args.length >= 3 && ['asm', 'assembly'].includes(args[2].toLowerCase())) {
     printAsm(data);
     return;
@@ -201,9 +211,21 @@ function cmdWrite(args) {
   }
 
   const { subject, topicNum, data } = getTopic(args[0], args[1]);
-  const isExperiment = ['aoa', 'coa'].includes(subject);
-  const ext = data.code_type === 'asm' ? '.asm' : '.c';
-  const defaultFile = isExperiment ? `${subject}_exp_${topicNum}${ext}` : `${subject}_topic_${topicNum}.py`;
+  if (Array.isArray(data.files) && data.files.length > 1) {
+    console.error('[error] This experiment has multiple files. Use helper.py:');
+    console.error(`        python helper.py write ${subject} ${topicNum}`);
+    process.exit(1);
+  }
+  const isExperiment = ['aoa', 'coa', 'fsjp'].includes(subject);
+  const ext = data.language === 'java' ? '.java' : (data.code_type === 'asm' ? '.asm' : '.c');
+  let defaultFile;
+  if (data.filename) {
+    defaultFile = data.filename;
+  } else if (isExperiment) {
+    defaultFile = `${subject}_exp_${topicNum}${ext}`;
+  } else {
+    defaultFile = `${subject}_topic_${topicNum}.py`;
+  }
   const filename = (args.length >= 3) ? args[2] : defaultFile;
 
   try {
@@ -224,10 +246,15 @@ function cmdCopy(args) {
   }
 
   const { subject, topicNum, data } = getTopic(args[0], args[1]);
+  if (Array.isArray(data.files) && data.files.length > 1) {
+    console.error('[error] This experiment has multiple files. Use helper.py:');
+    console.error(`        python helper.py copy ${subject} ${topicNum} 1`);
+    process.exit(1);
+  }
   const copyAsm = args.length >= 3 && ['asm', 'assembly'].includes(args[2].toLowerCase());
   const asmCode = data.code_type === 'asm' ? data.code : data.asm;
   const code = ((copyAsm ? asmCode : data.code) || '').trim();
-  const isExperiment = ['aoa', 'coa'].includes(subject);
+  const isExperiment = ['aoa', 'coa', 'fsjp'].includes(subject);
   const label = isExperiment ? 'experiment' : 'topic';
 
   if (!code) {
@@ -264,11 +291,13 @@ Examples:
   helper aoa exp2          # Outputs only Exp 02 C code
   helper aoa exp 3         # Outputs only Exp 03 C code
   helper coa exp1          # Outputs only COA Exp 01 C code
+  helper fsjp 1            # Outputs only FSJP Exp 01 Java code
   helper asm coa 3         # Outputs only COA Exp 03 assembly code
   helper aoa 1 > sort.c    # Redirect output directly to a .c file
   helper copy aoa 1        # Copy Exp 01 code to clipboard
 
 COA experiments 3, 4, 8, and 9 are assembly-only. The rest use C.
+FSJP experiments are Java. Multi-file FSJP experiments use helper.py.
 
 Available subjects: ${validSubjects().join(', ')}
 `;

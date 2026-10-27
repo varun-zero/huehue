@@ -17,8 +17,11 @@ $data = Get-Content $dataPath -Raw | ConvertFrom-Json
 # If Arg1 is 'list'
 if ($Arg1 -eq "list") {
     $targetSub = if ($Arg2) { $Arg2.ToLower() } else { $null }
+    if ($targetSub -in @("subject1", "sub1", "s1")) { $targetSub = "aoa" }
+    if ($targetSub -in @("subject2", "sub2", "s2")) { $targetSub = "coa" }
+    if ($targetSub -in @("subject3", "sub3", "s3")) { $targetSub = "fsjp" }
     if ($targetSub -and $data.PSObject.Properties[$targetSub]) {
-        $label = if ($targetSub -in @("aoa", "coa")) { "Experiments" } else { "Topics" }
+        $label = if ($targetSub -in @("aoa", "coa", "fsjp")) { "Experiments" } else { "Topics" }
         Write-Host "============================================================"
         Write-Host "  $label in '$targetSub'"
         Write-Host "============================================================"
@@ -29,7 +32,8 @@ if ($Arg1 -eq "list") {
         }
         Write-Host "============================================================"
     } else {
-        Write-Host "Available subjects: aoa, coa"
+        $subjects = ($data.PSObject.Properties.Name | Sort-Object) -join ", "
+        Write-Host "Available subjects: $subjects"
     }
     exit 0
 }
@@ -55,13 +59,19 @@ if (-not $sub -or -not $topicRaw) {
     Write-Host "       .\helper.ps1 asm <subject> <experiment_number>"
     Write-Host "COA 3, 4, 8, 9 are assembly-only."
     Write-Host "Example: .\helper.ps1 coa 1"
-    Write-Host "         .\helper.ps1 coa 3"
+    Write-Host "         .\helper.ps1 fsjp 1"
     exit 1
 }
 
 $sub = $sub.ToLower()
+if ($sub -in @("subject1", "sub1", "s1")) {
+    $sub = "aoa"
+}
 if ($sub -in @("subject2", "sub2", "s2")) {
     $sub = "coa"
+}
+if ($sub -in @("subject3", "sub3", "s3")) {
+    $sub = "fsjp"
 }
 $expNum = $topicRaw -replace '[^0-9]', ''
 if (-not $expNum) { $expNum = $topicRaw }

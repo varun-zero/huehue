@@ -5,11 +5,11 @@ helper.py -- Offline CLI study helper tool.
 Usage:
   python helper.py list
   python helper.py list <subject>
-  python helper.py show  <subject> <topic_num>
-  python helper.py write <subject> <topic_num> [filename]
-  python helper.py copy  <subject> <topic_num>
+  python helper.py show  <subject> <topic_num> [file|all]
+  python helper.py write <subject> <topic_num> [filename|folder]
+  python helper.py copy  <subject> <topic_num> [file|all]
 
-For AOA experiments, you can specify '1', 'exp1', or 'exp 1'.
+For AOA, COA and FSJP experiments, you can specify '1', 'exp1', or 'exp 1'.
 """
 
 import sys
@@ -1217,65 +1217,178 @@ int main()
         },
     },
 
-    "subject3": {
+    "fsjp": {
         "1": {
-            "title": "Topic 1 Title",
-            "notes": "Core logic and steps for subject3 topic 1.",
-            "code": """\
+            "title": "Exp 01: Classes and Objects - Student Management",
+            "notes": "",
+            "filename": "Exp1_43.java",
+            "language": "java",
+            "code": r"""
+import java.util.Scanner;
+
+class Student {
+    String name;
+    int rollNumber;
+    float marks;
+
+    public void inputDetails(Scanner scanner) {
+        System.out.print("Enter Name: ");
+        this.name = scanner.nextLine();
+
+        System.out.print("Enter Roll Number: ");
+        this.rollNumber = scanner.nextInt();
+
+        System.out.print("Enter Marks: ");
+        this.marks = scanner.nextFloat();
+        scanner.nextLine();
+    }
+
+    public void displayDetails() {
+        System.out.println("Name: " + this.name);
+        System.out.println("Roll Number: " + this.rollNumber);
+        System.out.println("Marks: " + this.marks);
+    }
+}
+
+public class Exp1_43 {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Enter Details for Student 1:");
+        Student student1 = new Student();
+        student1.inputDetails(scanner);
+
+        System.out.println("Enter Details for Student 2:");
+        Student student2 = new Student();
+        student2.inputDetails(scanner);
+
+        System.out.println("Student Information:");
+        student1.displayDetails();
+        student2.displayDetails();
+
+        scanner.close();
+    }
+}
 """,
         },
         "2": {
-            "title": "Topic 2 Title",
-            "notes": "Core logic and steps for subject3 topic 2.",
-            "code": """\
+            "title": "Exp 02: Method and Constructor Overloading",
+            "notes": "",
+            "filename": "Calculator.java",
+            "language": "java",
+            "code": r"""
+class Calculator {
+    Calculator() {
+        System.out.println("Welcome to Calculator");
+    }
+
+    Calculator(int a, int b) {
+        System.out.println("Sum of " + a + " and " + b + " is: " + (a + b));
+    }
+
+    void add() {
+        System.out.println("Sum of default numbers 5 and 10 is: " + (5 + 10));
+    }
+
+    void add(int a, int b) {
+        System.out.println("Sum of " + a + " and " + b + " is: " + (a + b));
+    }
+
+    void add(float a, float b, float c) {
+        System.out.println("Sum of " + a + ", " + b + " and " + c + " is: " + (a + b + c));
+    }
+
+    public static void main(String[] args) {
+        Calculator c1 = new Calculator();
+        Calculator c2 = new Calculator(15, 25);
+        c1.add();
+        c1.add(20, 30);
+        c1.add(12.5f, 15.5f, 10.0f);
+    }
+}
 """,
         },
         "3": {
-            "title": "Topic 3 Title",
-            "notes": "Core logic and steps for subject3 topic 3.",
-            "code": """\
-""",
-        },
-        "4": {
-            "title": "Topic 4 Title",
-            "notes": "Core logic and steps for subject3 topic 4.",
-            "code": """\
-""",
-        },
-        "5": {
-            "title": "Topic 5 Title",
-            "notes": "Core logic and steps for subject3 topic 5.",
-            "code": """\
-""",
-        },
-        "6": {
-            "title": "Topic 6 Title",
-            "notes": "Core logic and steps for subject3 topic 6.",
-            "code": """\
-""",
-        },
-        "7": {
-            "title": "Topic 7 Title",
-            "notes": "Core logic and steps for subject3 topic 7.",
-            "code": """\
-""",
-        },
-        "8": {
-            "title": "Topic 8 Title",
-            "notes": "Core logic and steps for subject3 topic 8.",
-            "code": """\
-""",
-        },
-        "9": {
-            "title": "Topic 9 Title",
-            "notes": "Core logic and steps for subject3 topic 9.",
-            "code": """\
-""",
-        },
-        "10": {
-            "title": "Topic 10 Title",
-            "notes": "Core logic and steps for subject3 topic 10.",
-            "code": """\
+            "title": "Exp 03: Types of Inheritance and Exception Handling",
+            "notes": "",
+            "filename": "InheritanceExceptionDemo.java",
+            "language": "java",
+            "code": r"""
+import java.util.Scanner;
+
+class Person {
+    String name;
+    int age;
+
+    Person(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+}
+
+class Student extends Person {
+    String course;
+
+    Student(String name, int age, String course) {
+        super(name, age);
+        this.course = course;
+    }
+}
+
+class GradStudent extends Student {
+    int gradYear;
+
+    GradStudent(String name, int age, String course, int gradYear) {
+        super(name, age, course);
+        this.gradYear = gradYear;
+    }
+
+    void show() {
+        System.out.println("GradStudent: " + name + ", Age: " + age +
+                ", Course: " + course + ", Year: " + gradYear);
+    }
+}
+
+class Teacher extends Person {
+    String subject;
+
+    Teacher(String name, int age, String subject) {
+        super(name, age);
+        this.subject = subject;
+    }
+
+    void show() {
+        System.out.println("Teacher: " + name + ", Age: " + age + ", Subject: " +
+                subject);
+    }
+}
+
+public class InheritanceExceptionDemo {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        try {
+            System.out.print("Enter GradStudent (Name Age Course Year): ");
+            GradStudent g = new GradStudent(sc.next(), sc.nextInt(), sc.next(), sc.nextInt());
+
+            System.out.print("Enter Teacher (Name Age Subject): ");
+            Teacher t = new Teacher(sc.next(), sc.nextInt(), sc.next());
+
+            System.out.print("Enter Total Marks and Total Subjects to compute Average: ");
+            int total = sc.nextInt(), subjects = sc.nextInt();
+            int avg = total / subjects;
+
+            System.out.println("\n--- Output ---");
+            g.show();
+            t.show();
+            System.out.println("Calculated Average Marks = " + avg);
+        } catch (ArithmeticException e) {
+            System.out.println("Exception Caught: Cannot divide marks by zero subjects!");
+        } finally {
+            System.out.println("Finally Block: Execution completed safely.");
+            sc.close();
+        }
+    }
+}
 """,
         },
     },
@@ -1286,6 +1399,8 @@ int main()
 # -----------------------------------------------------------------------------
 
 DIVIDER = "=" * 60
+
+EXPERIMENT_SUBJECTS = ("aoa", "coa", "fsjp")
 
 
 def _valid_subjects():
@@ -1316,6 +1431,10 @@ def _resolve_subject(raw):
     if raw_str in ("subject2", "sub2", "s2"):
         if "coa" in SUBJECTS:
             return "coa"
+    # Backward-compatible alias for subject3
+    if raw_str in ("subject3", "sub3", "s3"):
+        if "fsjp" in SUBJECTS:
+            return "fsjp"
     return None
 
 
@@ -1364,7 +1483,7 @@ def _get_topic(subject, topic_num):
         sys.exit(1)
     t = _resolve_topic(s, topic_num)
     if t is None:
-        is_experiment = s in ("aoa", "coa")
+        is_experiment = s in EXPERIMENT_SUBJECTS
         label = "experiment" if is_experiment else "topic"
         print(f"[error] Unknown {label} identifier: '{topic_num}' for subject '{s}'")
         valid_items = [f"exp{k}" if is_experiment else k for k in _valid_topics(s)]
@@ -1439,6 +1558,9 @@ def cmd_list(args):
                 print(f"  * {s:<10} (Analysis of Algorithms -- 10 Experiments)")
             elif s == "coa":
                 print(f"  * {s:<10} (Computer Organization & Architecture -- 10 Experiments)")
+            elif s == "fsjp":
+                count = len(_valid_topics(s))
+                print(f"  * {s:<10} (Full Stack Java Programming -- {count} Experiments)")
             else:
                 print(f"  * {s}")
         print(DIVIDER)
@@ -1452,7 +1574,7 @@ def cmd_list(args):
         sys.exit(1)
 
     topics = SUBJECTS[s]
-    is_experiment = s in ("aoa", "coa")
+    is_experiment = s in EXPERIMENT_SUBJECTS
     label = "Experiments" if is_experiment else "Topics"
 
     print(DIVIDER)
@@ -1462,6 +1584,9 @@ def cmd_list(args):
         title = topics[num]["title"]
         prefix = f"Exp {int(num):02d}" if is_experiment else f"{num:>2}"
         suffix = " [ASM]" if topics[num].get("code_type") == "asm" else ""
+        files = _topic_files(topics[num])
+        if len(files) > 1:
+            suffix += f" ({len(files)} files)"
         print(f"  [{prefix}]  {title}{suffix}")
     print(DIVIDER)
 
@@ -1480,22 +1605,134 @@ def _print_asm(topic):
         print("No assembly program for this experiment.")
 
 
+_LANGUAGE_LABELS = {
+    "asm": "8086 ASM",
+    "c": "C",
+    "java": "JAVA",
+    "html": "HTML",
+    "css": "CSS",
+    "js": "JAVASCRIPT",
+    "javascript": "JAVASCRIPT",
+    "jsp": "JSP",
+    "xml": "XML",
+    "jsx": "JSX",
+    "json": "JSON",
+    "sql": "SQL",
+    "py": "PYTHON",
+    "python": "PYTHON",
+}
+
+
+def _language_label(language):
+    text = str(language or "").strip()
+    return _LANGUAGE_LABELS.get(text.lower(), text.upper() or "TEXT")
+
+
+def _topic_files(topic):
+    """Return a topic's files as [{name, language, code}, ...]."""
+    files = topic.get("files")
+    if isinstance(files, list) and files:
+        return files
+    return [{
+        "name": topic.get("filename", ""),
+        "language": topic.get("language", topic.get("code_type", "c")),
+        "code": topic.get("code", ""),
+    }]
+
+
+def _is_multi_file(topic):
+    return len(_topic_files(topic)) > 1
+
+
+def _line_count(code):
+    return len(code.strip("\n").splitlines())
+
+
+def _resolve_file(files, raw):
+    """Resolve a 1-based number or file name. Returns index, -1 for all, or None."""
+    if raw is None:
+        return None
+    text = str(raw).strip()
+    if text.lower() == "all":
+        return -1
+    if text.isdigit():
+        number = int(text)
+        if 1 <= number <= len(files):
+            return number - 1
+        return None
+    lower = text.lower()
+    for index, item in enumerate(files):
+        name = str(item.get("name", ""))
+        if name.lower() == lower or os.path.basename(name).lower() == lower:
+            return index
+    return None
+
+
+def _print_file_index(subject, topic_key, topic, files):
+    print(topic["title"])
+    print(f"{len(files)} files\n")
+    for index, item in enumerate(files, 1):
+        name = item.get("name") or f"file{index}"
+        language = _language_label(item.get("language", ""))
+        lines = _line_count(item.get("code", ""))
+        print(f"  {index}. {name:<32} {language:<12} {lines:>3} lines")
+    print()
+    print("Show one file:")
+    print(f"  python helper.py show {subject} {topic_key} 1")
+    print(f"  python helper.py show {subject} {topic_key} {files[0].get('name') or 'file1'}")
+    print()
+    print("Show all files:")
+    print(f"  python helper.py show {subject} {topic_key} all")
+    print()
+    print("Write all files to a folder:")
+    print(f"  python helper.py write {subject} {topic_key}")
+
+
+def _print_files(files):
+    for index, item in enumerate(files, 1):
+        if index > 1:
+            print()
+        print(f"===== {index}. {item.get('name') or f'file{index}'} =====")
+        print(item.get("code", "").strip("\n"))
+
+
 def cmd_show(args):
-    """show <subject> <topic_num> -- Outputs ONLY the code."""
+    """show <subject> <topic_num> [file|all] -- Outputs code."""
     args = _normalize_args(args)
     if len(args) < 2:
-        print("[error] Usage: python helper.py [show] <subject> <topic_num>")
+        print("[error] Usage: python helper.py [show] <subject> <topic_num> [file|all]")
         print(f"        Valid subjects: {', '.join(_valid_subjects())}")
         sys.exit(1)
 
     raw_subject, raw_topic = args[0], args[1]
+    s = _resolve_subject(raw_subject)
+    t = _resolve_topic(s, raw_topic) if s else None
     topic = _get_topic(raw_subject, raw_topic)
+    files = _topic_files(topic)
+
+    if len(files) > 1:
+        selector = args[2] if len(args) >= 3 else None
+        if selector is None:
+            _print_file_index(s, t, topic, files)
+            return
+
+        chosen = _resolve_file(files, selector)
+        if chosen is None:
+            print(f"[error] Unknown file '{selector}' for {s} experiment {int(t):02d}.")
+            _print_file_index(s, t, topic, files)
+            sys.exit(1)
+
+        if chosen == -1:
+            _print_files(files)
+        else:
+            print(files[chosen].get("code", "").strip("\n"))
+        return
 
     if len(args) >= 3 and args[2].lower() in ("asm", "assembly"):
         _print_asm(topic)
         return
 
-    code = topic["code"].strip()
+    code = files[0].get("code", "").strip()
     if code:
         print(code)
     else:
@@ -1515,10 +1752,10 @@ def cmd_asm(args):
 
 
 def cmd_write(args):
-    """write <subject> <topic_num> [filename]"""
+    """write <subject> <topic_num> [filename|folder]"""
     args = _normalize_args(args)
     if len(args) < 2:
-        print("[error] Usage: python helper.py write <subject> <topic_num> [filename]")
+        print("[error] Usage: python helper.py write <subject> <topic_num> [filename|folder]")
         print(f"        Valid subjects: {', '.join(_valid_subjects())}")
         sys.exit(1)
 
@@ -1526,19 +1763,48 @@ def cmd_write(args):
     s = _resolve_subject(raw_subject)
     t = _resolve_topic(s, raw_topic) if s else raw_topic
     topic = _get_topic(raw_subject, raw_topic)
+    files = _topic_files(topic)
+
+    if len(files) > 1:
+        folder = args[2] if len(args) >= 3 else f"{s}_exp_{t}"
+        written = []
+        try:
+            for item in files:
+                name = str(item.get("name") or "file.txt").replace("\\", "/")
+                parts = [part for part in name.split("/") if part]
+                if not parts or name.startswith("/") or ":" in parts[0] or ".." in parts:
+                    raise ValueError(f"unsafe file name: {name}")
+                target = os.path.join(folder, *parts)
+                parent = os.path.dirname(target)
+                if parent:
+                    os.makedirs(parent, exist_ok=True)
+                with open(target, "w", encoding="utf-8") as fh:
+                    fh.write(item.get("code", "").strip("\n") + "\n")
+                written.append(target)
+        except (OSError, ValueError) as exc:
+            print(f"[error] Could not write files: {exc}")
+            sys.exit(1)
+        print(f"[ok] Wrote {len(written)} files to '{folder}'")
+        for path in written:
+            print(f"     {path}")
+        return
 
     if len(args) >= 3:
         filename = args[2]
+    elif files[0].get("name"):
+        filename = files[0]["name"]
+    elif s in ("aoa", "coa"):
+        ext = ".asm" if topic.get("code_type") == "asm" else ".c"
+        filename = f"{s}_exp_{t}{ext}"
     else:
-        if s in ("aoa", "coa"):
-            ext = ".asm" if topic.get("code_type") == "asm" else ".c"
-            filename = f"{s}_exp_{t}{ext}"
-        else:
-            filename = f"{s}_topic_{t}.py"
+        filename = f"{s}_topic_{t}.py"
 
-    code = topic["code"]
+    code = files[0].get("code", "")
 
     try:
+        parent = os.path.dirname(filename)
+        if parent:
+            os.makedirs(parent, exist_ok=True)
         with open(filename, "w", encoding="utf-8") as fh:
             fh.write(code.strip() + "\n")
         print(f"[ok] Code written to '{filename}'")
@@ -1548,10 +1814,10 @@ def cmd_write(args):
 
 
 def cmd_copy(args):
-    """copy <subject> <topic_num>"""
+    """copy <subject> <topic_num> [file|all|asm]"""
     args = _normalize_args(args)
     if len(args) < 2:
-        print("[error] Usage: python helper.py copy <subject> <topic_num>")
+        print("[error] Usage: python helper.py copy <subject> <topic_num> [file|all]")
         print(f"        Valid subjects: {', '.join(_valid_subjects())}")
         sys.exit(1)
 
@@ -1559,10 +1825,50 @@ def cmd_copy(args):
     s = _resolve_subject(raw_subject)
     t = _resolve_topic(s, raw_topic) if s else raw_topic
     topic = _get_topic(raw_subject, raw_topic)
-    copy_asm = len(args) >= 3 and args[2].lower() in ("asm", "assembly")
-    code = _asm_code(topic) if copy_asm else topic["code"]
+    files = _topic_files(topic)
 
-    is_experiment = s in ("aoa", "coa")
+    if len(files) > 1:
+        selector = args[2] if len(args) >= 3 else None
+        if selector is None:
+            print(f"[error] '{s}' experiment {int(t):02d} has {len(files)} files. Choose one:")
+            for index, item in enumerate(files, 1):
+                print(f"  {index}. {item.get('name') or f'file{index}'}")
+            print(f"        Example: python helper.py copy {s} {t} 1")
+            sys.exit(1)
+
+        chosen = _resolve_file(files, selector)
+        if chosen is None:
+            print(f"[error] Unknown file '{selector}' for {s} experiment {int(t):02d}.")
+            sys.exit(1)
+
+        if chosen == -1:
+            text = "\n\n".join(
+                f"===== {index}. {item.get('name') or f'file{index}'} =====\n"
+                f"{item.get('code', '').strip(chr(10))}"
+                for index, item in enumerate(files, 1)
+            )
+            label = f"{len(files)} files"
+        else:
+            text = files[chosen].get("code", "").strip("\n")
+            label = files[chosen].get("name") or f"file {chosen + 1}"
+
+        if not text.strip():
+            print("[warn] The selected file is empty - nothing to copy.")
+            return
+
+        success = _copy_to_clipboard(text + "\n")
+        if success:
+            print(f"[ok] {label} from '{s}' experiment {int(t):02d} copied to clipboard.")
+        else:
+            print("[warn] Could not access clipboard (clip, pbcopy, xclip, xsel, tkinter all unavailable).")
+            print("       Here is the code snippet:\n")
+            print(text)
+        return
+
+    copy_asm = len(args) >= 3 and args[2].lower() in ("asm", "assembly")
+    code = _asm_code(topic) if copy_asm else files[0].get("code", "")
+
+    is_experiment = s in EXPERIMENT_SUBJECTS
     item_label = "experiment" if is_experiment else "topic"
     if not code.strip():
         print(f"[warn] The code block for this {item_label} is empty - nothing to copy.")
@@ -1589,13 +1895,15 @@ helper.py -- offline CLI study helper
 Usage:
   python helper.py list
   python helper.py list <subject>
-  python helper.py show  <subject> <topic_or_exp>
+  python helper.py show  <subject> <topic_or_exp> [file|all]
   python helper.py asm   <subject> <topic_or_exp>
-  python helper.py write <subject> <topic_or_exp> [filename]
-  python helper.py copy  <subject> <topic_or_exp> [asm]
+  python helper.py write <subject> <topic_or_exp> [filename|folder]
+  python helper.py copy  <subject> <topic_or_exp> [file|all]
 
-For AOA and COA experiments, you can specify '1', 'exp1', or 'exp 1'.
+For AOA, COA and FSJP experiments, you can specify '1', 'exp1', or 'exp 1'.
 COA experiments 3, 4, 8, and 9 also include an 8086 assembly program.
+For experiments with multiple files, 'show' lists them; pass a file number or
+name to print one, or 'all' to print every file.
 
 Available subjects: {subjects}
 """

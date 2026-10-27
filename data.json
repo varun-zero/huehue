@@ -107,56 +107,27 @@
       "code": "\n#include <stdio.h>\n\nint main()\n{\n    FILE *fp;\n    char line1[100], line2[100], buffer[100];\n\n    printf(\"Enter initial line to write to file: \");\n    fgets(line1, sizeof(line1), stdin);\n\n    fp = fopen(\"coa_record.txt\", \"w\");\n    fprintf(fp, \"%s\", line1);\n    fclose(fp);\n\n    printf(\"Enter second line to append to file: \");\n    fgets(line2, sizeof(line2), stdin);\n\n    fp = fopen(\"coa_record.txt\", \"a\");\n    fprintf(fp, \"%s\", line2);\n    fclose(fp);\n\n    printf(\"\\n--- Contents Read from coa_record.txt ---\\n\");\n    fp = fopen(\"coa_record.txt\", \"r\");\n    while (fgets(buffer, sizeof(buffer), fp) != NULL)\n    {\n        printf(\"%s\", buffer);\n    }\n    fclose(fp);\n\n    return 0;\n}\n"
     }
   },
-  "subject3": {
+  "fsjp": {
     "1": {
-      "title": "Topic 1 Title",
-      "notes": "Core logic and steps for subject3 topic 1.",
-      "code": ""
+      "title": "Exp 01: Classes and Objects - Student Management",
+      "notes": "",
+      "filename": "Exp1_43.java",
+      "language": "java",
+      "code": "\nimport java.util.Scanner;\n\nclass Student {\n    String name;\n    int rollNumber;\n    float marks;\n\n    public void inputDetails(Scanner scanner) {\n        System.out.print(\"Enter Name: \");\n        this.name = scanner.nextLine();\n\n        System.out.print(\"Enter Roll Number: \");\n        this.rollNumber = scanner.nextInt();\n\n        System.out.print(\"Enter Marks: \");\n        this.marks = scanner.nextFloat();\n        scanner.nextLine();\n    }\n\n    public void displayDetails() {\n        System.out.println(\"Name: \" + this.name);\n        System.out.println(\"Roll Number: \" + this.rollNumber);\n        System.out.println(\"Marks: \" + this.marks);\n    }\n}\n\npublic class Exp1_43 {\n    public static void main(String[] args) {\n        Scanner scanner = new Scanner(System.in);\n\n        System.out.println(\"Enter Details for Student 1:\");\n        Student student1 = new Student();\n        student1.inputDetails(scanner);\n\n        System.out.println(\"Enter Details for Student 2:\");\n        Student student2 = new Student();\n        student2.inputDetails(scanner);\n\n        System.out.println(\"Student Information:\");\n        student1.displayDetails();\n        student2.displayDetails();\n\n        scanner.close();\n    }\n}\n"
     },
     "2": {
-      "title": "Topic 2 Title",
-      "notes": "Core logic and steps for subject3 topic 2.",
-      "code": ""
+      "title": "Exp 02: Method and Constructor Overloading",
+      "notes": "",
+      "filename": "Calculator.java",
+      "language": "java",
+      "code": "\nclass Calculator {\n    Calculator() {\n        System.out.println(\"Welcome to Calculator\");\n    }\n\n    Calculator(int a, int b) {\n        System.out.println(\"Sum of \" + a + \" and \" + b + \" is: \" + (a + b));\n    }\n\n    void add() {\n        System.out.println(\"Sum of default numbers 5 and 10 is: \" + (5 + 10));\n    }\n\n    void add(int a, int b) {\n        System.out.println(\"Sum of \" + a + \" and \" + b + \" is: \" + (a + b));\n    }\n\n    void add(float a, float b, float c) {\n        System.out.println(\"Sum of \" + a + \", \" + b + \" and \" + c + \" is: \" + (a + b + c));\n    }\n\n    public static void main(String[] args) {\n        Calculator c1 = new Calculator();\n        Calculator c2 = new Calculator(15, 25);\n        c1.add();\n        c1.add(20, 30);\n        c1.add(12.5f, 15.5f, 10.0f);\n    }\n}\n"
     },
     "3": {
-      "title": "Topic 3 Title",
-      "notes": "Core logic and steps for subject3 topic 3.",
-      "code": ""
-    },
-    "4": {
-      "title": "Topic 4 Title",
-      "notes": "Core logic and steps for subject3 topic 4.",
-      "code": ""
-    },
-    "5": {
-      "title": "Topic 5 Title",
-      "notes": "Core logic and steps for subject3 topic 5.",
-      "code": ""
-    },
-    "6": {
-      "title": "Topic 6 Title",
-      "notes": "Core logic and steps for subject3 topic 6.",
-      "code": ""
-    },
-    "7": {
-      "title": "Topic 7 Title",
-      "notes": "Core logic and steps for subject3 topic 7.",
-      "code": ""
-    },
-    "8": {
-      "title": "Topic 8 Title",
-      "notes": "Core logic and steps for subject3 topic 8.",
-      "code": ""
-    },
-    "9": {
-      "title": "Topic 9 Title",
-      "notes": "Core logic and steps for subject3 topic 9.",
-      "code": ""
-    },
-    "10": {
-      "title": "Topic 10 Title",
-      "notes": "Core logic and steps for subject3 topic 10.",
-      "code": ""
+      "title": "Exp 03: Types of Inheritance and Exception Handling",
+      "notes": "",
+      "filename": "InheritanceExceptionDemo.java",
+      "language": "java",
+      "code": "\nimport java.util.Scanner;\n\nclass Person {\n    String name;\n    int age;\n\n    Person(String name, int age) {\n        this.name = name;\n        this.age = age;\n    }\n}\n\nclass Student extends Person {\n    String course;\n\n    Student(String name, int age, String course) {\n        super(name, age);\n        this.course = course;\n    }\n}\n\nclass GradStudent extends Student {\n    int gradYear;\n\n    GradStudent(String name, int age, String course, int gradYear) {\n        super(name, age, course);\n        this.gradYear = gradYear;\n    }\n\n    void show() {\n        System.out.println(\"GradStudent: \" + name + \", Age: \" + age +\n                \", Course: \" + course + \", Year: \" + gradYear);\n    }\n}\n\nclass Teacher extends Person {\n    String subject;\n\n    Teacher(String name, int age, String subject) {\n        super(name, age);\n        this.subject = subject;\n    }\n\n    void show() {\n        System.out.println(\"Teacher: \" + name + \", Age: \" + age + \", Subject: \" +\n                subject);\n    }\n}\n\npublic class InheritanceExceptionDemo {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        try {\n            System.out.print(\"Enter GradStudent (Name Age Course Year): \");\n            GradStudent g = new GradStudent(sc.next(), sc.nextInt(), sc.next(), sc.nextInt());\n\n            System.out.print(\"Enter Teacher (Name Age Subject): \");\n            Teacher t = new Teacher(sc.next(), sc.nextInt(), sc.next());\n\n            System.out.print(\"Enter Total Marks and Total Subjects to compute Average: \");\n            int total = sc.nextInt(), subjects = sc.nextInt();\n            int avg = total / subjects;\n\n            System.out.println(\"\\n--- Output ---\");\n            g.show();\n            t.show();\n            System.out.println(\"Calculated Average Marks = \" + avg);\n        } catch (ArithmeticException e) {\n            System.out.println(\"Exception Caught: Cannot divide marks by zero subjects!\");\n        } finally {\n            System.out.println(\"Finally Block: Execution completed safely.\");\n            sc.close();\n        }\n    }\n}\n"
     }
   }
 }
