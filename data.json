@@ -149,6 +149,37 @@
           "code": "\npackage servletapp;\n\nimport java.io.*;\nimport jakarta.servlet.http.*;\nimport jakarta.servlet.annotation.WebServlet;\n\n@WebServlet(\"/welcomeHttp\")\npublic class HttpServletDemo extends HttpServlet {\n    public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {\n        res.setContentType(\"text/html\");\n        PrintWriter out = res.getWriter();\n        out.println(\"<h1>Welcome, Varun!</h1>\");\n        out.println(\"<p>You are using an HTTP Servlet (doGet method).</p>\");\n        out.println(\"<a href='index.html'>Back</a>\");\n    }\n}\n"
         }
       ]
+    },
+    "5": {
+      "title": "Exp 05: JSP Login Page with JDBC Validation and Servlet",
+      "notes": "Tomcat 11 (jakarta.servlet). Needs the MySQL Connector/J jar in WEB-INF/lib and a running MySQL server.",
+      "files": [
+        {
+          "name": "userdb.sql",
+          "language": "sql",
+          "code": "\nCREATE DATABASE userdb;\nUSE userdb;\n\nCREATE TABLE users (\n    username VARCHAR(50),\n    password VARCHAR(50),\n    full_name VARCHAR(100)\n);\n\nINSERT INTO users VALUES ('varun', 'admin123', 'Varun Ganesh Poojary');\n"
+        },
+        {
+          "name": "login.jsp",
+          "language": "jsp",
+          "code": "\n<html>\n<body>\n    <h2>User Login</h2>\n    <form action=\"LoginServlet\" method=\"post\">\n        Username: <input type=\"text\" name=\"username\"><br><br>\n        Password: <input type=\"password\" name=\"password\"><br><br>\n        <input type=\"submit\" value=\"Login\">\n    </form>\n</body>\n</html>\n"
+        },
+        {
+          "name": "LoginServlet.java",
+          "language": "java",
+          "code": "\npackage com.example;\n\nimport java.io.*;\nimport java.sql.*;\nimport jakarta.servlet.*;\nimport jakarta.servlet.http.*;\nimport jakarta.servlet.annotation.WebServlet;\n\n@WebServlet(\"/LoginServlet\")\npublic class LoginServlet extends HttpServlet {\n    public void doPost(HttpServletRequest req, HttpServletResponse res)\n            throws ServletException, IOException {\n\n        String user = req.getParameter(\"username\");\n        String pass = req.getParameter(\"password\");\n\n        try {\n            Class.forName(\"com.mysql.cj.jdbc.Driver\");\n            Connection con = DriverManager.getConnection(\n                \"jdbc:mysql://localhost:3306/userdb\", \"root\", \"your_password\");\n\n            PreparedStatement ps = con.prepareStatement(\n                \"SELECT full_name FROM users WHERE username=? AND password=?\");\n            ps.setString(1, user);\n            ps.setString(2, pass);\n            ResultSet rs = ps.executeQuery();\n\n            if (rs.next()) {\n                req.setAttribute(\"name\", rs.getString(\"full_name\"));\n                req.getRequestDispatcher(\"welcome.jsp\").forward(req, res);\n            } else {\n                req.setAttribute(\"msg\", \"Invalid username or password.\");\n                req.getRequestDispatcher(\"error.jsp\").forward(req, res);\n            }\n            con.close();\n\n        } catch (Exception e) {\n            req.setAttribute(\"msg\", \"Error: \" + e.getMessage());\n            req.getRequestDispatcher(\"error.jsp\").forward(req, res);\n        }\n    }\n}\n"
+        },
+        {
+          "name": "welcome.jsp",
+          "language": "jsp",
+          "code": "\n<html>\n<body>\n    <h2>Welcome, <%= request.getAttribute(\"name\") %>!</h2>\n    <p>Login verified through JDBC and Servlet.</p>\n    <a href=\"login.jsp\">Log Out</a>\n</body>\n</html>\n"
+        },
+        {
+          "name": "error.jsp",
+          "language": "jsp",
+          "code": "\n<html>\n<body>\n    <h2>Login Failed</h2>\n    <p><%= request.getAttribute(\"msg\") %></p>\n    <a href=\"login.jsp\">Back to Login</a>\n</body>\n</html>\n"
+        }
+      ]
     }
   }
 }

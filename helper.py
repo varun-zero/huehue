@@ -1454,6 +1454,118 @@ public class HttpServletDemo extends HttpServlet {
                 },
             ],
         },
+        "5": {
+            "title": "Exp 05: JSP Login Page with JDBC Validation and Servlet",
+            "notes": "Tomcat 11 (jakarta.servlet). Needs the MySQL Connector/J jar in WEB-INF/lib and a running MySQL server.",
+            "files": [
+                {
+                    "name": "userdb.sql",
+                    "language": "sql",
+                    "code": r"""
+CREATE DATABASE userdb;
+USE userdb;
+
+CREATE TABLE users (
+    username VARCHAR(50),
+    password VARCHAR(50),
+    full_name VARCHAR(100)
+);
+
+INSERT INTO users VALUES ('varun', 'admin123', 'Varun Ganesh Poojary');
+""",
+                },
+                {
+                    "name": "login.jsp",
+                    "language": "jsp",
+                    "code": r"""
+<html>
+<body>
+    <h2>User Login</h2>
+    <form action="LoginServlet" method="post">
+        Username: <input type="text" name="username"><br><br>
+        Password: <input type="password" name="password"><br><br>
+        <input type="submit" value="Login">
+    </form>
+</body>
+</html>
+""",
+                },
+                {
+                    "name": "LoginServlet.java",
+                    "language": "java",
+                    "code": r"""
+package com.example;
+
+import java.io.*;
+import java.sql.*;
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
+import jakarta.servlet.annotation.WebServlet;
+
+@WebServlet("/LoginServlet")
+public class LoginServlet extends HttpServlet {
+    public void doPost(HttpServletRequest req, HttpServletResponse res)
+            throws ServletException, IOException {
+
+        String user = req.getParameter("username");
+        String pass = req.getParameter("password");
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/userdb", "root", "your_password");
+
+            PreparedStatement ps = con.prepareStatement(
+                "SELECT full_name FROM users WHERE username=? AND password=?");
+            ps.setString(1, user);
+            ps.setString(2, pass);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                req.setAttribute("name", rs.getString("full_name"));
+                req.getRequestDispatcher("welcome.jsp").forward(req, res);
+            } else {
+                req.setAttribute("msg", "Invalid username or password.");
+                req.getRequestDispatcher("error.jsp").forward(req, res);
+            }
+            con.close();
+
+        } catch (Exception e) {
+            req.setAttribute("msg", "Error: " + e.getMessage());
+            req.getRequestDispatcher("error.jsp").forward(req, res);
+        }
+    }
+}
+""",
+                },
+                {
+                    "name": "welcome.jsp",
+                    "language": "jsp",
+                    "code": r"""
+<html>
+<body>
+    <h2>Welcome, <%= request.getAttribute("name") %>!</h2>
+    <p>Login verified through JDBC and Servlet.</p>
+    <a href="login.jsp">Log Out</a>
+</body>
+</html>
+""",
+                },
+                {
+                    "name": "error.jsp",
+                    "language": "jsp",
+                    "code": r"""
+<html>
+<body>
+    <h2>Login Failed</h2>
+    <p><%= request.getAttribute("msg") %></p>
+    <a href="login.jsp">Back to Login</a>
+</body>
+</html>
+""",
+                },
+            ],
+        },
     },
 }
 

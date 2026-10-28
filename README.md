@@ -98,9 +98,10 @@ python helper.py copy coa 3 asm
 
 FSJP experiments are stored under the `fsjp` subject. Experiments 1-3 are
 single-file Core Java programs. Experiment 4 is a 3-file servlet app
-(`index.html`, `GenericServletDemo.java`, `HttpServletDemo.java`), and later
-experiments can contain HTML, CSS, JavaScript, JSP, servlet, React and Spring
-Boot files.
+(`index.html`, `GenericServletDemo.java`, `HttpServletDemo.java`), experiment 5
+is a 5-file JSP + JDBC app (`userdb.sql`, `login.jsp`, `LoginServlet.java`,
+`welcome.jsp`, `error.jsp`), and later experiments can contain HTML, CSS,
+JavaScript, JSP, servlet, React and Spring Boot files.
 
 ```bash
 # List FSJP experiments:
@@ -171,6 +172,46 @@ It targets Tomcat 11 (`jakarta.servlet`, Servlet 6.1, Java 17+). Tomcat 10.1
 uses the same imports (Servlet 6.0). On Tomcat 9 or older, change the imports
 to `javax.servlet` and the annotation import to
 `javax.servlet.annotation.WebServlet`.
+
+### Experiment 5 (JSP + JDBC)
+
+Experiment 5 is five files:
+
+```bash
+python helper.py fsjp 5
+```
+
+```
+  1. userdb.sql                       SQL           10 lines
+  2. login.jsp                        JSP           10 lines
+  3. LoginServlet.java                JAVA          42 lines
+  4. welcome.jsp                      JSP            7 lines
+  5. error.jsp                        JSP            7 lines
+```
+
+`LoginServlet` uses `@WebServlet("/LoginServlet")`, so no `web.xml` is needed.
+Deployment layout:
+
+```
+webapps\loginapp\login.jsp
+webapps\loginapp\welcome.jsp
+webapps\loginapp\error.jsp
+webapps\loginapp\WEB-INF\classes\com\example\LoginServlet.class
+webapps\loginapp\WEB-INF\lib\mysql-connector-j-9.7.0.jar
+```
+
+```bash
+# 1. create the database
+mysql -u root -p < fsjp_exp_5/userdb.sql
+
+# 2. compile the servlet
+javac -cp "C:\apache-tomcat-11.0.27\lib\servlet-api.jar" -d WEB-INF\classes LoginServlet.java
+
+# 3. drop the MySQL driver in WEB-INF\lib
+```
+
+Replace `your_password` in `LoginServlet.java` with your real MySQL password
+before compiling.
 
 ## Running Without npm
 
