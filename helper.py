@@ -1627,6 +1627,36 @@ function validateEmail() {
                 },
             ],
         },
+        "8": {
+            "title": "Exp 08: DOM Program to Change Webpage Background Color Every 5 Seconds",
+            "notes": "Plain HTML + JavaScript. Open index.html directly in a browser; no server needed.",
+            "filename": "index.html",
+            "language": "html",
+            "code": r"""
+<html>
+<head>
+    <title>Background Color Changer</title>
+</head>
+<body>
+    <h1>Document Object Model (DOM)</h1>
+    <p>Background color changes automatically every 5 seconds.</p>
+
+    <script>
+        var colors = ["red", "blue", "green", "orange", "purple", "teal", "brown"];
+        var index = 0;
+
+        function changeBackgroundColor() {
+            document.body.style.backgroundColor = colors[index];
+            index = (index + 1) % colors.length;
+        }
+
+        changeBackgroundColor();
+        setInterval(changeBackgroundColor, 5000);
+    </script>
+</body>
+</html>
+""",
+        },
     },
 }
 

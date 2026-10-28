@@ -101,7 +101,8 @@ single-file Core Java programs. Experiment 4 is a 3-file servlet app
 (`index.html`, `GenericServletDemo.java`, `HttpServletDemo.java`), experiment 5
 is a 5-file JSP + JDBC app (`userdb.sql`, `login.jsp`, `LoginServlet.java`,
 `welcome.jsp`, `error.jsp`), experiment 7 is a 2-file HTML + JavaScript email
-validator, and later experiments can contain HTML, CSS, JavaScript, JSP,
+validator, experiment 8 is a single `index.html` that recolours the page every
+5 seconds, and later experiments can contain HTML, CSS, JavaScript, JSP,
 servlet, React and Spring Boot files.
 
 ```bash
@@ -227,6 +228,20 @@ python helper.py write fsjp 7
 Open `index.html` in a browser. The script blocks submission, alerts on an
 empty field or a missing `@`/`.`, then uses a RegEx to write "Valid Email
 Address." (green) or "Invalid Email Address." (red) into `<p id="msg">`.
+
+### Experiment 8 (DOM background colour)
+
+Experiment 8 is a single `index.html` with the script inline:
+
+```bash
+python helper.py fsjp 8
+python helper.py write fsjp 8
+# index.html
+```
+
+Open it in a browser. The page turns red on load, then cycles
+blue, green, orange, purple, teal, brown every 5 seconds via `setInterval`,
+and wraps back to red.
 
 ## Running Without npm
 

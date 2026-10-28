@@ -196,6 +196,13 @@
           "code": "\nfunction validateEmail() {\n    var box = document.getElementById(\"email\");\n    var msg = document.getElementById(\"msg\");\n    var email = box.value;\n\n    if (email == \"\") {\n        alert(\"Email field is empty. Please enter your email.\");\n        box.focus();\n        return false;\n    }\n\n    if (email.indexOf(\"@\") == -1 || email.indexOf(\".\") == -1) {\n        alert(\"Invalid email: '@' or '.' is missing. Please re-enter.\");\n        box.focus();\n        return false;\n    }\n\n    var pattern = /^[^@]+@[^@]+\\.[a-z]+$/i;\n    if (!pattern.test(email)) {\n        msg.innerHTML = \"Invalid Email Address. Please enter a valid email.\";\n        msg.style.color = \"red\";\n        box.focus();\n        return false;\n    }\n\n    msg.innerHTML = \"Valid Email Address.\";\n    msg.style.color = \"green\";\n    return false;\n}\n"
         }
       ]
+    },
+    "8": {
+      "title": "Exp 08: DOM Program to Change Webpage Background Color Every 5 Seconds",
+      "notes": "Plain HTML + JavaScript. Open index.html directly in a browser; no server needed.",
+      "filename": "index.html",
+      "language": "html",
+      "code": "\n<html>\n<head>\n    <title>Background Color Changer</title>\n</head>\n<body>\n    <h1>Document Object Model (DOM)</h1>\n    <p>Background color changes automatically every 5 seconds.</p>\n\n    <script>\n        var colors = [\"red\", \"blue\", \"green\", \"orange\", \"purple\", \"teal\", \"brown\"];\n        var index = 0;\n\n        function changeBackgroundColor() {\n            document.body.style.backgroundColor = colors[index];\n            index = (index + 1) % colors.length;\n        }\n\n        changeBackgroundColor();\n        setInterval(changeBackgroundColor, 5000);\n    </script>\n</body>\n</html>\n"
     }
   }
 }
