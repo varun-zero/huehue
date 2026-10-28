@@ -131,7 +131,7 @@
     },
     "4": {
       "title": "Exp 04: Implementing Generic Servlet and HTTP Servlet",
-      "notes": "Tomcat 9 or older uses javax.servlet. Tomcat 10+ requires jakarta.servlet.",
+      "notes": "Tomcat 11 (Servlet 6.1) and Tomcat 10.1 (Servlet 6.0) use jakarta.servlet. Tomcat 9 and older use javax.servlet.",
       "files": [
         {
           "name": "index.html",
@@ -141,12 +141,12 @@
         {
           "name": "GenericServletDemo.java",
           "language": "java",
-          "code": "\npackage servletapp;\n\nimport java.io.*;\nimport javax.servlet.*;\nimport javax.servlet.annotation.WebServlet;\n\n@WebServlet(\"/welcome\")\npublic class GenericServletDemo extends GenericServlet {\n    public void service(ServletRequest req, ServletResponse res) throws IOException {\n        res.setContentType(\"text/html\");\n        PrintWriter out = res.getWriter();\n        out.println(\"<h1>Welcome, Varun!</h1>\");\n        out.println(\"<p>You are using a Generic Servlet.</p>\");\n        out.println(\"<a href='index.html'>Back</a>\");\n    }\n}\n"
+          "code": "\npackage servletapp;\n\nimport java.io.*;\nimport jakarta.servlet.*;\nimport jakarta.servlet.annotation.WebServlet;\n\n@WebServlet(\"/welcome\")\npublic class GenericServletDemo extends GenericServlet {\n    public void service(ServletRequest req, ServletResponse res) throws IOException {\n        res.setContentType(\"text/html\");\n        PrintWriter out = res.getWriter();\n        out.println(\"<h1>Welcome, Varun!</h1>\");\n        out.println(\"<p>You are using a Generic Servlet.</p>\");\n        out.println(\"<a href='index.html'>Back</a>\");\n    }\n}\n"
         },
         {
           "name": "HttpServletDemo.java",
           "language": "java",
-          "code": "\npackage servletapp;\n\nimport java.io.*;\nimport javax.servlet.http.*;\nimport javax.servlet.annotation.WebServlet;\n\n@WebServlet(\"/welcomeHttp\")\npublic class HttpServletDemo extends HttpServlet {\n    public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {\n        res.setContentType(\"text/html\");\n        PrintWriter out = res.getWriter();\n        out.println(\"<h1>Welcome, Varun!</h1>\");\n        out.println(\"<p>You are using an HTTP Servlet (doGet method).</p>\");\n        out.println(\"<a href='index.html'>Back</a>\");\n    }\n}\n"
+          "code": "\npackage servletapp;\n\nimport java.io.*;\nimport jakarta.servlet.http.*;\nimport jakarta.servlet.annotation.WebServlet;\n\n@WebServlet(\"/welcomeHttp\")\npublic class HttpServletDemo extends HttpServlet {\n    public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {\n        res.setContentType(\"text/html\");\n        PrintWriter out = res.getWriter();\n        out.println(\"<h1>Welcome, Varun!</h1>\");\n        out.println(\"<p>You are using an HTTP Servlet (doGet method).</p>\");\n        out.println(\"<a href='index.html'>Back</a>\");\n    }\n}\n"
         }
       ]
     }

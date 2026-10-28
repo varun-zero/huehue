@@ -167,9 +167,10 @@ python helper.py copy fsjp 4 2
 ### Servlet compatibility
 
 Experiment 4 uses `@WebServlet` annotations, so it does not need a `web.xml`.
-It targets Tomcat 9 or older (`javax.servlet`). On Tomcat 10 or newer, change
-the imports to `jakarta.servlet` and the annotation import to
-`jakarta.servlet.annotation.WebServlet`.
+It targets Tomcat 11 (`jakarta.servlet`, Servlet 6.1, Java 17+). Tomcat 10.1
+uses the same imports (Servlet 6.0). On Tomcat 9 or older, change the imports
+to `javax.servlet` and the annotation import to
+`javax.servlet.annotation.WebServlet`.
 
 ## Running Without npm
 

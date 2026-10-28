@@ -1393,7 +1393,7 @@ public class InheritanceExceptionDemo {
         },
         "4": {
             "title": "Exp 04: Implementing Generic Servlet and HTTP Servlet",
-            "notes": "Tomcat 9 or older uses javax.servlet. Tomcat 10+ requires jakarta.servlet.",
+            "notes": "Tomcat 11 (Servlet 6.1) and Tomcat 10.1 (Servlet 6.0) use jakarta.servlet. Tomcat 9 and older use javax.servlet.",
             "files": [
                 {
                     "name": "index.html",
@@ -1415,8 +1415,8 @@ public class InheritanceExceptionDemo {
 package servletapp;
 
 import java.io.*;
-import javax.servlet.*;
-import javax.servlet.annotation.WebServlet;
+import jakarta.servlet.*;
+import jakarta.servlet.annotation.WebServlet;
 
 @WebServlet("/welcome")
 public class GenericServletDemo extends GenericServlet {
@@ -1437,8 +1437,8 @@ public class GenericServletDemo extends GenericServlet {
 package servletapp;
 
 import java.io.*;
-import javax.servlet.http.*;
-import javax.servlet.annotation.WebServlet;
+import jakarta.servlet.http.*;
+import jakarta.servlet.annotation.WebServlet;
 
 @WebServlet("/welcomeHttp")
 public class HttpServletDemo extends HttpServlet {
