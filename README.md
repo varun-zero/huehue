@@ -100,8 +100,9 @@ FSJP experiments are stored under the `fsjp` subject. Experiments 1-3 are
 single-file Core Java programs. Experiment 4 is a 3-file servlet app
 (`index.html`, `GenericServletDemo.java`, `HttpServletDemo.java`), experiment 5
 is a 5-file JSP + JDBC app (`userdb.sql`, `login.jsp`, `LoginServlet.java`,
-`welcome.jsp`, `error.jsp`), and later experiments can contain HTML, CSS,
-JavaScript, JSP, servlet, React and Spring Boot files.
+`welcome.jsp`, `error.jsp`), experiment 7 is a 2-file HTML + JavaScript email
+validator, and later experiments can contain HTML, CSS, JavaScript, JSP,
+servlet, React and Spring Boot files.
 
 ```bash
 # List FSJP experiments:
@@ -212,6 +213,20 @@ javac -cp "C:\apache-tomcat-11.0.27\lib\servlet-api.jar" -d WEB-INF\classes Logi
 
 Replace `your_password` in `LoginServlet.java` with your real MySQL password
 before compiling.
+
+### Experiment 7 (email validation)
+
+Experiment 7 is two files and needs no server:
+
+```bash
+python helper.py write fsjp 7
+# fsjp_exp_7/index.html
+# fsjp_exp_7/script.js
+```
+
+Open `index.html` in a browser. The script blocks submission, alerts on an
+empty field or a missing `@`/`.`, then uses a RegEx to write "Valid Email
+Address." (green) or "Invalid Email Address." (red) into `<p id="msg">`.
 
 ## Running Without npm
 

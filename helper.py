@@ -1566,6 +1566,67 @@ public class LoginServlet extends HttpServlet {
                 },
             ],
         },
+        "7": {
+            "title": "Exp 07: Client-Side Email Address Validation using JavaScript",
+            "notes": "Plain HTML + JavaScript. Open index.html directly in a browser; no server needed.",
+            "files": [
+                {
+                    "name": "index.html",
+                    "language": "html",
+                    "code": r"""
+<html>
+<head>
+    <title>Email Validation</title>
+</head>
+<body>
+    <h2>Email Validation</h2>
+    <form onsubmit="return validateEmail()">
+        Email: <input type="text" id="email">
+        <input type="submit" value="Submit">
+    </form>
+    <p id="msg"></p>
+    <script src="script.js"></script>
+</body>
+</html>
+""",
+                },
+                {
+                    "name": "script.js",
+                    "language": "js",
+                    "code": r"""
+function validateEmail() {
+    var box = document.getElementById("email");
+    var msg = document.getElementById("msg");
+    var email = box.value;
+
+    if (email == "") {
+        alert("Email field is empty. Please enter your email.");
+        box.focus();
+        return false;
+    }
+
+    if (email.indexOf("@") == -1 || email.indexOf(".") == -1) {
+        alert("Invalid email: '@' or '.' is missing. Please re-enter.");
+        box.focus();
+        return false;
+    }
+
+    var pattern = /^[^@]+@[^@]+\.[a-z]+$/i;
+    if (!pattern.test(email)) {
+        msg.innerHTML = "Invalid Email Address. Please enter a valid email.";
+        msg.style.color = "red";
+        box.focus();
+        return false;
+    }
+
+    msg.innerHTML = "Valid Email Address.";
+    msg.style.color = "green";
+    return false;
+}
+""",
+                },
+            ],
+        },
     },
 }
 

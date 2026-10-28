@@ -180,6 +180,22 @@
           "code": "\n<html>\n<body>\n    <h2>Login Failed</h2>\n    <p><%= request.getAttribute(\"msg\") %></p>\n    <a href=\"login.jsp\">Back to Login</a>\n</body>\n</html>\n"
         }
       ]
+    },
+    "7": {
+      "title": "Exp 07: Client-Side Email Address Validation using JavaScript",
+      "notes": "Plain HTML + JavaScript. Open index.html directly in a browser; no server needed.",
+      "files": [
+        {
+          "name": "index.html",
+          "language": "html",
+          "code": "\n<html>\n<head>\n    <title>Email Validation</title>\n</head>\n<body>\n    <h2>Email Validation</h2>\n    <form onsubmit=\"return validateEmail()\">\n        Email: <input type=\"text\" id=\"email\">\n        <input type=\"submit\" value=\"Submit\">\n    </form>\n    <p id=\"msg\"></p>\n    <script src=\"script.js\"></script>\n</body>\n</html>\n"
+        },
+        {
+          "name": "script.js",
+          "language": "js",
+          "code": "\nfunction validateEmail() {\n    var box = document.getElementById(\"email\");\n    var msg = document.getElementById(\"msg\");\n    var email = box.value;\n\n    if (email == \"\") {\n        alert(\"Email field is empty. Please enter your email.\");\n        box.focus();\n        return false;\n    }\n\n    if (email.indexOf(\"@\") == -1 || email.indexOf(\".\") == -1) {\n        alert(\"Invalid email: '@' or '.' is missing. Please re-enter.\");\n        box.focus();\n        return false;\n    }\n\n    var pattern = /^[^@]+@[^@]+\\.[a-z]+$/i;\n    if (!pattern.test(email)) {\n        msg.innerHTML = \"Invalid Email Address. Please enter a valid email.\";\n        msg.style.color = \"red\";\n        box.focus();\n        return false;\n    }\n\n    msg.innerHTML = \"Valid Email Address.\";\n    msg.style.color = \"green\";\n    return false;\n}\n"
+        }
+      ]
     }
   }
 }
