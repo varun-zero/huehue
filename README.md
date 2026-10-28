@@ -140,16 +140,6 @@ Exp 04: Implementing Generic Servlet and HTTP Servlet
   1. index.html                    HTML            7 lines
   2. GenericServletDemo.java       JAVA           16 lines
   3. HttpServletDemo.java          JAVA           16 lines
-
-Show one file:
-  python helper.py show fsjp 4 1
-  python helper.py show fsjp 4 index.html
-
-Show all files:
-  python helper.py show fsjp 4 all
-
-Write all files to a folder:
-  python helper.py write fsjp 4
 ```
 
 ```bash

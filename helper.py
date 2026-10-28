@@ -2178,16 +2178,6 @@ def _print_file_index(subject, topic_key, topic, files):
         language = _language_label(item.get("language", ""))
         lines = _line_count(item.get("code", ""))
         print(f"  {index}. {name:<32} {language:<12} {lines:>3} lines")
-    print()
-    print("Show one file:")
-    print(f"  python helper.py show {subject} {topic_key} 1")
-    print(f"  python helper.py show {subject} {topic_key} {files[0].get('name') or 'file1'}")
-    print()
-    print("Show all files:")
-    print(f"  python helper.py show {subject} {topic_key} all")
-    print()
-    print("Write all files to a folder:")
-    print(f"  python helper.py write {subject} {topic_key}")
 
 
 def _print_files(files):
