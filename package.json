@@ -1,21 +1,21 @@
 {
   "name": "helper-cli",
   "version": "1.0.0",
-  "description": "Offline CLI study helper tool for AOA, COA and FSJP lab programs",
+  "description": "Offline CLI study helper tool for Full Stack Java Programming (FSJP) lab programs",
   "main": "bin/helper.js",
   "bin": {
     "helper": "./bin/helper.js"
   },
   "scripts": {
-    "test": "node ./bin/helper.js aoa 1"
+    "test": "node ./bin/helper.js fsjp 1"
   },
   "keywords": [
-    "aoa",
-    "coa",
     "fsjp",
     "java",
-    "c",
-    "algorithms",
+    "servlet",
+    "jsp",
+    "jdbc",
+    "web",
     "helper",
     "cli"
   ],

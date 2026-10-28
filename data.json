@@ -1,260 +1,232 @@
 {
-  "aoa": {
-    "1": {
-      "title": "Exp 01: Insertion Sort and Selection Sort",
-      "notes": "",
-      "code": "\n#include <stdio.h>\n\nvoid insertionSort(int a[], int n)\n{\n    int i, j, key;\n\n    for (i = 1; i < n; i++)\n    {\n        key = a[i];\n        j = i - 1;\n\n        while (j >= 0 && a[j] > key)\n        {\n            a[j + 1] = a[j];\n            j--;\n        }\n\n        a[j + 1] = key;\n    }\n}\n\nvoid selectionSort(int a[], int n)\n{\n    int i, j, min, temp;\n\n    for (i = 0; i < n - 1; i++)\n    {\n        min = i;\n\n        for (j = i + 1; j < n; j++)\n        {\n            if (a[j] < a[min])\n            {\n                min = j;\n            }\n        }\n\n        temp = a[i];\n        a[i] = a[min];\n        a[min] = temp;\n    }\n}\n\nint main()\n{\n    int n, choice, i;\n    int a[50];\n\n    printf(\"Enter number of elements: \");\n    scanf(\"%d\", &n);\n\n    printf(\"Enter %d integers: \", n);\n    for (i = 0; i < n; i++)\n    {\n        scanf(\"%d\", &a[i]);\n    }\n\n    printf(\"Choose (1 for Insertion Sort, 2 for Selection Sort): \");\n    scanf(\"%d\", &choice);\n\n    if (choice == 1)\n    {\n        insertionSort(a, n);\n    }\n    else\n    {\n        selectionSort(a, n);\n    }\n\n    printf(\"Sorted array: \");\n    for (i = 0; i < n; i++)\n    {\n        printf(\"%d \", a[i]);\n    }\n    printf(\"\\n\");\n\n    return 0;\n}\n"
-    },
-    "2": {
-      "title": "Exp 02: Binary Search using Divide and Conquer",
-      "notes": "",
-      "code": "\n#include <stdio.h>\n\nint binarySearch(int a[], int low, int high, int key)\n{\n    int mid;\n\n    if (low > high)\n    {\n        return -1;\n    }\n\n    mid = (low + high) / 2;\n\n    if (a[mid] == key)\n    {\n        return mid;\n    }\n    else if (a[mid] > key)\n    {\n        return binarySearch(a, low, mid - 1, key);\n    }\n    else\n    {\n        return binarySearch(a, mid + 1, high, key);\n    }\n}\n\nint main()\n{\n    int n, i, key, pos;\n    int a[50];\n\n    printf(\"Enter number of elements: \");\n    scanf(\"%d\", &n);\n\n    printf(\"Enter %d sorted elements: \", n);\n    for (i = 0; i < n; i++)\n    {\n        scanf(\"%d\", &a[i]);\n    }\n\n    printf(\"Enter element to search: \");\n    scanf(\"%d\", &key);\n\n    pos = binarySearch(a, 0, n - 1, key);\n\n    if (pos != -1)\n    {\n        printf(\"Success: %d found at index %d (position %d).\\n\", key, pos, pos + 1);\n    }\n    else\n    {\n        printf(\"Element %d not found in the array.\\n\", key);\n    }\n\n    return 0;\n}\n"
-    },
-    "3": {
-      "title": "Exp 03: Quick Sort using Divide and Conquer",
-      "notes": "",
-      "code": "\n#include <stdio.h>\n\nvoid swap(int *a, int *b)\n{\n    int temp;\n\n    temp = *a;\n    *a = *b;\n    *b = temp;\n}\n\nint partition(int a[], int low, int high)\n{\n    int pivot, i, j;\n\n    pivot = a[high];\n    i = low - 1;\n\n    for (j = low; j < high; j++)\n    {\n        if (a[j] < pivot)\n        {\n            i++;\n            swap(&a[i], &a[j]);\n        }\n    }\n\n    swap(&a[i + 1], &a[high]);\n\n    return i + 1;\n}\n\nvoid quickSort(int a[], int low, int high)\n{\n    int pivot;\n\n    if (low < high)\n    {\n        pivot = partition(a, low, high);\n        quickSort(a, low, pivot - 1);\n        quickSort(a, pivot + 1, high);\n    }\n}\n\nint main()\n{\n    int n, i;\n    int a[50];\n\n    printf(\"Enter number of elements: \");\n    scanf(\"%d\", &n);\n\n    printf(\"Enter %d elements: \", n);\n    for (i = 0; i < n; i++)\n    {\n        scanf(\"%d\", &a[i]);\n    }\n\n    quickSort(a, 0, n - 1);\n\n    printf(\"Sorted array (Quick Sort): \");\n    for (i = 0; i < n; i++)\n    {\n        printf(\"%d \", a[i]);\n    }\n    printf(\"\\n\");\n\n    return 0;\n}\n"
-    },
-    "4": {
-      "title": "Exp 04: Fractional Knapsack using Greedy Method",
-      "notes": "",
-      "code": "\n#include <stdio.h>\n\nvoid swap(float *a, float *b)\n{\n    float temp;\n\n    temp = *a;\n    *a = *b;\n    *b = temp;\n}\n\nint main()\n{\n    int n, i, j;\n    float profit[20], weight[20], ratio[20];\n    float capacity, total = 0;\n\n    printf(\"Enter number of items: \");\n    scanf(\"%d\", &n);\n\n    for (i = 0; i < n; i++)\n    {\n        printf(\"Item %d (Profit Weight): \", i + 1);\n        scanf(\"%f %f\", &profit[i], &weight[i]);\n\n        ratio[i] = profit[i] / weight[i];\n    }\n\n    printf(\"Enter knapsack capacity: \");\n    scanf(\"%f\", &capacity);\n\n    for (i = 0; i < n - 1; i++)\n    {\n        for (j = i + 1; j < n; j++)\n        {\n            if (ratio[i] < ratio[j])\n            {\n                swap(&ratio[i], &ratio[j]);\n                swap(&profit[i], &profit[j]);\n                swap(&weight[i], &weight[j]);\n            }\n        }\n    }\n\n    for (i = 0; i < n; i++)\n    {\n        if (weight[i] <= capacity)\n        {\n            total += profit[i];\n            capacity -= weight[i];\n        }\n        else\n        {\n            total += profit[i] * (capacity / weight[i]);\n            break;\n        }\n    }\n\n    printf(\"Maximum Profit = %.2f\\n\", total);\n\n    return 0;\n}\n"
-    },
-    "5": {
-      "title": "Exp 05: Prim's Minimum Spanning Tree (MST) Algorithm",
-      "notes": "",
-      "code": "\n#include <stdio.h>\n#define INF 9999\n\nint main()\n{\n    int n, i, j, k;\n    int cost[20][20];\n    int visited[20] = {0};\n    int total = 0;\n    int min, u, v;\n\n    printf(\"Enter number of vertices: \");\n    scanf(\"%d\", &n);\n\n    printf(\"Enter cost matrix (use 0 for self/no edge):\\n\");\n    for (i = 0; i < n; i++)\n    {\n        for (j = 0; j < n; j++)\n        {\n            scanf(\"%d\", &cost[i][j]);\n\n            if (cost[i][j] == 0)\n            {\n                cost[i][j] = INF;\n            }\n        }\n    }\n\n    visited[0] = 1;\n    printf(\"\\nSelected MST Edges:\\n\");\n\n    for (k = 0; k < n - 1; k++)\n    {\n        min = INF;\n        u = 0;\n        v = 0;\n\n        for (i = 0; i < n; i++)\n        {\n            if (visited[i])\n            {\n                for (j = 0; j < n; j++)\n                {\n                    if (!visited[j] && cost[i][j] < min)\n                    {\n                        min = cost[i][j];\n                        u = i;\n                        v = j;\n                    }\n                }\n            }\n        }\n\n        visited[v] = 1;\n        printf(\"Edge %d: (%d -> %d) with Cost = %d\\n\", k + 1, u, v, min);\n        total += min;\n    }\n\n    printf(\"Total MST Cost = %d\\n\", total);\n\n    return 0;\n}\n"
-    },
-    "6": {
-      "title": "Exp 06: All-Pairs Shortest Path (Floyd-Warshall)",
-      "notes": "",
-      "code": "\n#include <stdio.h>\n#define INF 999\n\nint main()\n{\n    int n, i, j, k;\n    int dist[20][20];\n\n    printf(\"Enter number of vertices: \");\n    scanf(\"%d\", &n);\n\n    printf(\"Enter weighted matrix (use 999 for INF):\\n\");\n    for (i = 0; i < n; i++)\n    {\n        for (j = 0; j < n; j++)\n        {\n            scanf(\"%d\", &dist[i][j]);\n        }\n    }\n\n    for (k = 0; k < n; k++)\n    {\n        for (i = 0; i < n; i++)\n        {\n            for (j = 0; j < n; j++)\n            {\n                if (dist[i][k] + dist[k][j] < dist[i][j])\n                {\n                    dist[i][j] = dist[i][k] + dist[k][j];\n                }\n            }\n        }\n    }\n\n    printf(\"\\nAll-Pairs Shortest Distance Matrix:\\n\");\n    for (i = 0; i < n; i++)\n    {\n        for (j = 0; j < n; j++)\n        {\n            if (dist[i][j] >= INF)\n            {\n                printf(\"INF\\t\");\n            }\n            else\n            {\n                printf(\"%d\\t\", dist[i][j]);\n            }\n        }\n        printf(\"\\n\");\n    }\n\n    return 0;\n}\n"
-    },
-    "7": {
-      "title": "Exp 07: Sum of Subset using Backtracking",
-      "notes": "",
-      "code": "\n#include <stdio.h>\n\nint set[20], chosen[20];\nint n, target, found = 0;\n\nvoid findSubsets(int index, int sum)\n{\n    int i;\n\n    if (sum == target)\n    {\n        found = 1;\n        printf(\"{ \");\n\n        for (i = 0; i < index; i++)\n        {\n            if (chosen[i])\n            {\n                printf(\"%d \", set[i]);\n            }\n        }\n\n        printf(\"}\\n\");\n        return;\n    }\n\n    if (index == n || sum > target)\n    {\n        return;\n    }\n\n    chosen[index] = 1;\n    findSubsets(index + 1, sum + set[index]);\n\n    chosen[index] = 0;\n    findSubsets(index + 1, sum);\n}\n\nint main()\n{\n    int i;\n\n    printf(\"Enter number of elements: \");\n    scanf(\"%d\", &n);\n\n    printf(\"Enter %d positive integers: \", n);\n    for (i = 0; i < n; i++)\n    {\n        scanf(\"%d\", &set[i]);\n    }\n\n    printf(\"Enter target sum: \");\n    scanf(\"%d\", &target);\n\n    printf(\"\\nSubsets summing to %d:\\n\", target);\n    findSubsets(0, 0);\n\n    if (!found)\n    {\n        printf(\"No subset found with target sum.\\n\");\n    }\n\n    return 0;\n}\n"
-    },
-    "8": {
-      "title": "Exp 08: N-Queens Problem using Backtracking",
-      "notes": "",
-      "code": "\n#include <stdio.h>\n#include <stdlib.h>\n\nint board[20];\nint n;\n\nint isSafe(int row, int col)\n{\n    int i;\n\n    for (i = 0; i < row; i++)\n    {\n        if (board[i] == col || abs(board[i] - col) == abs(i - row))\n        {\n            return 0;\n        }\n    }\n\n    return 1;\n}\n\nint solve(int row)\n{\n    int col;\n\n    if (row == n)\n    {\n        return 1;\n    }\n\n    for (col = 0; col < n; col++)\n    {\n        if (isSafe(row, col))\n        {\n            board[row] = col;\n\n            if (solve(row + 1))\n            {\n                return 1;\n            }\n        }\n    }\n\n    return 0;\n}\n\nint main()\n{\n    int i, j;\n\n    printf(\"Enter number of Queens (N): \");\n    scanf(\"%d\", &n);\n\n    if (solve(0))\n    {\n        printf(\"\\nSolution board placement:\\n\");\n\n        for (i = 0; i < n; i++)\n        {\n            for (j = 0; j < n; j++)\n            {\n                if (board[i] == j)\n                {\n                    printf(\"Q \");\n                }\n                else\n                {\n                    printf(\". \");\n                }\n            }\n            printf(\"\\n\");\n        }\n    }\n    else\n    {\n        printf(\"No valid placement exists for N = %d.\\n\", n);\n    }\n\n    return 0;\n}\n"
-    },
-    "9": {
-      "title": "Exp 09: Rabin-Karp String Matching Algorithm",
-      "notes": "",
-      "code": "\n#include <stdio.h>\n#include <string.h>\n\n#define D 256\n#define Q 101\n\nint main()\n{\n    char text[100], pattern[50];\n    int n, m, i, j;\n    int patternHash = 0, textHash = 0, h = 1;\n    int found = 0;\n\n    printf(\"Enter text string (no spaces): \");\n    scanf(\"%s\", text);\n\n    printf(\"Enter pattern to search: \");\n    scanf(\"%s\", pattern);\n\n    n = strlen(text);\n    m = strlen(pattern);\n\n    for (i = 0; i < m - 1; i++)\n    {\n        h = (h * D) % Q;\n    }\n\n    for (i = 0; i < m; i++)\n    {\n        patternHash = (D * patternHash + pattern[i]) % Q;\n        textHash = (D * textHash + text[i]) % Q;\n    }\n\n    for (i = 0; i <= n - m; i++)\n    {\n        if (patternHash == textHash)\n        {\n            for (j = 0; j < m; j++)\n            {\n                if (text[i + j] != pattern[j])\n                {\n                    break;\n                }\n            }\n\n            if (j == m)\n            {\n                printf(\"Pattern found at index %d\\n\", i);\n                found = 1;\n            }\n        }\n\n        if (i < n - m)\n        {\n            textHash = (D * (textHash - text[i] * h) + text[i + m]) % Q;\n\n            if (textHash < 0)\n            {\n                textHash += Q;\n            }\n        }\n    }\n\n    if (!found)\n    {\n        printf(\"Pattern not found in text.\\n\");\n    }\n\n    return 0;\n}\n"
-    },
-    "10": {
-      "title": "Exp 10: Min-Max Algorithm using Divide and Conquer",
-      "notes": "",
-      "code": "\n#include <stdio.h>\n\nvoid findMinMax(int a[], int low, int high, int *min, int *max)\n{\n    int mid;\n    int leftMin, leftMax, rightMin, rightMax;\n\n    if (low == high)\n    {\n        *min = a[low];\n        *max = a[low];\n        return;\n    }\n\n    if (high == low + 1)\n    {\n        if (a[low] < a[high])\n        {\n            *min = a[low];\n            *max = a[high];\n        }\n        else\n        {\n            *min = a[high];\n            *max = a[low];\n        }\n        return;\n    }\n\n    mid = (low + high) / 2;\n\n    findMinMax(a, low, mid, &leftMin, &leftMax);\n    findMinMax(a, mid + 1, high, &rightMin, &rightMax);\n\n    if (leftMin < rightMin)\n    {\n        *min = leftMin;\n    }\n    else\n    {\n        *min = rightMin;\n    }\n\n    if (leftMax > rightMax)\n    {\n        *max = leftMax;\n    }\n    else\n    {\n        *max = rightMax;\n    }\n}\n\nint main()\n{\n    int n, i, min, max;\n    int a[50];\n\n    printf(\"Enter number of elements: \");\n    scanf(\"%d\", &n);\n\n    printf(\"Enter %d elements: \", n);\n    for (i = 0; i < n; i++)\n    {\n        scanf(\"%d\", &a[i]);\n    }\n\n    findMinMax(a, 0, n - 1, &min, &max);\n\n    printf(\"Minimum element = %d\\n\", min);\n    printf(\"Maximum element = %d\\n\", max);\n\n    return 0;\n}\n"
+    "fsjp": {
+        "1": {
+            "title": "Exp 01: Student class with inputDetails() and displayDetails()",
+            "notes": "",
+            "filename": "Student.java",
+            "language": "java",
+            "code": "import java.util.Scanner;\n\nclass Student {\n    String name;\n    int rollNumber;\n    float marks;\n\n    void inputDetails() {\n        Scanner sc = new Scanner(System.in);\n        System.out.print(\"Enter name: \");\n        name = sc.nextLine();\n        System.out.print(\"Enter roll number: \");\n        rollNumber = sc.nextInt();\n        System.out.print(\"Enter marks: \");\n        marks = sc.nextFloat();\n    }\n\n    void displayDetails() {\n        System.out.println(\"Name: \" + name + \", Roll: \" + rollNumber + \", Marks: \" + marks);\n    }\n\n    public static void main(String[] args) {\n        Student s = new Student();\n        s.inputDetails();\n        s.displayDetails();\n    }\n}",
+            "files": [
+                {
+                    "name": "Student.java",
+                    "language": "java",
+                    "code": "import java.util.Scanner;\n\nclass Student {\n    String name;\n    int rollNumber;\n    float marks;\n\n    void inputDetails() {\n        Scanner sc = new Scanner(System.in);\n        System.out.print(\"Enter name: \");\n        name = sc.nextLine();\n        System.out.print(\"Enter roll number: \");\n        rollNumber = sc.nextInt();\n        System.out.print(\"Enter marks: \");\n        marks = sc.nextFloat();\n    }\n\n    void displayDetails() {\n        System.out.println(\"Name: \" + name + \", Roll: \" + rollNumber + \", Marks: \" + marks);\n    }\n\n    public static void main(String[] args) {\n        Student s = new Student();\n        s.inputDetails();\n        s.displayDetails();\n    }\n}"
+                }
+            ]
+        },
+        "2": {
+            "title": "Exp 02: Constructor Overloading",
+            "notes": "",
+            "filename": "Calculator.java",
+            "language": "java",
+            "code": "class Calculator {\n    Calculator() {\n        System.out.println(\"Welcome to Calculator!\");\n    }\n\n    Calculator(int a, int b) {\n        System.out.println(\"Sum = \" + (a + b));\n    }\n\n    public static void main(String[] args) {\n        new Calculator();\n        new Calculator(10, 20);\n    }\n}",
+            "files": [
+                {
+                    "name": "Calculator.java",
+                    "language": "java",
+                    "code": "class Calculator {\n    Calculator() {\n        System.out.println(\"Welcome to Calculator!\");\n    }\n\n    Calculator(int a, int b) {\n        System.out.println(\"Sum = \" + (a + b));\n    }\n\n    public static void main(String[] args) {\n        new Calculator();\n        new Calculator(10, 20);\n    }\n}"
+                }
+            ]
+        },
+        "3": {
+            "title": "Exp 03: Method Overloading",
+            "notes": "",
+            "filename": "Calculator.java",
+            "language": "java",
+            "code": "class Calculator {\n    int add() { return 5 + 10; }\n    int add(int a, int b) { return a + b; }\n    float add(float a, float b, float c) { return a + b + c; }\n\n    public static void main(String[] args) {\n        Calculator c = new Calculator();\n        System.out.println(\"No parameters: \" + c.add());\n        System.out.println(\"Two integers: \" + c.add(20, 30));\n        System.out.println(\"Three floats: \" + c.add(1.5f, 2.5f, 3.5f));\n    }\n}",
+            "files": [
+                {
+                    "name": "Calculator.java",
+                    "language": "java",
+                    "code": "class Calculator {\n    int add() { return 5 + 10; }\n    int add(int a, int b) { return a + b; }\n    float add(float a, float b, float c) { return a + b + c; }\n\n    public static void main(String[] args) {\n        Calculator c = new Calculator();\n        System.out.println(\"No parameters: \" + c.add());\n        System.out.println(\"Two integers: \" + c.add(20, 30));\n        System.out.println(\"Three floats: \" + c.add(1.5f, 2.5f, 3.5f));\n    }\n}"
+                }
+            ]
+        },
+        "4": {
+            "title": "Exp 04: Single Inheritance",
+            "notes": "",
+            "filename": "SingleInheritance.java",
+            "language": "java",
+            "code": "class Person {\n    String name = \"Varun\";\n    int age = 20;\n}\n\nclass Student extends Person {\n    String course = \"B.Tech\";\n    int roll = 101;\n\n    public static void main(String[] args) {\n        Student s = new Student();\n        System.out.println(\"Name: \" + s.name + \", Age: \" + s.age);\n        System.out.println(\"Course: \" + s.course + \", Roll: \" + s.roll);\n    }\n}",
+            "files": [
+                {
+                    "name": "SingleInheritance.java",
+                    "language": "java",
+                    "code": "class Person {\n    String name = \"Varun\";\n    int age = 20;\n}\n\nclass Student extends Person {\n    String course = \"B.Tech\";\n    int roll = 101;\n\n    public static void main(String[] args) {\n        Student s = new Student();\n        System.out.println(\"Name: \" + s.name + \", Age: \" + s.age);\n        System.out.println(\"Course: \" + s.course + \", Roll: \" + s.roll);\n    }\n}"
+                }
+            ]
+        },
+        "5": {
+            "title": "Exp 05: Multilevel Inheritance",
+            "notes": "",
+            "filename": "MultilevelInheritance.java",
+            "language": "java",
+            "code": "class Person {\n    String name = \"Varun\";\n}\n\nclass Student extends Person {\n    String course = \"B.Tech\";\n}\n\nclass GraduateStudent extends Student {\n    int year = 2026;\n\n    public static void main(String[] args) {\n        GraduateStudent g = new GraduateStudent();\n        System.out.println(\"Name: \" + g.name);\n        System.out.println(\"Course: \" + g.course);\n        System.out.println(\"Graduation Year: \" + g.year);\n    }\n}",
+            "files": [
+                {
+                    "name": "MultilevelInheritance.java",
+                    "language": "java",
+                    "code": "class Person {\n    String name = \"Varun\";\n}\n\nclass Student extends Person {\n    String course = \"B.Tech\";\n}\n\nclass GraduateStudent extends Student {\n    int year = 2026;\n\n    public static void main(String[] args) {\n        GraduateStudent g = new GraduateStudent();\n        System.out.println(\"Name: \" + g.name);\n        System.out.println(\"Course: \" + g.course);\n        System.out.println(\"Graduation Year: \" + g.year);\n    }\n}"
+                }
+            ]
+        },
+        "6": {
+            "title": "Exp 06: Hierarchical Inheritance",
+            "notes": "",
+            "filename": "HierarchicalInheritance.java",
+            "language": "java",
+            "code": "class Person {\n    String college = \"ABC College\";\n}\n\nclass Student extends Person {\n    String course = \"B.Tech\";\n}\n\nclass Teacher extends Person {\n    String subject = \"Java\";\n}\n\nclass Administrator extends Person {\n    String dept = \"Admissions\";\n}\n\npublic class HierarchicalInheritance {\n    public static void main(String[] args) {\n        Student s = new Student();\n        Teacher t = new Teacher();\n        Administrator a = new Administrator();\n        System.out.println(\"Student: \" + s.course + \" (\" + s.college + \")\");\n        System.out.println(\"Teacher: \" + t.subject + \" (\" + t.college + \")\");\n        System.out.println(\"Administrator: \" + a.dept + \" (\" + a.college + \")\");\n    }\n}",
+            "files": [
+                {
+                    "name": "HierarchicalInheritance.java",
+                    "language": "java",
+                    "code": "class Person {\n    String college = \"ABC College\";\n}\n\nclass Student extends Person {\n    String course = \"B.Tech\";\n}\n\nclass Teacher extends Person {\n    String subject = \"Java\";\n}\n\nclass Administrator extends Person {\n    String dept = \"Admissions\";\n}\n\npublic class HierarchicalInheritance {\n    public static void main(String[] args) {\n        Student s = new Student();\n        Teacher t = new Teacher();\n        Administrator a = new Administrator();\n        System.out.println(\"Student: \" + s.course + \" (\" + s.college + \")\");\n        System.out.println(\"Teacher: \" + t.subject + \" (\" + t.college + \")\");\n        System.out.println(\"Administrator: \" + a.dept + \" (\" + a.college + \")\");\n    }\n}"
+                }
+            ]
+        },
+        "7": {
+            "title": "Exp 07: Servlet to display a welcome message (no web.xml)",
+            "notes": "Run at: http://localhost:8080/YourProject/welcome (For Tomcat 10+, use jakarta.servlet instead of javax.servlet)",
+            "filename": "WelcomeServlet.java",
+            "language": "java",
+            "code": "import java.io.*;\nimport javax.servlet.annotation.WebServlet;\nimport javax.servlet.http.*;\n\n@WebServlet(\"/welcome\")\npublic class WelcomeServlet extends HttpServlet {\n    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {\n        res.setContentType(\"text/html\");\n        res.getWriter().println(\"<h1>Welcome to Servlet Programming!</h1>\");\n    }\n}",
+            "files": [
+                {
+                    "name": "WelcomeServlet.java",
+                    "language": "java",
+                    "code": "import java.io.*;\nimport javax.servlet.annotation.WebServlet;\nimport javax.servlet.http.*;\n\n@WebServlet(\"/welcome\")\npublic class WelcomeServlet extends HttpServlet {\n    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {\n        res.setContentType(\"text/html\");\n        res.getWriter().println(\"<h1>Welcome to Servlet Programming!</h1>\");\n    }\n}"
+                }
+            ]
+        },
+        "8": {
+            "title": "Exp 08: Servlet to accept a name from an HTML form (no web.xml)",
+            "notes": "",
+            "files": [
+                {
+                    "name": "index.html",
+                    "language": "html",
+                    "code": "<form action=\"hello\" method=\"post\">\n    Enter your name: <input type=\"text\" name=\"username\">\n    <input type=\"submit\" value=\"Submit\">\n</form>"
+                },
+                {
+                    "name": "HelloServlet.java",
+                    "language": "java",
+                    "code": "import java.io.*;\nimport javax.servlet.annotation.WebServlet;\nimport javax.servlet.http.*;\n\n@WebServlet(\"/hello\")\npublic class HelloServlet extends HttpServlet {\n    protected void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {\n        res.setContentType(\"text/html\");\n        res.getWriter().println(\"<h2>Hello, \" + req.getParameter(\"username\") + \"!</h2>\");\n    }\n}"
+                }
+            ]
+        },
+        "9": {
+            "title": "Exp 09: JSP welcome message",
+            "notes": "",
+            "filename": "welcome.jsp",
+            "language": "jsp",
+            "code": "<html>\n<body>\n    <h1>Welcome to JSP Programming!</h1>\n</body>\n</html>",
+            "files": [
+                {
+                    "name": "welcome.jsp",
+                    "language": "jsp",
+                    "code": "<html>\n<body>\n    <h1>Welcome to JSP Programming!</h1>\n</body>\n</html>"
+                }
+            ]
+        },
+        "10": {
+            "title": "Exp 10: JSP to display name, register number and department",
+            "notes": "",
+            "filename": "details.jsp",
+            "language": "jsp",
+            "code": "<html>\n<body>\n    <%\n        String name = \"Varun\", regNo = \"2021001\", dept = \"Computer Science\";\n    %>\n    <h2>Student Details</h2>\n    <p>Name: <%= name %></p>\n    <p>Register Number: <%= regNo %></p>\n    <p>Department: <%= dept %></p>\n</body>\n</html>",
+            "files": [
+                {
+                    "name": "details.jsp",
+                    "language": "jsp",
+                    "code": "<html>\n<body>\n    <%\n        String name = \"Varun\", regNo = \"2021001\", dept = \"Computer Science\";\n    %>\n    <h2>Student Details</h2>\n    <p>Name: <%= name %></p>\n    <p>Register Number: <%= regNo %></p>\n    <p>Department: <%= dept %></p>\n</body>\n</html>"
+                }
+            ]
+        },
+        "11": {
+            "title": "Exp 11: JDBC application (insert, update, delete, display)",
+            "notes": "Run SQL in MySQL first: CREATE DATABASE college; USE college; CREATE TABLE student (roll INT PRIMARY KEY, name VARCHAR(50), marks FLOAT);",
+            "files": [
+                {
+                    "name": "student.sql",
+                    "language": "sql",
+                    "code": "CREATE DATABASE college;\nUSE college;\nCREATE TABLE student (roll INT PRIMARY KEY, name VARCHAR(50), marks FLOAT);"
+                },
+                {
+                    "name": "StudentJDBC.java",
+                    "language": "java",
+                    "code": "import java.sql.*;\nimport java.util.Scanner;\n\npublic class StudentJDBC {\n    public static void main(String[] args) throws Exception {\n        Connection con = DriverManager.getConnection(\n                \"jdbc:mysql://localhost:3306/college\", \"root\", \"password\");\n        Scanner sc = new Scanner(System.in);\n        int ch;\n\n        do {\n            System.out.print(\"\\n1.Insert 2.Update 3.Delete 4.Display 5.Exit: \");\n            ch = sc.nextInt();\n\n            if (ch == 1) {\n                System.out.print(\"Enter roll, name, marks: \");\n                PreparedStatement ps = con.prepareStatement(\"INSERT INTO student VALUES (?,?,?)\");\n                ps.setInt(1, sc.nextInt());\n                ps.setString(2, sc.next());\n                ps.setFloat(3, sc.nextFloat());\n                ps.executeUpdate();\n                System.out.println(\"Record inserted.\");\n            } else if (ch == 2) {\n                System.out.print(\"Enter roll and new marks: \");\n                PreparedStatement ps = con.prepareStatement(\"UPDATE student SET marks=? WHERE roll=?\");\n                int roll = sc.nextInt();\n                ps.setFloat(1, sc.nextFloat());\n                ps.setInt(2, roll);\n                ps.executeUpdate();\n                System.out.println(\"Record updated.\");\n            } else if (ch == 3) {\n                System.out.print(\"Enter roll to delete: \");\n                PreparedStatement ps = con.prepareStatement(\"DELETE FROM student WHERE roll=?\");\n                ps.setInt(1, sc.nextInt());\n                ps.executeUpdate();\n                System.out.println(\"Record deleted.\");\n            } else if (ch == 4) {\n                ResultSet rs = con.createStatement().executeQuery(\"SELECT * FROM student\");\n                while (rs.next())\n                    System.out.println(rs.getInt(1) + \" \" + rs.getString(2) + \" \" + rs.getFloat(3));\n            }\n        } while (ch != 5);\n\n        con.close();\n    }\n}"
+                }
+            ]
+        },
+        "12": {
+            "title": "Exp 12: Student registration form with CSS",
+            "notes": "",
+            "filename": "index.html",
+            "language": "html",
+            "code": "<!DOCTYPE html>\n<html>\n<head>\n    <title>Student Registration</title>\n    <style>\n        form { width: 280px; margin: 40px auto; padding: 20px; border: 1px solid gray; font-family: Arial; }\n        input, select, button { width: 100%; padding: 8px; margin: 6px 0; box-sizing: border-box; }\n        button { background: green; color: white; border: none; }\n    </style>\n</head>\n<body>\n    <form>\n        <h3>Student Registration</h3>\n        <input type=\"text\" placeholder=\"Enter Name\">\n        <input type=\"email\" placeholder=\"Enter Email\">\n        <input type=\"password\" placeholder=\"Enter Password\">\n        <select>\n            <option>B.Tech</option>\n            <option>BCA</option>\n            <option>MCA</option>\n        </select>\n        <button type=\"submit\">Register</button>\n    </form>\n</body>\n</html>",
+            "files": [
+                {
+                    "name": "index.html",
+                    "language": "html",
+                    "code": "<!DOCTYPE html>\n<html>\n<head>\n    <title>Student Registration</title>\n    <style>\n        form { width: 280px; margin: 40px auto; padding: 20px; border: 1px solid gray; font-family: Arial; }\n        input, select, button { width: 100%; padding: 8px; margin: 6px 0; box-sizing: border-box; }\n        button { background: green; color: white; border: none; }\n    </style>\n</head>\n<body>\n    <form>\n        <h3>Student Registration</h3>\n        <input type=\"text\" placeholder=\"Enter Name\">\n        <input type=\"email\" placeholder=\"Enter Email\">\n        <input type=\"password\" placeholder=\"Enter Password\">\n        <select>\n            <option>B.Tech</option>\n            <option>BCA</option>\n            <option>MCA</option>\n        </select>\n        <button type=\"submit\">Register</button>\n    </form>\n</body>\n</html>"
+                }
+            ]
+        },
+        "13": {
+            "title": "Exp 13: College department webpage",
+            "notes": "",
+            "filename": "index.html",
+            "language": "html",
+            "code": "<!DOCTYPE html>\n<html>\n<head>\n    <title>CSE Department</title>\n    <style>\n        body { font-family: Arial; margin: 0; }\n        header, footer { background: navy; color: white; text-align: center; padding: 10px; }\n        nav { background: #ddd; text-align: center; padding: 6px; }\n        section { padding: 10px 20px; }\n        table, th, td { border: 1px solid black; border-collapse: collapse; padding: 6px; }\n    </style>\n</head>\n<body>\n    <header><h2>Department of Computer Science</h2></header>\n    <nav><a href=\"#faculty\">Faculty</a> | <a href=\"#courses\">Courses</a> | <a href=\"#contact\">Contact</a></nav>\n\n    <section id=\"faculty\">\n        <h3>Faculty</h3>\n        <table>\n            <tr><th>Name</th><th>Designation</th></tr>\n            <tr><td>Dr. Ravi Kumar</td><td>Professor &amp; HOD</td></tr>\n            <tr><td>Ms. Anita Sharma</td><td>Assistant Professor</td></tr>\n        </table>\n    </section>\n\n    <section id=\"courses\">\n        <h3>Courses</h3>\n        <table>\n            <tr><th>Course</th><th>Duration</th></tr>\n            <tr><td>B.Tech CSE</td><td>4 Years</td></tr>\n            <tr><td>MCA</td><td>2 Years</td></tr>\n        </table>\n    </section>\n\n    <section id=\"contact\">\n        <h3>Contact</h3>\n        <p>Email: cse@abccollege.edu | Phone: 044-12345678</p>\n    </section>\n\n    <footer>&copy; 2026 CSE Department</footer>\n</body>\n</html>",
+            "files": [
+                {
+                    "name": "index.html",
+                    "language": "html",
+                    "code": "<!DOCTYPE html>\n<html>\n<head>\n    <title>CSE Department</title>\n    <style>\n        body { font-family: Arial; margin: 0; }\n        header, footer { background: navy; color: white; text-align: center; padding: 10px; }\n        nav { background: #ddd; text-align: center; padding: 6px; }\n        section { padding: 10px 20px; }\n        table, th, td { border: 1px solid black; border-collapse: collapse; padding: 6px; }\n    </style>\n</head>\n<body>\n    <header><h2>Department of Computer Science</h2></header>\n    <nav><a href=\"#faculty\">Faculty</a> | <a href=\"#courses\">Courses</a> | <a href=\"#contact\">Contact</a></nav>\n\n    <section id=\"faculty\">\n        <h3>Faculty</h3>\n        <table>\n            <tr><th>Name</th><th>Designation</th></tr>\n            <tr><td>Dr. Ravi Kumar</td><td>Professor &amp; HOD</td></tr>\n            <tr><td>Ms. Anita Sharma</td><td>Assistant Professor</td></tr>\n        </table>\n    </section>\n\n    <section id=\"courses\">\n        <h3>Courses</h3>\n        <table>\n            <tr><th>Course</th><th>Duration</th></tr>\n            <tr><td>B.Tech CSE</td><td>4 Years</td></tr>\n            <tr><td>MCA</td><td>2 Years</td></tr>\n        </table>\n    </section>\n\n    <section id=\"contact\">\n        <h3>Contact</h3>\n        <p>Email: cse@abccollege.edu | Phone: 044-12345678</p>\n    </section>\n\n    <footer>&copy; 2026 CSE Department</footer>\n</body>\n</html>"
+                }
+            ]
+        },
+        "14": {
+            "title": "Exp 14: JavaScript email validation",
+            "notes": "",
+            "filename": "index.html",
+            "language": "html",
+            "code": "<input type=\"text\" id=\"email\" placeholder=\"Enter email\">\n<button onclick=\"validate()\">Validate</button>\n<p id=\"res\"></p>\n\n<script>\nfunction validate() {\n    let e = document.getElementById(\"email\").value;\n    let valid = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(e);\n    document.getElementById(\"res\").innerText = valid ? \"Valid Email ID\" : \"Invalid Email ID\";\n}\n</script>",
+            "files": [
+                {
+                    "name": "index.html",
+                    "language": "html",
+                    "code": "<input type=\"text\" id=\"email\" placeholder=\"Enter email\">\n<button onclick=\"validate()\">Validate</button>\n<p id=\"res\"></p>\n\n<script>\nfunction validate() {\n    let e = document.getElementById(\"email\").value;\n    let valid = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(e);\n    document.getElementById(\"res\").innerText = valid ? \"Valid Email ID\" : \"Invalid Email ID\";\n}\n</script>"
+                }
+            ]
+        },
+        "15": {
+            "title": "Exp 15: Student registration form validation",
+            "notes": "",
+            "filename": "index.html",
+            "language": "html",
+            "code": "<form onsubmit=\"return validate()\">\n    Name: <input id=\"n\"><br>\n    Email: <input id=\"e\"><br>\n    Password: <input type=\"password\" id=\"p\"><br>\n    <input type=\"submit\" value=\"Register\">\n</form>\n\n<script>\nfunction validate() {\n    if (n.value == \"\") { alert(\"Name is required\"); return false; }\n    if (!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(e.value)) { alert(\"Enter valid email\"); return false; }\n    if (p.value.length < 6) { alert(\"Password must be 6+ chars\"); return false; }\n    alert(\"Registration successful!\");\n    return true;\n}\n</script>",
+            "files": [
+                {
+                    "name": "index.html",
+                    "language": "html",
+                    "code": "<form onsubmit=\"return validate()\">\n    Name: <input id=\"n\"><br>\n    Email: <input id=\"e\"><br>\n    Password: <input type=\"password\" id=\"p\"><br>\n    <input type=\"submit\" value=\"Register\">\n</form>\n\n<script>\nfunction validate() {\n    if (n.value == \"\") { alert(\"Name is required\"); return false; }\n    if (!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(e.value)) { alert(\"Enter valid email\"); return false; }\n    if (p.value.length < 6) { alert(\"Password must be 6+ chars\"); return false; }\n    alert(\"Registration successful!\");\n    return true;\n}\n</script>"
+                }
+            ]
+        },
+        "16": {
+            "title": "Exp 16: DOM: change background color every 5 seconds",
+            "notes": "",
+            "filename": "index.html",
+            "language": "html",
+            "code": "<!DOCTYPE html>\n<html>\n<body>\n    <h2>Background changes every 5 seconds</h2>\n\n    <script>\n        let colors = [\"lightblue\", \"lightgreen\", \"lightpink\", \"lightyellow\", \"lavender\"];\n        let i = 0;\n\n        function changeColor() {\n            document.body.style.backgroundColor = colors[i];\n            i = (i + 1) % colors.length;\n        }\n\n        changeColor();\n        setInterval(changeColor, 5000);\n    </script>\n</body>\n</html>",
+            "files": [
+                {
+                    "name": "index.html",
+                    "language": "html",
+                    "code": "<!DOCTYPE html>\n<html>\n<body>\n    <h2>Background changes every 5 seconds</h2>\n\n    <script>\n        let colors = [\"lightblue\", \"lightgreen\", \"lightpink\", \"lightyellow\", \"lavender\"];\n        let i = 0;\n\n        function changeColor() {\n            document.body.style.backgroundColor = colors[i];\n            i = (i + 1) % colors.length;\n        }\n\n        changeColor();\n        setInterval(changeColor, 5000);\n    </script>\n</body>\n</html>"
+                }
+            ]
+        }
     }
-  },
-  "coa": {
-    "1": {
-      "title": "Exp 01: Decimal and Hexadecimal to Binary Conversion",
-      "notes": "Aim: Convert a decimal number and a hexadecimal number into binary. | Category: Number System Conversion",
-      "code": "\n#include <stdio.h>\n#include <ctype.h>\n\nvoid decimalToBinary(int n)\n{\n    int bits[32], idx = 0, i;\n\n    if (n == 0)\n    {\n        printf(\"0\\n\");\n        return;\n    }\n\n    while (n > 0)\n    {\n        bits[idx] = n % 2;\n        idx++;\n        n /= 2;\n    }\n\n    for (i = idx - 1; i >= 0; i--)\n    {\n        printf(\"%d\", bits[i]);\n    }\n\n    printf(\"\\n\");\n}\n\nvoid hexToBinary(char hex[])\n{\n    int i, b, val;\n    char c;\n\n    for (i = 0; hex[i] != '\\0'; i++)\n    {\n        c = toupper(hex[i]);\n        val = (c >= '0' && c <= '9') ? (c - '0') : (c - 'A' + 10);\n\n        for (b = 3; b >= 0; b--)\n        {\n            printf(\"%d\", (val >> b) & 1);\n        }\n    }\n\n    printf(\"\\n\");\n}\n\nint main()\n{\n    int dec;\n    char hex[20];\n\n    printf(\"Enter a Decimal number: \");\n    scanf(\"%d\", &dec);\n\n    printf(\"Binary of Decimal %d = \", dec);\n    decimalToBinary(dec);\n\n    printf(\"\\nEnter a Hexadecimal number: \");\n    scanf(\"%s\", hex);\n\n    printf(\"Binary of Hexadecimal %s = \", hex);\n    hexToBinary(hex);\n\n    return 0;\n}\n"
-    },
-    "2": {
-      "title": "Exp 02: 2's Complement of a Binary Number",
-      "notes": "Aim: Find the 2's complement of a binary number. | Category: Signed Binary Representation",
-      "code": "\n#include <stdio.h>\n#include <string.h>\n\nint main()\n{\n    char binary[100];\n    int i, len;\n\n    printf(\"Enter a binary number: \");\n    scanf(\"%s\", binary);\n\n    len = strlen(binary);\n\n    for (i = len - 1; i >= 0; i--)\n    {\n        if (binary[i] == '1')\n        {\n            break;\n        }\n    }\n\n    if (i == -1)\n    {\n        printf(\"2's Complement: 1%s\\n\", binary);\n    }\n    else\n    {\n        for (i = i - 1; i >= 0; i--)\n        {\n            if (binary[i] == '1')\n            {\n                binary[i] = '0';\n            }\n            else\n            {\n                binary[i] = '1';\n            }\n        }\n\n        printf(\"2's Complement: %s\\n\", binary);\n    }\n\n    return 0;\n}\n"
-    },
-    "3": {
-      "title": "Exp 03: Basic Arithmetic Operations on 8-Bit Data",
-      "notes": "Aim: Perform addition, subtraction, multiplication, and division on 8-bit data. | Category: ALU Arithmetic Operations",
-      "code": "\n.MODEL SMALL\n.DATA\n    NUM1 DB 14H\n    NUM2 DB 06H\n    SUM  DB ?\n    DIFF DB ?\n    PROD DW ?\n    QUOT DB ?\n    REM  DB ?\n.CODE\nMAIN PROC\n    MOV AX, @DATA\n    MOV DS, AX\n    MOV AL, NUM1\n    ADD AL, NUM2\n    MOV SUM, AL\n    MOV AL, NUM1\n    SUB AL, NUM2\n    MOV DIFF, AL\n    MOV AL, NUM1\n    MOV BL, NUM2\n    MUL BL\n    MOV PROD, AX\n    MOV AX, 0000H\n    MOV AL, NUM1\n    DIV BL\n    MOV QUOT, AL\n    MOV REM, AH\n    MOV AH, 4CH\n    INT 21H\nMAIN ENDP\nEND MAIN\n",
-      "code_type": "asm"
-    },
-    "4": {
-      "title": "Exp 04: Basic Logical Operations (AND, OR, XOR, NOT) on 8-Bit Data",
-      "notes": "Aim: Perform AND, OR, XOR, and NOT on 8-bit data. | Category: ALU Logical Operations",
-      "code": "\n.MODEL SMALL\n.DATA\n    OP1     DB 92H\n    OP2     DB 6AH\n    RES_AND DB ?\n    RES_OR  DB ?\n    RES_XOR DB ?\n    RES_NOT DB ?\n.CODE\nMAIN PROC\n    MOV AX, @DATA\n    MOV DS, AX\n    MOV AL, OP1\n    AND AL, OP2\n    MOV RES_AND, AL\n    MOV AL, OP1\n    OR  AL, OP2\n    MOV RES_OR, AL\n    MOV AL, OP1\n    XOR AL, OP2\n    MOV RES_XOR, AL\n    MOV AL, OP1\n    NOT AL\n    MOV RES_NOT, AL\n    MOV AH, 4CH\n    INT 21H\nMAIN ENDP\nEND MAIN\n",
-      "code_type": "asm"
-    },
-    "5": {
-      "title": "Exp 05: Signed 8-Bit Multiplication using Booth's Algorithm",
-      "notes": "Aim: Multiply two signed 8-bit numbers using Booth's Algorithm. | Category: Signed Multiplication Algorithm",
-      "code": "\n#include <stdio.h>\n\nint main()\n{\n    int M, Q, A = 0, Q_1 = 0, n = 8;\n    int step, Q0, signA, product;\n\n    printf(\"Enter signed Multiplicand (M): \");\n    scanf(\"%d\", &M);\n\n    printf(\"Enter signed Multiplier (Q): \");\n    scanf(\"%d\", &Q);\n\n    M &= 0xFF;\n    Q &= 0xFF;\n\n    for (step = 1; step <= n; step++)\n    {\n        Q0 = Q & 1;\n\n        if (Q0 == 0 && Q_1 == 1)\n        {\n            A = (A + M) & 0xFF;\n        }\n        else if (Q0 == 1 && Q_1 == 0)\n        {\n            A = (A - M) & 0xFF;\n        }\n\n        signA = A & 0x80;\n        Q_1 = Q & 1;\n        Q = (Q >> 1) | ((A & 1) << 7);\n        A = (A >> 1) | signA;\n    }\n\n    product = (A << 8) | Q;\n\n    if (product & 0x8000)\n    {\n        product -= 0x10000;\n    }\n\n    printf(\"Final 16-bit Register [A:Q] = 0x%04X\\n\", (A << 8) | Q);\n    printf(\"Signed Product = %d\\n\", product);\n\n    return 0;\n}\n"
-    },
-    "6": {
-      "title": "Exp 06: Unsigned 8-Bit Division using Restoring Division Algorithm",
-      "notes": "Aim: Divide two unsigned 8-bit numbers using the Restoring Division Algorithm. | Category: Unsigned Division Algorithm",
-      "code": "\n#include <stdio.h>\n\nint main()\n{\n    int Q, M;\n    int A = 0;\n    int n = 8;\n    int i;\n\n    printf(\"Enter Dividend (Q): \");\n    scanf(\"%d\", &Q);\n\n    printf(\"Enter Divisor (M): \");\n    scanf(\"%d\", &M);\n\n    if (M == 0)\n    {\n        printf(\"Error: Division by zero is not allowed.\\n\");\n        return 0;\n    }\n\n    for (i = 0; i < n; i++)\n    {\n        A = (A << 1) | ((Q >> (n - 1)) & 1);\n        Q = (Q << 1) & 0xFF;\n\n        A = A - M;\n\n        if (A < 0)\n        {\n            A = A + M;\n        }\n        else\n        {\n            Q = Q | 1;\n        }\n    }\n\n    printf(\"\\nQuotient = %d\\n\", Q);\n    printf(\"Remainder = %d\\n\", A);\n\n    return 0;\n}\n"
-    },
-    "7": {
-      "title": "Exp 07: Direct Mapping Technique of Cache Memory",
-      "notes": "Aim: Simulate the Direct Mapping Technique of cache memory. | Category: Cache Memory Organization",
-      "code": "\n#include <stdio.h>\n\nint main()\n{\n    int numLines, numReq, cache[32];\n    int hits = 0, misses = 0;\n    int i, block, line;\n\n    printf(\"Enter number of Cache Lines: \");\n    scanf(\"%d\", &numLines);\n\n    for (i = 0; i < numLines; i++)\n    {\n        cache[i] = -1;\n    }\n\n    printf(\"Enter number of Memory Block requests: \");\n    scanf(\"%d\", &numReq);\n\n    printf(\"Enter %d Memory Block numbers: \", numReq);\n    for (i = 0; i < numReq; i++)\n    {\n        scanf(\"%d\", &block);\n        line = block % numLines;\n\n        if (cache[line] == block)\n        {\n            hits++;\n            printf(\"Access Block %d -> Line %d : CACHE HIT\\n\", block, line);\n        }\n        else\n        {\n            misses++;\n            cache[line] = block;\n            printf(\"Access Block %d -> Line %d : CACHE MISS (Loaded Block %d)\\n\", block, line, block);\n        }\n    }\n\n    printf(\"\\nFinal Cache Table:\\n\");\n    for (i = 0; i < numLines; i++)\n    {\n        if (cache[i] != -1)\n        {\n            printf(\"Line %d : Block %d\\n\", i, cache[i]);\n        }\n        else\n        {\n            printf(\"Line %d : Empty\\n\", i);\n        }\n    }\n\n    printf(\"Total Hits = %d | Total Misses = %d\\n\", hits, misses);\n\n    return 0;\n}\n"
-    },
-    "8": {
-      "title": "Exp 08: Sorting an Array of 8-Bit Numbers in Ascending Order",
-      "notes": "Aim: Sort an array of 8-bit numbers in ascending order using Bubble Sort. | Category: Data Manipulation / Sorting",
-      "code": "\n.MODEL SMALL\n.DATA\n    ARRAY DB 45H, 12H, 78H, 34H\n    COUNT EQU 4\n.CODE\nMAIN PROC\n    MOV AX, @DATA\n    MOV DS, AX\n    MOV CX, COUNT - 1\nOUTER:\n    MOV DX, CX\n    LEA SI, ARRAY\nINNER:\n    MOV AL, [SI]\n    CMP AL, [SI + 1]\n    JBE NO_SWAP\n    XCHG AL, [SI + 1]\n    MOV [SI], AL\nNO_SWAP:\n    INC SI\n    DEC DX\n    JNZ INNER\n    LOOP OUTER\n    MOV AH, 4CH\n    INT 21H\nMAIN ENDP\nEND MAIN\n",
-      "code_type": "asm"
-    },
-    "9": {
-      "title": "Exp 09: Block Transfer using Index Registers (SI and DI)",
-      "notes": "Aim: Transfer a block of data using the SI and DI index registers. | Category: Memory Block Transfer",
-      "code": "\n.MODEL SMALL\n.DATA\n    SRC_BLK  DB 10H, 20H, 30H, 40H, 50H\n    DEST_BLK DB 5 DUP(0)\n    COUNT    EQU 5\n.CODE\nMAIN PROC\n    MOV AX, @DATA\n    MOV DS, AX\n    MOV ES, AX\n    LEA SI, SRC_BLK\n    LEA DI, DEST_BLK\n    MOV CX, COUNT\n    CLD\n    REP MOVSB\n    MOV AH, 4CH\n    INT 21H\nMAIN ENDP\nEND MAIN\n",
-      "code_type": "asm"
-    },
-    "10": {
-      "title": "Exp 10: Basic File Operations in C (Create, Write, Append, Read)",
-      "notes": "Aim: Create, write, append, and read a file using user input. | Category: Secondary Storage / File I/O",
-      "code": "\n#include <stdio.h>\n\nint main()\n{\n    FILE *fp;\n    char line1[100], line2[100], buffer[100];\n\n    printf(\"Enter initial line to write to file: \");\n    fgets(line1, sizeof(line1), stdin);\n\n    fp = fopen(\"coa_record.txt\", \"w\");\n    fprintf(fp, \"%s\", line1);\n    fclose(fp);\n\n    printf(\"Enter second line to append to file: \");\n    fgets(line2, sizeof(line2), stdin);\n\n    fp = fopen(\"coa_record.txt\", \"a\");\n    fprintf(fp, \"%s\", line2);\n    fclose(fp);\n\n    printf(\"\\n--- Contents Read from coa_record.txt ---\\n\");\n    fp = fopen(\"coa_record.txt\", \"r\");\n    while (fgets(buffer, sizeof(buffer), fp) != NULL)\n    {\n        printf(\"%s\", buffer);\n    }\n    fclose(fp);\n\n    return 0;\n}\n"
-    }
-  },
-  "fsjp": {
-    "1": {
-      "title": "Exp 01: Classes and Objects - Student Management",
-      "notes": "",
-      "filename": "Exp1_43.java",
-      "language": "java",
-      "code": "\nimport java.util.Scanner;\n\nclass Student {\n    String name;\n    int rollNumber;\n    float marks;\n\n    public void inputDetails(Scanner scanner) {\n        System.out.print(\"Enter Name: \");\n        this.name = scanner.nextLine();\n\n        System.out.print(\"Enter Roll Number: \");\n        this.rollNumber = scanner.nextInt();\n\n        System.out.print(\"Enter Marks: \");\n        this.marks = scanner.nextFloat();\n        scanner.nextLine();\n    }\n\n    public void displayDetails() {\n        System.out.println(\"Name: \" + this.name);\n        System.out.println(\"Roll Number: \" + this.rollNumber);\n        System.out.println(\"Marks: \" + this.marks);\n    }\n}\n\npublic class Exp1_43 {\n    public static void main(String[] args) {\n        Scanner scanner = new Scanner(System.in);\n\n        System.out.println(\"Enter Details for Student 1:\");\n        Student student1 = new Student();\n        student1.inputDetails(scanner);\n\n        System.out.println(\"Enter Details for Student 2:\");\n        Student student2 = new Student();\n        student2.inputDetails(scanner);\n\n        System.out.println(\"Student Information:\");\n        student1.displayDetails();\n        student2.displayDetails();\n\n        scanner.close();\n    }\n}\n"
-    },
-    "2": {
-      "title": "Exp 02: Method and Constructor Overloading",
-      "notes": "",
-      "filename": "Calculator.java",
-      "language": "java",
-      "code": "\nclass Calculator {\n    Calculator() {\n        System.out.println(\"Welcome to Calculator\");\n    }\n\n    Calculator(int a, int b) {\n        System.out.println(\"Sum of \" + a + \" and \" + b + \" is: \" + (a + b));\n    }\n\n    void add() {\n        System.out.println(\"Sum of default numbers 5 and 10 is: \" + (5 + 10));\n    }\n\n    void add(int a, int b) {\n        System.out.println(\"Sum of \" + a + \" and \" + b + \" is: \" + (a + b));\n    }\n\n    void add(float a, float b, float c) {\n        System.out.println(\"Sum of \" + a + \", \" + b + \" and \" + c + \" is: \" + (a + b + c));\n    }\n\n    public static void main(String[] args) {\n        Calculator c1 = new Calculator();\n        Calculator c2 = new Calculator(15, 25);\n        c1.add();\n        c1.add(20, 30);\n        c1.add(12.5f, 15.5f, 10.0f);\n    }\n}\n"
-    },
-    "3": {
-      "title": "Exp 03: Types of Inheritance and Exception Handling",
-      "notes": "",
-      "filename": "InheritanceExceptionDemo.java",
-      "language": "java",
-      "code": "\nimport java.util.Scanner;\n\nclass Person {\n    String name;\n    int age;\n\n    Person(String name, int age) {\n        this.name = name;\n        this.age = age;\n    }\n}\n\nclass Student extends Person {\n    String course;\n\n    Student(String name, int age, String course) {\n        super(name, age);\n        this.course = course;\n    }\n}\n\nclass GradStudent extends Student {\n    int gradYear;\n\n    GradStudent(String name, int age, String course, int gradYear) {\n        super(name, age, course);\n        this.gradYear = gradYear;\n    }\n\n    void show() {\n        System.out.println(\"GradStudent: \" + name + \", Age: \" + age +\n                \", Course: \" + course + \", Year: \" + gradYear);\n    }\n}\n\nclass Teacher extends Person {\n    String subject;\n\n    Teacher(String name, int age, String subject) {\n        super(name, age);\n        this.subject = subject;\n    }\n\n    void show() {\n        System.out.println(\"Teacher: \" + name + \", Age: \" + age + \", Subject: \" +\n                subject);\n    }\n}\n\npublic class InheritanceExceptionDemo {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        try {\n            System.out.print(\"Enter GradStudent (Name Age Course Year): \");\n            GradStudent g = new GradStudent(sc.next(), sc.nextInt(), sc.next(), sc.nextInt());\n\n            System.out.print(\"Enter Teacher (Name Age Subject): \");\n            Teacher t = new Teacher(sc.next(), sc.nextInt(), sc.next());\n\n            System.out.print(\"Enter Total Marks and Total Subjects to compute Average: \");\n            int total = sc.nextInt(), subjects = sc.nextInt();\n            int avg = total / subjects;\n\n            System.out.println(\"\\n--- Output ---\");\n            g.show();\n            t.show();\n            System.out.println(\"Calculated Average Marks = \" + avg);\n        } catch (ArithmeticException e) {\n            System.out.println(\"Exception Caught: Cannot divide marks by zero subjects!\");\n        } finally {\n            System.out.println(\"Finally Block: Execution completed safely.\");\n            sc.close();\n        }\n    }\n}\n"
-    },
-    "4": {
-      "title": "Exp 04: Implementing Generic Servlet and HTTP Servlet",
-      "notes": "Tomcat 11 (Servlet 6.1) and Tomcat 10.1 (Servlet 6.0) use jakarta.servlet. Tomcat 9 and older use javax.servlet.",
-      "files": [
-        {
-          "name": "index.html",
-          "language": "html",
-          "code": "\n<html>\n<body>\n    <h2>Experiment 4: Generic and HTTP Servlet</h2>\n    <p><a href=\"welcome\">Generic Servlet</a></p>\n    <p><a href=\"welcomeHttp\">HTTP Servlet</a></p>\n</body>\n</html>\n"
-        },
-        {
-          "name": "GenericServletDemo.java",
-          "language": "java",
-          "code": "\npackage servletapp;\n\nimport java.io.*;\nimport jakarta.servlet.*;\nimport jakarta.servlet.annotation.WebServlet;\n\n@WebServlet(\"/welcome\")\npublic class GenericServletDemo extends GenericServlet {\n    public void service(ServletRequest req, ServletResponse res) throws IOException {\n        res.setContentType(\"text/html\");\n        PrintWriter out = res.getWriter();\n        out.println(\"<h1>Welcome, Varun!</h1>\");\n        out.println(\"<p>You are using a Generic Servlet.</p>\");\n        out.println(\"<a href='index.html'>Back</a>\");\n    }\n}\n"
-        },
-        {
-          "name": "HttpServletDemo.java",
-          "language": "java",
-          "code": "\npackage servletapp;\n\nimport java.io.*;\nimport jakarta.servlet.http.*;\nimport jakarta.servlet.annotation.WebServlet;\n\n@WebServlet(\"/welcomeHttp\")\npublic class HttpServletDemo extends HttpServlet {\n    public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {\n        res.setContentType(\"text/html\");\n        PrintWriter out = res.getWriter();\n        out.println(\"<h1>Welcome, Varun!</h1>\");\n        out.println(\"<p>You are using an HTTP Servlet (doGet method).</p>\");\n        out.println(\"<a href='index.html'>Back</a>\");\n    }\n}\n"
-        }
-      ]
-    },
-    "5": {
-      "title": "Exp 05: JSP Login Page with JDBC Validation and Servlet",
-      "notes": "Tomcat 11 (jakarta.servlet). Needs the MySQL Connector/J jar in WEB-INF/lib and a running MySQL server.",
-      "files": [
-        {
-          "name": "userdb.sql",
-          "language": "sql",
-          "code": "\nCREATE DATABASE userdb;\nUSE userdb;\n\nCREATE TABLE users (\n    username VARCHAR(50),\n    password VARCHAR(50),\n    full_name VARCHAR(100)\n);\n\nINSERT INTO users VALUES ('varun', 'admin123', 'Varun Ganesh Poojary');\n"
-        },
-        {
-          "name": "login.jsp",
-          "language": "jsp",
-          "code": "\n<html>\n<body>\n    <h2>User Login</h2>\n    <form action=\"LoginServlet\" method=\"post\">\n        Username: <input type=\"text\" name=\"username\"><br><br>\n        Password: <input type=\"password\" name=\"password\"><br><br>\n        <input type=\"submit\" value=\"Login\">\n    </form>\n</body>\n</html>\n"
-        },
-        {
-          "name": "LoginServlet.java",
-          "language": "java",
-          "code": "\npackage com.example;\n\nimport java.io.*;\nimport java.sql.*;\nimport jakarta.servlet.*;\nimport jakarta.servlet.http.*;\nimport jakarta.servlet.annotation.WebServlet;\n\n@WebServlet(\"/LoginServlet\")\npublic class LoginServlet extends HttpServlet {\n    public void doPost(HttpServletRequest req, HttpServletResponse res)\n            throws ServletException, IOException {\n\n        String user = req.getParameter(\"username\");\n        String pass = req.getParameter(\"password\");\n\n        try {\n            Class.forName(\"com.mysql.cj.jdbc.Driver\");\n            Connection con = DriverManager.getConnection(\n                \"jdbc:mysql://localhost:3306/userdb\", \"root\", \"your_password\");\n\n            PreparedStatement ps = con.prepareStatement(\n                \"SELECT full_name FROM users WHERE username=? AND password=?\");\n            ps.setString(1, user);\n            ps.setString(2, pass);\n            ResultSet rs = ps.executeQuery();\n\n            if (rs.next()) {\n                req.setAttribute(\"name\", rs.getString(\"full_name\"));\n                req.getRequestDispatcher(\"welcome.jsp\").forward(req, res);\n            } else {\n                req.setAttribute(\"msg\", \"Invalid username or password.\");\n                req.getRequestDispatcher(\"error.jsp\").forward(req, res);\n            }\n            con.close();\n\n        } catch (Exception e) {\n            req.setAttribute(\"msg\", \"Error: \" + e.getMessage());\n            req.getRequestDispatcher(\"error.jsp\").forward(req, res);\n        }\n    }\n}\n"
-        },
-        {
-          "name": "welcome.jsp",
-          "language": "jsp",
-          "code": "\n<html>\n<body>\n    <h2>Welcome, <%= request.getAttribute(\"name\") %>!</h2>\n    <p>Login verified through JDBC and Servlet.</p>\n    <a href=\"login.jsp\">Log Out</a>\n</body>\n</html>\n"
-        },
-        {
-          "name": "error.jsp",
-          "language": "jsp",
-          "code": "\n<html>\n<body>\n    <h2>Login Failed</h2>\n    <p><%= request.getAttribute(\"msg\") %></p>\n    <a href=\"login.jsp\">Back to Login</a>\n</body>\n</html>\n"
-        }
-      ]
-    },
-    "7": {
-      "title": "Exp 07: Client-Side Email Address Validation using JavaScript",
-      "notes": "Plain HTML + JavaScript. Open index.html directly in a browser; no server needed.",
-      "files": [
-        {
-          "name": "index.html",
-          "language": "html",
-          "code": "\n<html>\n<head>\n    <title>Email Validation</title>\n</head>\n<body>\n    <h2>Email Validation</h2>\n    <form onsubmit=\"return validateEmail()\">\n        Email: <input type=\"text\" id=\"email\">\n        <input type=\"submit\" value=\"Submit\">\n    </form>\n    <p id=\"msg\"></p>\n    <script src=\"script.js\"></script>\n</body>\n</html>\n"
-        },
-        {
-          "name": "script.js",
-          "language": "js",
-          "code": "\nfunction validateEmail() {\n    var box = document.getElementById(\"email\");\n    var msg = document.getElementById(\"msg\");\n    var email = box.value;\n\n    if (email == \"\") {\n        alert(\"Email field is empty. Please enter your email.\");\n        box.focus();\n        return false;\n    }\n\n    if (email.indexOf(\"@\") == -1 || email.indexOf(\".\") == -1) {\n        alert(\"Invalid email: '@' or '.' is missing. Please re-enter.\");\n        box.focus();\n        return false;\n    }\n\n    var pattern = /^[^@]+@[^@]+\\.[a-z]+$/i;\n    if (!pattern.test(email)) {\n        msg.innerHTML = \"Invalid Email Address. Please enter a valid email.\";\n        msg.style.color = \"red\";\n        box.focus();\n        return false;\n    }\n\n    msg.innerHTML = \"Valid Email Address.\";\n    msg.style.color = \"green\";\n    return false;\n}\n"
-        }
-      ]
-    },
-    "8": {
-      "title": "Exp 08: DOM Program to Change Webpage Background Color Every 5 Seconds",
-      "notes": "Plain HTML + JavaScript. Open index.html directly in a browser; no server needed.",
-      "filename": "index.html",
-      "language": "html",
-      "code": "\n<html>\n<head>\n    <title>Background Color Changer</title>\n</head>\n<body>\n    <h1>Document Object Model (DOM)</h1>\n    <p>Background color changes automatically every 5 seconds.</p>\n\n    <script>\n        var colors = [\"red\", \"blue\", \"green\", \"orange\", \"purple\", \"teal\", \"brown\"];\n        var index = 0;\n\n        function changeBackgroundColor() {\n            document.body.style.backgroundColor = colors[index];\n            index = (index + 1) % colors.length;\n        }\n\n        changeBackgroundColor();\n        setInterval(changeBackgroundColor, 5000);\n    </script>\n</body>\n</html>\n"
-    },
-    "9": {
-      "title": "Exp 09: Single Page Website in React using Hooks, Router, Props, and State",
-      "notes": "Vite + React project. Put these files into a Vite React app and run npm install react-router-dom before npm run dev.",
-      "files": [
-        {
-          "name": "App.jsx",
-          "language": "jsx",
-          "code": "\nimport { useState, useEffect } from \"react\";\nimport { BrowserRouter, Routes, Route, Link } from \"react-router-dom\";\n\nfunction Home() {\n  const [count, setCount] = useState(0);\n\n  useEffect(() => {\n    document.title = \"Count: \" + count;\n  }, [count]);\n\n  return (\n    <div>\n      <h2>Home Page</h2>\n      <p>React Single Page Website.</p>\n      <p>Count: {count}</p>\n      <button onClick={() => setCount(count + 1)}>Increase</button>\n    </div>\n  );\n}\n\nfunction About({ name }) {\n  return (\n    <div>\n      <h2>About Page</h2>\n      <p>Student Name: {name}</p>\n    </div>\n  );\n}\n\nfunction Contact() {\n  return (\n    <div>\n      <h2>Contact Page</h2>\n      <p>Email: student@example.com</p>\n    </div>\n  );\n}\n\nfunction App() {\n  return (\n    <BrowserRouter>\n      <h1>React Single Page Website</h1>\n      <nav>\n        <Link to=\"/\">Home</Link> | <Link to=\"/about\">About</Link> | <Link to=\"/contact\">Contact</Link>\n      </nav>\n\n      <Routes>\n        <Route path=\"/\" element={<Home />} />\n        <Route path=\"/about\" element={<About name=\"Varun Poojary\" />} />\n        <Route path=\"/contact\" element={<Contact />} />\n      </Routes>\n    </BrowserRouter>\n  );\n}\n\nexport default App;\n"
-        },
-        {
-          "name": "main.jsx",
-          "language": "jsx",
-          "code": "\nimport { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\n\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n"
-        },
-        {
-          "name": "index.html",
-          "language": "html",
-          "code": "\n<html>\n<head>\n  <title>react-website</title>\n</head>\n<body>\n  <div id=\"root\"></div>\n  <script type=\"module\" src=\"/src/main.jsx\"></script>\n</body>\n</html>\n"
-        }
-      ]
-    },
-    "10": {
-      "title": "Exp 10: Monolithic Application using Spring Boot (REST API)",
-      "notes": "Spring Boot + Spring Data JPA + H2. Four layers: model, repository, service, controller.",
-      "files": [
-        {
-          "name": "Employee.java",
-          "language": "java",
-          "code": "\npackage com.example.demo.model;\n\nimport jakarta.persistence.*;\n\n@Entity\npublic class Employee {\n    @Id\n    @GeneratedValue\n    private Long id;\n    private String name;\n    private String department;\n    private double salary;\n\n    public Employee() {}\n\n    public Employee(String name, String department, double salary) {\n        this.name = name;\n        this.department = department;\n        this.salary = salary;\n    }\n\n    public Long getId() { return id; }\n    public String getName() { return name; }\n    public void setName(String name) { this.name = name; }\n    public String getDepartment() { return department; }\n    public void setDepartment(String department) { this.department = department; }\n    public double getSalary() { return salary; }\n    public void setSalary(double salary) { this.salary = salary; }\n}\n"
-        },
-        {
-          "name": "EmployeeRepository.java",
-          "language": "java",
-          "code": "\npackage com.example.demo.repository;\n\nimport com.example.demo.model.Employee;\nimport org.springframework.data.jpa.repository.JpaRepository;\n\npublic interface EmployeeRepository extends JpaRepository<Employee, Long> {\n}\n"
-        },
-        {
-          "name": "EmployeeService.java",
-          "language": "java",
-          "code": "\npackage com.example.demo.service;\n\nimport com.example.demo.model.Employee;\nimport com.example.demo.repository.EmployeeRepository;\nimport java.util.List;\nimport org.springframework.stereotype.Service;\n\n@Service\npublic class EmployeeService {\n    private final EmployeeRepository repository;\n\n    public EmployeeService(EmployeeRepository repository) {\n        this.repository = repository;\n    }\n\n    public List<Employee> getAllEmployees() {\n        return repository.findAll();\n    }\n\n    public Employee addEmployee(Employee employee) {\n        return repository.save(employee);\n    }\n}\n"
-        },
-        {
-          "name": "EmployeeController.java",
-          "language": "java",
-          "code": "\npackage com.example.demo.controller;\n\nimport com.example.demo.model.Employee;\nimport com.example.demo.service.EmployeeService;\nimport java.util.List;\nimport org.springframework.web.bind.annotation.*;\n\n@RestController\n@RequestMapping(\"/employees\")\npublic class EmployeeController {\n    private final EmployeeService service;\n\n    public EmployeeController(EmployeeService service) {\n        this.service = service;\n    }\n\n    @GetMapping\n    public List<Employee> getEmployees() {\n        return service.getAllEmployees();\n    }\n\n    @PostMapping\n    public Employee addEmployee(@RequestBody Employee employee) {\n        return service.addEmployee(employee);\n    }\n}\n"
-        },
-        {
-          "name": "DemoApplication.java",
-          "language": "java",
-          "code": "\npackage com.example.demo;\n\nimport com.example.demo.model.Employee;\nimport com.example.demo.repository.EmployeeRepository;\nimport org.springframework.boot.*;\nimport org.springframework.boot.autoconfigure.SpringBootApplication;\nimport org.springframework.context.annotation.Bean;\n\n@SpringBootApplication\npublic class DemoApplication {\n    public static void main(String[] args) {\n        SpringApplication.run(DemoApplication.class, args);\n    }\n\n    @Bean\n    CommandLineRunner init(EmployeeRepository repo) {\n        return args -> {\n            repo.save(new Employee(\"Varun Poojary\", \"AI&DS\", 75000));\n            repo.save(new Employee(\"Vihar\", \"CS\", 65000));\n        };\n    }\n}\n"
-        }
-      ]
-    }
-  }
 }
