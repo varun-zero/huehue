@@ -5,12 +5,29 @@ const path = require('path');
 const { spawnSync } = require('child_process');
 
 // Load data
-const dataPath = path.join(__dirname, '..', 'data.json');
+const candidates = [
+  path.join(__dirname, '..', 'data.json'),
+  path.join(__dirname, 'data.json'),
+  path.join(process.cwd(), 'data.json'),
+  path.join(process.cwd(), 'helper', 'data.json'),
+  path.join(process.env.USERPROFILE || process.env.HOME || '', 'helper', 'data.json'),
+  path.join(process.env.USERPROFILE || process.env.HOME || '', 'data.json')
+];
+
 let SUBJECTS = {};
-try {
-  SUBJECTS = JSON.parse(fs.readFileSync(dataPath, 'utf-8'));
-} catch (err) {
-  console.error(`[error] Could not load data from ${dataPath}: ${err.message}`);
+let loaded = false;
+for (const c of candidates) {
+  if (fs.existsSync(c)) {
+    try {
+      SUBJECTS = JSON.parse(fs.readFileSync(c, 'utf-8'));
+      loaded = true;
+      break;
+    } catch (e) {}
+  }
+}
+
+if (!loaded) {
+  console.error(`[error] Could not load data.json from any candidate location.`);
   process.exit(1);
 }
 

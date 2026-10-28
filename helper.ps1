@@ -8,10 +8,25 @@ param (
 )
 
 $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Definition
-$dataPath = Join-Path $scriptDir "data.json"
+$candidates = @(
+    (Join-Path $scriptDir "data.json"),
+    (Join-Path $scriptDir "helper\data.json"),
+    (Join-Path $PWD "data.json"),
+    (Join-Path $PWD "helper\data.json"),
+    (Join-Path $env:USERPROFILE "helper\data.json"),
+    (Join-Path $env:USERPROFILE "data.json")
+)
 
-if (-not (Test-Path $dataPath)) {
-    Write-Error "data.json not found in $scriptDir"
+$dataPath = $null
+foreach ($c in $candidates) {
+    if (Test-Path $c) {
+        $dataPath = $c
+        break
+    }
+}
+
+if (-not $dataPath) {
+    Write-Error "data.json not found in $scriptDir or candidate paths"
     exit 1
 }
 
