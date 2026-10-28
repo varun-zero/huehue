@@ -203,6 +203,58 @@
       "filename": "index.html",
       "language": "html",
       "code": "\n<html>\n<head>\n    <title>Background Color Changer</title>\n</head>\n<body>\n    <h1>Document Object Model (DOM)</h1>\n    <p>Background color changes automatically every 5 seconds.</p>\n\n    <script>\n        var colors = [\"red\", \"blue\", \"green\", \"orange\", \"purple\", \"teal\", \"brown\"];\n        var index = 0;\n\n        function changeBackgroundColor() {\n            document.body.style.backgroundColor = colors[index];\n            index = (index + 1) % colors.length;\n        }\n\n        changeBackgroundColor();\n        setInterval(changeBackgroundColor, 5000);\n    </script>\n</body>\n</html>\n"
+    },
+    "9": {
+      "title": "Exp 09: Single Page Website in React using Hooks, Router, Props, and State",
+      "notes": "Vite + React project. Put these files into a Vite React app and run npm install react-router-dom before npm run dev.",
+      "files": [
+        {
+          "name": "App.jsx",
+          "language": "jsx",
+          "code": "\nimport { useState, useEffect } from \"react\";\nimport { BrowserRouter, Routes, Route, Link } from \"react-router-dom\";\n\nfunction Home() {\n  const [count, setCount] = useState(0);\n\n  useEffect(() => {\n    document.title = \"Count: \" + count;\n  }, [count]);\n\n  return (\n    <div>\n      <h2>Home Page</h2>\n      <p>React Single Page Website.</p>\n      <p>Count: {count}</p>\n      <button onClick={() => setCount(count + 1)}>Increase</button>\n    </div>\n  );\n}\n\nfunction About({ name }) {\n  return (\n    <div>\n      <h2>About Page</h2>\n      <p>Student Name: {name}</p>\n    </div>\n  );\n}\n\nfunction Contact() {\n  return (\n    <div>\n      <h2>Contact Page</h2>\n      <p>Email: student@example.com</p>\n    </div>\n  );\n}\n\nfunction App() {\n  return (\n    <BrowserRouter>\n      <h1>React Single Page Website</h1>\n      <nav>\n        <Link to=\"/\">Home</Link> | <Link to=\"/about\">About</Link> | <Link to=\"/contact\">Contact</Link>\n      </nav>\n\n      <Routes>\n        <Route path=\"/\" element={<Home />} />\n        <Route path=\"/about\" element={<About name=\"Varun Poojary\" />} />\n        <Route path=\"/contact\" element={<Contact />} />\n      </Routes>\n    </BrowserRouter>\n  );\n}\n\nexport default App;\n"
+        },
+        {
+          "name": "main.jsx",
+          "language": "jsx",
+          "code": "\nimport { createRoot } from \"react-dom/client\";\nimport App from \"./App.jsx\";\n\ncreateRoot(document.getElementById(\"root\")).render(<App />);\n"
+        },
+        {
+          "name": "index.html",
+          "language": "html",
+          "code": "\n<html>\n<head>\n  <title>react-website</title>\n</head>\n<body>\n  <div id=\"root\"></div>\n  <script type=\"module\" src=\"/src/main.jsx\"></script>\n</body>\n</html>\n"
+        }
+      ]
+    },
+    "10": {
+      "title": "Exp 10: Monolithic Application using Spring Boot (REST API)",
+      "notes": "Spring Boot + Spring Data JPA + H2. Four layers: model, repository, service, controller.",
+      "files": [
+        {
+          "name": "Employee.java",
+          "language": "java",
+          "code": "\npackage com.example.demo.model;\n\nimport jakarta.persistence.*;\n\n@Entity\npublic class Employee {\n    @Id\n    @GeneratedValue\n    private Long id;\n    private String name;\n    private String department;\n    private double salary;\n\n    public Employee() {}\n\n    public Employee(String name, String department, double salary) {\n        this.name = name;\n        this.department = department;\n        this.salary = salary;\n    }\n\n    public Long getId() { return id; }\n    public String getName() { return name; }\n    public void setName(String name) { this.name = name; }\n    public String getDepartment() { return department; }\n    public void setDepartment(String department) { this.department = department; }\n    public double getSalary() { return salary; }\n    public void setSalary(double salary) { this.salary = salary; }\n}\n"
+        },
+        {
+          "name": "EmployeeRepository.java",
+          "language": "java",
+          "code": "\npackage com.example.demo.repository;\n\nimport com.example.demo.model.Employee;\nimport org.springframework.data.jpa.repository.JpaRepository;\n\npublic interface EmployeeRepository extends JpaRepository<Employee, Long> {\n}\n"
+        },
+        {
+          "name": "EmployeeService.java",
+          "language": "java",
+          "code": "\npackage com.example.demo.service;\n\nimport com.example.demo.model.Employee;\nimport com.example.demo.repository.EmployeeRepository;\nimport java.util.List;\nimport org.springframework.stereotype.Service;\n\n@Service\npublic class EmployeeService {\n    private final EmployeeRepository repository;\n\n    public EmployeeService(EmployeeRepository repository) {\n        this.repository = repository;\n    }\n\n    public List<Employee> getAllEmployees() {\n        return repository.findAll();\n    }\n\n    public Employee addEmployee(Employee employee) {\n        return repository.save(employee);\n    }\n}\n"
+        },
+        {
+          "name": "EmployeeController.java",
+          "language": "java",
+          "code": "\npackage com.example.demo.controller;\n\nimport com.example.demo.model.Employee;\nimport com.example.demo.service.EmployeeService;\nimport java.util.List;\nimport org.springframework.web.bind.annotation.*;\n\n@RestController\n@RequestMapping(\"/employees\")\npublic class EmployeeController {\n    private final EmployeeService service;\n\n    public EmployeeController(EmployeeService service) {\n        this.service = service;\n    }\n\n    @GetMapping\n    public List<Employee> getEmployees() {\n        return service.getAllEmployees();\n    }\n\n    @PostMapping\n    public Employee addEmployee(@RequestBody Employee employee) {\n        return service.addEmployee(employee);\n    }\n}\n"
+        },
+        {
+          "name": "DemoApplication.java",
+          "language": "java",
+          "code": "\npackage com.example.demo;\n\nimport com.example.demo.model.Employee;\nimport com.example.demo.repository.EmployeeRepository;\nimport org.springframework.boot.*;\nimport org.springframework.boot.autoconfigure.SpringBootApplication;\nimport org.springframework.context.annotation.Bean;\n\n@SpringBootApplication\npublic class DemoApplication {\n    public static void main(String[] args) {\n        SpringApplication.run(DemoApplication.class, args);\n    }\n\n    @Bean\n    CommandLineRunner init(EmployeeRepository repo) {\n        return args -> {\n            repo.save(new Employee(\"Varun Poojary\", \"AI&DS\", 75000));\n            repo.save(new Employee(\"Vihar\", \"CS\", 65000));\n        };\n    }\n}\n"
+        }
+      ]
     }
   }
 }

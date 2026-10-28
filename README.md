@@ -96,14 +96,20 @@ python helper.py copy coa 3 asm
 
 ## FSJP (Full Stack Java Programming)
 
-FSJP experiments are stored under the `fsjp` subject. Experiments 1-3 are
-single-file Core Java programs. Experiment 4 is a 3-file servlet app
-(`index.html`, `GenericServletDemo.java`, `HttpServletDemo.java`), experiment 5
-is a 5-file JSP + JDBC app (`userdb.sql`, `login.jsp`, `LoginServlet.java`,
-`welcome.jsp`, `error.jsp`), experiment 7 is a 2-file HTML + JavaScript email
-validator, experiment 8 is a single `index.html` that recolours the page every
-5 seconds, and later experiments can contain HTML, CSS, JavaScript, JSP,
-servlet, React and Spring Boot files.
+FSJP experiments are stored under the `fsjp` subject and mix single-file and
+multi-file experiments:
+
+| Exp | Files | Stack |
+|---|---|---|
+| 01 | `Exp1_43.java` | Core Java — classes and objects |
+| 02 | `Calculator.java` | Core Java — overloading |
+| 03 | `InheritanceExceptionDemo.java` | Core Java — inheritance, exceptions |
+| 04 | 3 files | Servlet — `jakarta.servlet` |
+| 05 | 5 files | JSP + Servlet + JDBC |
+| 07 | 2 files | HTML + JavaScript validation |
+| 08 | `index.html` | JavaScript DOM + `setInterval` |
+| 09 | 3 files | React — hooks, props, router |
+| 10 | 5 files | Spring Boot REST API |
 
 ```bash
 # List FSJP experiments:
@@ -242,6 +248,57 @@ python helper.py write fsjp 8
 Open it in a browser. The page turns red on load, then cycles
 blue, green, orange, purple, teal, brown every 5 seconds via `setInterval`,
 and wraps back to red.
+
+### Experiment 9 (React SPA)
+
+Experiment 9 is a Vite + React project. Create the project first, then drop
+the three files in:
+
+```bash
+npm create vite@latest my-app -- --template react
+cd my-app
+python helper.py write fsjp 9
+```
+
+`write` puts the files in `fsjp_exp_9/`. Move them into the project:
+
+```
+fsjp_exp_9\index.html   -> index.html
+fsjp_exp_9\App.jsx      -> src\App.jsx
+fsjp_exp_9\main.jsx     -> src\main.jsx
+```
+
+```bash
+npm install
+npm install react-router-dom
+npm run dev
+```
+
+### Experiment 10 (Spring Boot)
+
+Experiment 10 is a Spring Boot project with four layers (model, repository,
+service, controller):
+
+```bash
+python helper.py write fsjp 10
+```
+
+From Spring Initializr, pick **Spring Web**, **Spring Data JPA** and
+**H2 Database**, then place the files:
+
+```
+fsjp_exp_10\Employee.java            -> src\main\java\com\example\demo\model\
+fsjp_exp_10\EmployeeRepository.java  -> src\main\java\com\example\demo\repository\
+fsjp_exp_10\EmployeeService.java     -> src\main\java\com\example\demo\service\
+fsjp_exp_10\EmployeeController.java  -> src\main\java\com\example\demo\controller\
+fsjp_exp_10\DemoApplication.java     -> src\main\java\com\example\demo\
+```
+
+```bash
+./mvnw spring-boot:run
+```
+
+Then `GET http://localhost:8080/employees` returns the two seeded employees.
 
 ## Running Without npm
 

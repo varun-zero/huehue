@@ -1657,6 +1657,242 @@ function validateEmail() {
 </html>
 """,
         },
+        "9": {
+            "title": "Exp 09: Single Page Website in React using Hooks, Router, Props, and State",
+            "notes": "Vite + React project. Put these files into a Vite React app and run npm install react-router-dom before npm run dev.",
+            "files": [
+                {
+                    "name": "App.jsx",
+                    "language": "jsx",
+                    "code": r"""
+import { useState, useEffect } from "react";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+
+function Home() {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    document.title = "Count: " + count;
+  }, [count]);
+
+  return (
+    <div>
+      <h2>Home Page</h2>
+      <p>React Single Page Website.</p>
+      <p>Count: {count}</p>
+      <button onClick={() => setCount(count + 1)}>Increase</button>
+    </div>
+  );
+}
+
+function About({ name }) {
+  return (
+    <div>
+      <h2>About Page</h2>
+      <p>Student Name: {name}</p>
+    </div>
+  );
+}
+
+function Contact() {
+  return (
+    <div>
+      <h2>Contact Page</h2>
+      <p>Email: student@example.com</p>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <h1>React Single Page Website</h1>
+      <nav>
+        <Link to="/">Home</Link> | <Link to="/about">About</Link> | <Link to="/contact">Contact</Link>
+      </nav>
+
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About name="Varun Poojary" />} />
+        <Route path="/contact" element={<Contact />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
+
+export default App;
+""",
+                },
+                {
+                    "name": "main.jsx",
+                    "language": "jsx",
+                    "code": r"""
+import { createRoot } from "react-dom/client";
+import App from "./App.jsx";
+
+createRoot(document.getElementById("root")).render(<App />);
+""",
+                },
+                {
+                    "name": "index.html",
+                    "language": "html",
+                    "code": r"""
+<html>
+<head>
+  <title>react-website</title>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+</html>
+""",
+                },
+            ],
+        },
+        "10": {
+            "title": "Exp 10: Monolithic Application using Spring Boot (REST API)",
+            "notes": "Spring Boot + Spring Data JPA + H2. Four layers: model, repository, service, controller.",
+            "files": [
+                {
+                    "name": "Employee.java",
+                    "language": "java",
+                    "code": r"""
+package com.example.demo.model;
+
+import jakarta.persistence.*;
+
+@Entity
+public class Employee {
+    @Id
+    @GeneratedValue
+    private Long id;
+    private String name;
+    private String department;
+    private double salary;
+
+    public Employee() {}
+
+    public Employee(String name, String department, double salary) {
+        this.name = name;
+        this.department = department;
+        this.salary = salary;
+    }
+
+    public Long getId() { return id; }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    public String getDepartment() { return department; }
+    public void setDepartment(String department) { this.department = department; }
+    public double getSalary() { return salary; }
+    public void setSalary(double salary) { this.salary = salary; }
+}
+""",
+                },
+                {
+                    "name": "EmployeeRepository.java",
+                    "language": "java",
+                    "code": r"""
+package com.example.demo.repository;
+
+import com.example.demo.model.Employee;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface EmployeeRepository extends JpaRepository<Employee, Long> {
+}
+""",
+                },
+                {
+                    "name": "EmployeeService.java",
+                    "language": "java",
+                    "code": r"""
+package com.example.demo.service;
+
+import com.example.demo.model.Employee;
+import com.example.demo.repository.EmployeeRepository;
+import java.util.List;
+import org.springframework.stereotype.Service;
+
+@Service
+public class EmployeeService {
+    private final EmployeeRepository repository;
+
+    public EmployeeService(EmployeeRepository repository) {
+        this.repository = repository;
+    }
+
+    public List<Employee> getAllEmployees() {
+        return repository.findAll();
+    }
+
+    public Employee addEmployee(Employee employee) {
+        return repository.save(employee);
+    }
+}
+""",
+                },
+                {
+                    "name": "EmployeeController.java",
+                    "language": "java",
+                    "code": r"""
+package com.example.demo.controller;
+
+import com.example.demo.model.Employee;
+import com.example.demo.service.EmployeeService;
+import java.util.List;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/employees")
+public class EmployeeController {
+    private final EmployeeService service;
+
+    public EmployeeController(EmployeeService service) {
+        this.service = service;
+    }
+
+    @GetMapping
+    public List<Employee> getEmployees() {
+        return service.getAllEmployees();
+    }
+
+    @PostMapping
+    public Employee addEmployee(@RequestBody Employee employee) {
+        return service.addEmployee(employee);
+    }
+}
+""",
+                },
+                {
+                    "name": "DemoApplication.java",
+                    "language": "java",
+                    "code": r"""
+package com.example.demo;
+
+import com.example.demo.model.Employee;
+import com.example.demo.repository.EmployeeRepository;
+import org.springframework.boot.*;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+
+@SpringBootApplication
+public class DemoApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(DemoApplication.class, args);
+    }
+
+    @Bean
+    CommandLineRunner init(EmployeeRepository repo) {
+        return args -> {
+            repo.save(new Employee("Varun Poojary", "AI&DS", 75000));
+            repo.save(new Employee("Vihar", "CS", 65000));
+        };
+    }
+}
+""",
+                },
+            ],
+        },
     },
 }
 
