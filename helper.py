@@ -1391,6 +1391,69 @@ public class InheritanceExceptionDemo {
 }
 """,
         },
+        "4": {
+            "title": "Exp 04: Implementing Generic Servlet and HTTP Servlet",
+            "notes": "Tomcat 9 or older uses javax.servlet. Tomcat 10+ requires jakarta.servlet.",
+            "files": [
+                {
+                    "name": "index.html",
+                    "language": "html",
+                    "code": r"""
+<html>
+<body>
+    <h2>Experiment 4: Generic and HTTP Servlet</h2>
+    <p><a href="welcome">Generic Servlet</a></p>
+    <p><a href="welcomeHttp">HTTP Servlet</a></p>
+</body>
+</html>
+""",
+                },
+                {
+                    "name": "GenericServletDemo.java",
+                    "language": "java",
+                    "code": r"""
+package servletapp;
+
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.annotation.WebServlet;
+
+@WebServlet("/welcome")
+public class GenericServletDemo extends GenericServlet {
+    public void service(ServletRequest req, ServletResponse res) throws IOException {
+        res.setContentType("text/html");
+        PrintWriter out = res.getWriter();
+        out.println("<h1>Welcome, Varun!</h1>");
+        out.println("<p>You are using a Generic Servlet.</p>");
+        out.println("<a href='index.html'>Back</a>");
+    }
+}
+""",
+                },
+                {
+                    "name": "HttpServletDemo.java",
+                    "language": "java",
+                    "code": r"""
+package servletapp;
+
+import java.io.*;
+import javax.servlet.http.*;
+import javax.servlet.annotation.WebServlet;
+
+@WebServlet("/welcomeHttp")
+public class HttpServletDemo extends HttpServlet {
+    public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
+        res.setContentType("text/html");
+        PrintWriter out = res.getWriter();
+        out.println("<h1>Welcome, Varun!</h1>");
+        out.println("<p>You are using an HTTP Servlet (doGet method).</p>");
+        out.println("<a href='index.html'>Back</a>");
+    }
+}
+""",
+                },
+            ],
+        },
     },
 }
 

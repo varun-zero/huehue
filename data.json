@@ -128,6 +128,27 @@
       "filename": "InheritanceExceptionDemo.java",
       "language": "java",
       "code": "\nimport java.util.Scanner;\n\nclass Person {\n    String name;\n    int age;\n\n    Person(String name, int age) {\n        this.name = name;\n        this.age = age;\n    }\n}\n\nclass Student extends Person {\n    String course;\n\n    Student(String name, int age, String course) {\n        super(name, age);\n        this.course = course;\n    }\n}\n\nclass GradStudent extends Student {\n    int gradYear;\n\n    GradStudent(String name, int age, String course, int gradYear) {\n        super(name, age, course);\n        this.gradYear = gradYear;\n    }\n\n    void show() {\n        System.out.println(\"GradStudent: \" + name + \", Age: \" + age +\n                \", Course: \" + course + \", Year: \" + gradYear);\n    }\n}\n\nclass Teacher extends Person {\n    String subject;\n\n    Teacher(String name, int age, String subject) {\n        super(name, age);\n        this.subject = subject;\n    }\n\n    void show() {\n        System.out.println(\"Teacher: \" + name + \", Age: \" + age + \", Subject: \" +\n                subject);\n    }\n}\n\npublic class InheritanceExceptionDemo {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        try {\n            System.out.print(\"Enter GradStudent (Name Age Course Year): \");\n            GradStudent g = new GradStudent(sc.next(), sc.nextInt(), sc.next(), sc.nextInt());\n\n            System.out.print(\"Enter Teacher (Name Age Subject): \");\n            Teacher t = new Teacher(sc.next(), sc.nextInt(), sc.next());\n\n            System.out.print(\"Enter Total Marks and Total Subjects to compute Average: \");\n            int total = sc.nextInt(), subjects = sc.nextInt();\n            int avg = total / subjects;\n\n            System.out.println(\"\\n--- Output ---\");\n            g.show();\n            t.show();\n            System.out.println(\"Calculated Average Marks = \" + avg);\n        } catch (ArithmeticException e) {\n            System.out.println(\"Exception Caught: Cannot divide marks by zero subjects!\");\n        } finally {\n            System.out.println(\"Finally Block: Execution completed safely.\");\n            sc.close();\n        }\n    }\n}\n"
+    },
+    "4": {
+      "title": "Exp 04: Implementing Generic Servlet and HTTP Servlet",
+      "notes": "Tomcat 9 or older uses javax.servlet. Tomcat 10+ requires jakarta.servlet.",
+      "files": [
+        {
+          "name": "index.html",
+          "language": "html",
+          "code": "\n<html>\n<body>\n    <h2>Experiment 4: Generic and HTTP Servlet</h2>\n    <p><a href=\"welcome\">Generic Servlet</a></p>\n    <p><a href=\"welcomeHttp\">HTTP Servlet</a></p>\n</body>\n</html>\n"
+        },
+        {
+          "name": "GenericServletDemo.java",
+          "language": "java",
+          "code": "\npackage servletapp;\n\nimport java.io.*;\nimport javax.servlet.*;\nimport javax.servlet.annotation.WebServlet;\n\n@WebServlet(\"/welcome\")\npublic class GenericServletDemo extends GenericServlet {\n    public void service(ServletRequest req, ServletResponse res) throws IOException {\n        res.setContentType(\"text/html\");\n        PrintWriter out = res.getWriter();\n        out.println(\"<h1>Welcome, Varun!</h1>\");\n        out.println(\"<p>You are using a Generic Servlet.</p>\");\n        out.println(\"<a href='index.html'>Back</a>\");\n    }\n}\n"
+        },
+        {
+          "name": "HttpServletDemo.java",
+          "language": "java",
+          "code": "\npackage servletapp;\n\nimport java.io.*;\nimport javax.servlet.http.*;\nimport javax.servlet.annotation.WebServlet;\n\n@WebServlet(\"/welcomeHttp\")\npublic class HttpServletDemo extends HttpServlet {\n    public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {\n        res.setContentType(\"text/html\");\n        PrintWriter out = res.getWriter();\n        out.println(\"<h1>Welcome, Varun!</h1>\");\n        out.println(\"<p>You are using an HTTP Servlet (doGet method).</p>\");\n        out.println(\"<a href='index.html'>Back</a>\");\n    }\n}\n"
+        }
+      ]
     }
   }
 }

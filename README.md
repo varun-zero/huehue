@@ -97,8 +97,10 @@ python helper.py copy coa 3 asm
 ## FSJP (Full Stack Java Programming)
 
 FSJP experiments are stored under the `fsjp` subject. Experiments 1-3 are
-single-file Core Java programs; later experiments can contain several files
-(HTML, CSS, JavaScript, JSP, servlet, `web.xml`, React, Spring Boot).
+single-file Core Java programs. Experiment 4 is a 3-file servlet app
+(`index.html`, `GenericServletDemo.java`, `HttpServletDemo.java`), and later
+experiments can contain HTML, CSS, JavaScript, JSP, servlet, React and Spring
+Boot files.
 
 ```bash
 # List FSJP experiments:
@@ -126,9 +128,9 @@ python helper.py fsjp 4
 Exp 04: Implementing Generic Servlet and HTTP Servlet
 3 files
 
-  1. index.html                    HTML           15 lines
-  2. GenericServletDemo.java       JAVA           18 lines
-  3. HttpServletDemo.java          JAVA           20 lines
+  1. index.html                    HTML            7 lines
+  2. GenericServletDemo.java       JAVA           16 lines
+  3. HttpServletDemo.java          JAVA           16 lines
 
 Show one file:
   python helper.py show fsjp 4 1
@@ -161,6 +163,13 @@ python helper.py copy fsjp 4 2
 
 `write` preserves subdirectories in file names, so a file named
 `WEB-INF/web.xml` is written to `fsjp_exp_4/WEB-INF/web.xml`.
+
+### Servlet compatibility
+
+Experiment 4 uses `@WebServlet` annotations, so it does not need a `web.xml`.
+It targets Tomcat 9 or older (`javax.servlet`). On Tomcat 10 or newer, change
+the imports to `jakarta.servlet` and the annotation import to
+`jakarta.servlet.annotation.WebServlet`.
 
 ## Running Without npm
 

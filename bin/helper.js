@@ -148,7 +148,9 @@ function cmdList(args) {
   for (const num of validTopics(s)) {
     const title = SUBJECTS[s][num].title;
     const prefix = isExperiment ? `Exp ${String(num).padStart(2, '0')}` : String(num).padStart(2, ' ');
-    const suffix = SUBJECTS[s][num].code_type === 'asm' ? ' [ASM]' : '';
+    let suffix = SUBJECTS[s][num].code_type === 'asm' ? ' [ASM]' : '';
+    const files = Array.isArray(SUBJECTS[s][num].files) ? SUBJECTS[s][num].files : [];
+    if (files.length > 1) suffix += ` (${files.length} files)`;
     console.log(`  [${prefix}]  ${title}${suffix}`);
   }
   console.log(DIVIDER);

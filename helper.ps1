@@ -28,6 +28,9 @@ if ($Arg1 -eq "list") {
         foreach ($prop in $data.$targetSub.PSObject.Properties) {
             $item = $prop.Value
             $suffix = if ($item.code_type -eq "asm") { " [ASM]" } else { "" }
+            if ($item.files -and $item.files.Count -gt 1) {
+                $suffix += " ($($item.files.Count) files)"
+            }
             Write-Host ("  [Exp {0:D2}]  {1}{2}" -f [int]$prop.Name, $item.title, $suffix)
         }
         Write-Host "============================================================"
@@ -87,6 +90,10 @@ if ($data.PSObject.Properties[$sub]) {
         }
     }
     if ($found) {
+        if ($found.files -and $found.files.Count -gt 1) {
+            Write-Error "This experiment has multiple files. Use helper.py: python helper.py show $sub $expNum"
+            exit 1
+        }
         if ($isAsm) {
             if ($found.asm) {
                 Write-Output $found.asm.Trim()
