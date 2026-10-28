@@ -154,6 +154,89 @@ if ($found.files -and $found.files.Count -gt 0) {
     $files = @($single)
 }
 
+function Print-TomcatGuide([string]$expId) {
+    $e = [int]($expId -replace '\D','')
+    if ($e -notin @(7, 8, 9, 10)) { return }
+
+    $tcPath = $env:CATALINA_HOME
+    if (-not $tcPath -and (Test-Path "C:\apache-tomcat-9.0.86")) {
+        $tcPath = "C:\apache-tomcat-9.0.86"
+    }
+
+    Write-Host ""
+    Write-Host "============================================================"
+    Write-Host ("  APACHE TOMCAT EXECUTION GUIDE -- Exp {0:D2}" -f $e)
+    Write-Host "============================================================"
+    if ($tcPath) {
+        Write-Host "Tomcat Location : $tcPath"
+    } else {
+        Write-Host "Tomcat Location : Set `$env:CATALINA_HOME"
+    }
+    Write-Host "------------------------------------------------------------"
+
+    if ($e -eq 7) {
+        Write-Host "Webapp Target   : webapps/myapp/WEB-INF/classes/WelcomeServlet.class"
+        Write-Host "Browser URL     : http://localhost:8080/myapp/welcome"
+        Write-Host ""
+        Write-Host "[1] Universal PowerShell Commands:"
+        Write-Host '    New-Item -ItemType Directory -Force -Path "$env:CATALINA_HOME\webapps\myapp\WEB-INF\classes"'
+        Write-Host '    javac -cp "$env:CATALINA_HOME\lib\servlet-api.jar" -d "$env:CATALINA_HOME\webapps\myapp\WEB-INF\classes" WelcomeServlet.java'
+        Write-Host '    & "$env:CATALINA_HOME\bin\startup.bat"'
+        Write-Host "    http://localhost:8080/myapp/welcome"
+    } elseif ($e -eq 8) {
+        Write-Host "Webapp Target   : webapps/myapp/index.html & WEB-INF/classes/HelloServlet.class"
+        Write-Host "Browser URL     : http://localhost:8080/myapp/index.html"
+        Write-Host ""
+        Write-Host "[1] Universal PowerShell Commands:"
+        Write-Host '    New-Item -ItemType Directory -Force -Path "$env:CATALINA_HOME\webapps\myapp\WEB-INF\classes"'
+        Write-Host '    Copy-Item index.html "$env:CATALINA_HOME\webapps\myapp\"'
+        Write-Host '    javac -cp "$env:CATALINA_HOME\lib\servlet-api.jar" -d "$env:CATALINA_HOME\webapps\myapp\WEB-INF\classes" HelloServlet.java'
+        Write-Host '    & "$env:CATALINA_HOME\bin\startup.bat"'
+        Write-Host "    http://localhost:8080/myapp/index.html"
+    } elseif ($e -eq 9) {
+        Write-Host "Webapp Target   : webapps/myapp/welcome.jsp (No javac needed)"
+        Write-Host "Browser URL     : http://localhost:8080/myapp/welcome.jsp"
+        Write-Host ""
+        Write-Host "[1] Universal PowerShell Commands:"
+        Write-Host '    New-Item -ItemType Directory -Force -Path "$env:CATALINA_HOME\webapps\myapp"'
+        Write-Host '    Copy-Item welcome.jsp "$env:CATALINA_HOME\webapps\myapp\"'
+        Write-Host '    & "$env:CATALINA_HOME\bin\startup.bat"'
+        Write-Host "    http://localhost:8080/myapp/welcome.jsp"
+    } elseif ($e -eq 10) {
+        Write-Host "Webapp Target   : webapps/myapp/details.jsp (No javac needed)"
+        Write-Host "Browser URL     : http://localhost:8080/myapp/details.jsp"
+        Write-Host ""
+        Write-Host "[1] Universal PowerShell Commands:"
+        Write-Host '    New-Item -ItemType Directory -Force -Path "$env:CATALINA_HOME\webapps\myapp"'
+        Write-Host '    Copy-Item details.jsp "$env:CATALINA_HOME\webapps\myapp\"'
+        Write-Host '    & "$env:CATALINA_HOME\bin\startup.bat"'
+        Write-Host "    http://localhost:8080/myapp/details.jsp"
+    }
+    if ($tcPath) {
+        Write-Host ""
+        Write-Host "[2] Ready-to-Run for THIS PC ($tcPath):"
+        if ($e -eq 7) {
+            Write-Host "    javac -cp `"$tcPath\lib\servlet-api.jar`" -d `"$tcPath\webapps\myapp\WEB-INF\classes`" WelcomeServlet.java"
+            Write-Host "    & `"$tcPath\bin\startup.bat`""
+            Write-Host "    http://localhost:8080/myapp/welcome"
+        } elseif ($e -eq 8) {
+            Write-Host "    Copy-Item index.html `"$tcPath\webapps\myapp\`""
+            Write-Host "    javac -cp `"$tcPath\lib\servlet-api.jar`" -d `"$tcPath\webapps\myapp\WEB-INF\classes`" HelloServlet.java"
+            Write-Host "    & `"$tcPath\bin\startup.bat`""
+            Write-Host "    http://localhost:8080/myapp/index.html"
+        } elseif ($e -eq 9) {
+            Write-Host "    Copy-Item welcome.jsp `"$tcPath\webapps\myapp\`""
+            Write-Host "    & `"$tcPath\bin\startup.bat`""
+            Write-Host "    http://localhost:8080/myapp/welcome.jsp"
+        } elseif ($e -eq 10) {
+            Write-Host "    Copy-Item details.jsp `"$tcPath\webapps\myapp\`""
+            Write-Host "    & `"$tcPath\bin\startup.bat`""
+            Write-Host "    http://localhost:8080/myapp/details.jsp"
+        }
+    }
+    Write-Host "============================================================"
+}
+
 if ($files.Count -gt 1) {
     if (-not $fileArg) {
         # Check if stdin is interactive
@@ -178,6 +261,7 @@ if ($files.Count -gt 1) {
             Write-Output $f.code.Trim()
             $idx++
         }
+        Print-TomcatGuide $expNum
         exit 0
     }
 
@@ -198,6 +282,7 @@ if ($files.Count -gt 1) {
 
     if ($selectedFile) {
         Write-Output $selectedFile.code.Trim()
+        Print-TomcatGuide $expNum
         exit 0
     }
 
@@ -207,4 +292,5 @@ if ($files.Count -gt 1) {
 
 # Single file
 Write-Output $files[0].code.Trim()
+Print-TomcatGuide $expNum
 exit 0

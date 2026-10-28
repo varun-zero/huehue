@@ -308,16 +308,14 @@ public class StudentJDBC {
 
 ## Q12. Student registration form with CSS
 
+index.html
+
 ```html
 <!DOCTYPE html>
 <html>
 <head>
     <title>Student Registration</title>
-    <style>
-        form { width: 280px; margin: 40px auto; padding: 20px; border: 1px solid gray; font-family: Arial; }
-        input, select, button { width: 100%; padding: 8px; margin: 6px 0; box-sizing: border-box; }
-        button { background: green; color: white; border: none; }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <form>
@@ -336,42 +334,97 @@ public class StudentJDBC {
 </html>
 ```
 
+style.css
+
+```css
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f4f8;
+}
+
+form {
+    width: 300px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+input, select, button {
+    width: 100%;
+    padding: 8px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+}
+
+button {
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+}
+```
+
 ---
 
 ## Q13. College department webpage
+
+index.html
 
 ```html
 <!DOCTYPE html>
 <html>
 <head>
     <title>CSE Department</title>
-    <style>
-        body { font-family: Arial; margin: 0; }
-        header, footer { background: navy; color: white; text-align: center; padding: 10px; }
-        nav { background: #ddd; text-align: center; padding: 6px; }
-        section { padding: 10px 20px; }
-        table, th, td { border: 1px solid black; border-collapse: collapse; padding: 6px; }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header><h2>Department of Computer Science</h2></header>
-    <nav><a href="#faculty">Faculty</a> | <a href="#courses">Courses</a> | <a href="#contact">Contact</a></nav>
+
+    <header>
+        <h2>Department of Computer Science</h2>
+    </header>
+
+    <nav>
+        <a href="#faculty">Faculty</a> | 
+        <a href="#courses">Courses</a> | 
+        <a href="#contact">Contact</a>
+    </nav>
 
     <section id="faculty">
         <h3>Faculty</h3>
         <table>
-            <tr><th>Name</th><th>Designation</th></tr>
-            <tr><td>Dr. Ravi Kumar</td><td>Professor &amp; HOD</td></tr>
-            <tr><td>Ms. Anita Sharma</td><td>Assistant Professor</td></tr>
+            <tr>
+                <th>Name</th>
+                <th>Designation</th>
+            </tr>
+            <tr>
+                <td>Dr. Ravi Kumar</td>
+                <td>Professor &amp; HOD</td>
+            </tr>
+            <tr>
+                <td>Ms. Anita Sharma</td>
+                <td>Assistant Professor</td>
+            </tr>
         </table>
     </section>
 
     <section id="courses">
         <h3>Courses</h3>
         <table>
-            <tr><th>Course</th><th>Duration</th></tr>
-            <tr><td>B.Tech CSE</td><td>4 Years</td></tr>
-            <tr><td>MCA</td><td>2 Years</td></tr>
+            <tr>
+                <th>Course</th>
+                <th>Duration</th>
+            </tr>
+            <tr>
+                <td>B.Tech CSE</td>
+                <td>4 Years</td>
+            </tr>
+            <tr>
+                <td>MCA</td>
+                <td>2 Years</td>
+            </tr>
         </table>
     </section>
 
@@ -380,50 +433,123 @@ public class StudentJDBC {
         <p>Email: cse@abccollege.edu | Phone: 044-12345678</p>
     </section>
 
-    <footer>&copy; 2026 CSE Department</footer>
+    <footer>
+        &copy; 2026 CSE Department
+    </footer>
+
 </body>
 </html>
+```
+
+style.css
+
+```css
+body {
+    font-family: Arial;
+    margin: 0;
+}
+
+header, footer {
+    background-color: navy;
+    color: white;
+    text-align: center;
+    padding: 10px;
+}
+
+nav {
+    background-color: lightgray;
+    text-align: center;
+    padding: 5px;
+}
+
+section {
+    padding: 10px 20px;
+}
+
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+    padding: 6px;
+}
 ```
 
 ---
 
 ## Q14. JavaScript email validation
 
-```html
-<input type="text" id="email" placeholder="Enter email">
-<button onclick="validate()">Validate</button>
-<p id="res"></p>
+index.html
 
-<script>
-function validate() {
-    let e = document.getElementById("email").value;
-    let valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
-    document.getElementById("res").innerText = valid ? "Valid Email ID" : "Invalid Email ID";
-}
-</script>
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Email Validation</title>
+</head>
+<body>
+
+    <input type="text" id="email" placeholder="Enter email">
+    <button onclick="validate()">Validate</button>
+    <p id="res"></p>
+
+    <script>
+    function validate() {
+        let e = document.getElementById("email").value;
+        let valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
+        document.getElementById("res").innerText = valid ? "Valid Email ID" : "Invalid Email ID";
+    }
+    </script>
+
+</body>
+</html>
 ```
 
 ---
 
 ## Q15. Student registration form validation
 
-```html
-<form onsubmit="return validate()">
-    Name: <input id="n"><br>
-    Email: <input id="e"><br>
-    Password: <input type="password" id="p"><br>
-    <input type="submit" value="Register">
-</form>
+index.html
 
-<script>
-function validate() {
-    if (n.value == "") { alert("Name is required"); return false; }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e.value)) { alert("Enter valid email"); return false; }
-    if (p.value.length < 6) { alert("Password must be 6+ chars"); return false; }
-    alert("Registration successful!");
-    return true;
-}
-</script>
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Registration Validation</title>
+</head>
+<body>
+
+    <form onsubmit="return validate()">
+        Name: <input id="n"><br><br>
+        Email: <input id="e"><br><br>
+        Password: <input type="password" id="p"><br><br>
+        <input type="submit" value="Register">
+    </form>
+
+    <script>
+    function validate() {
+        let name = document.getElementById("n").value.trim();
+        let email = document.getElementById("e").value.trim();
+        let pass = document.getElementById("p").value;
+
+        if (name === "") { 
+            alert("Name is required"); 
+            return false; 
+        }
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { 
+            alert("Enter a valid email"); 
+            return false; 
+        }
+        if (pass.length < 6) { 
+            alert("Password must be at least 6 characters"); 
+            return false; 
+        }
+
+        alert("Registration successful!");
+        return true;
+    }
+    </script>
+
+</body>
+</html>
 ```
 
 ---
