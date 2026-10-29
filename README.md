@@ -108,3 +108,17 @@ helper copy fsjp 6
 # Or piping to Windows clip:
 python helper.py 6 | clip
 ```
+
+## Code Files
+
+All FSJP source files are also available as separate files under [`fsjp-codes/`](fsjp-codes/), organized by experiment:
+
+```text
+fsjp-codes/
+├── exp-01/
+├── exp-02/
+└── ...
+└── exp-16/
+```
+
+Multi-file experiments keep their original filenames inside the corresponding experiment folder.

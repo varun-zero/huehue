@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <h2>Background changes every 5 seconds</h2>
+
+    <script>
+        let colors = ["lightblue", "lightgreen", "lightpink", "lightyellow", "lavender"];
+        let i = 0;
+
+        function changeColor() {
+            document.body.style.backgroundColor = colors[i];
+            i = (i + 1) % colors.length;
+        }
+
+        changeColor();
+        setInterval(changeColor, 5000);
+    </script>
+</body>
+</html>
