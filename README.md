@@ -39,7 +39,7 @@ helper fsjp 6
 
 ## Multi-File Experiments
 
-Experiments with multiple files (Exp 8 and Exp 11):
+Experiments with multiple files (Q8 and Q11):
 
 ```bash
 # View list of files in experiment:
@@ -66,22 +66,22 @@ helper list
 ```
 
 ### Experiments Overview:
-- **Exp 01**: Student class with `inputDetails()` and `displayDetails()`
-- **Exp 02**: Constructor Overloading
-- **Exp 03**: Method Overloading
-- **Exp 04**: Single Inheritance
-- **Exp 05**: Multilevel Inheritance
-- **Exp 06**: Hierarchical Inheritance
-- **Exp 07**: Servlet to display a welcome message (`@WebServlet`, no `web.xml`)
-- **Exp 08**: Servlet to accept a name from an HTML form (`index.html`, `HelloServlet.java`)
-- **Exp 09**: JSP welcome message (`welcome.jsp`)
-- **Exp 10**: JSP to display name, register number and department (`details.jsp`)
-- **Exp 11**: JDBC application: insert, update, delete, display (`student.sql`, `StudentJDBC.java`)
-- **Exp 12**: Student registration form with CSS
-- **Exp 13**: College department webpage
-- **Exp 14**: JavaScript email validation
-- **Exp 15**: Student registration form validation
-- **Exp 16**: DOM: change background color every 5 seconds
+- **Q1**: Student Class (inputDetails / displayDetails)
+- **Q2**: Constructor Overloading
+- **Q3**: Method Overloading
+- **Q4**: Single Inheritance
+- **Q5**: Multilevel Inheritance
+- **Q6**: Hierarchical Inheritance
+- **Q7**: Servlet Welcome Message
+- **Q8**: Servlet Form Input (Name Display)
+- **Q9**: JSP Welcome Message
+- **Q10**: JSP Student Details (Name, Reg No, Department)
+- **Q11**: JDBC Student Records (Insert, Update, Delete, Display)
+- **Q12**: Student Registration Form with CSS
+- **Q13**: College Department Webpage
+- **Q14**: JavaScript Email Validation
+- **Q15**: Student Registration Form Validation (HTML + JavaScript)
+- **Q16**: DOM Background Color Change Every 5 Seconds
 
 ---
 
@@ -115,10 +115,10 @@ All FSJP source files are also available as separate files under [`fsjp-codes/`]
 
 ```text
 fsjp-codes/
-├── exp-01/
-├── exp-02/
+├── q01-student-class/
+├── q02-constructor-overloading/
 └── ...
-└── exp-16/
+└── q16-dom-background-color-change/
 ```
 
 Multi-file experiments keep their original filenames inside the corresponding experiment folder.

@@ -226,7 +226,7 @@ def _resolve_file(files, raw):
 
 
 def _print_file_index(subject, topic_key, topic, files):
-    display_id = f"Exp {int(topic_key):02d}" if (topic_key and str(topic_key).isdigit()) else topic_key
+    display_id = f"Q{int(topic_key)}" if (topic_key and str(topic_key).isdigit()) else topic_key
     print(f"[{display_id}] {topic.get('title', '')}")
     print(f"{len(files)} files:\n")
     for index, item in enumerate(files, 1):
@@ -371,7 +371,7 @@ def _format_tomcat_instructions(topic_key, topic=None):
 
     lines = [
         "=" * 60,
-        f"  APACHE TOMCAT EXECUTION GUIDE -- Exp {int(key):02d}",
+        f"  APACHE TOMCAT EXECUTION GUIDE -- Q{int(key)}",
         "=" * 60,
     ]
 
@@ -578,7 +578,7 @@ def cmd_list(args):
     print(DIVIDER)
     for num in _valid_topics(s):
         title = topics[num].get("title", "")
-        prefix = f"Exp {int(num):02d}"
+        prefix = f"Q{int(num)}"
         files = _topic_files(topics[num])
         suffix = f" ({len(files)} files)" if len(files) > 1 else ""
         print(f"  [{prefix}]  {title}{suffix}")
@@ -710,7 +710,7 @@ def cmd_write(args):
             fh.write(code.strip() + "\n")
         print(f"[ok] Code written to '{filename}'")
         if _requires_tomcat(t, topic):
-            print(f"[tomcat] Exp {int(t):02d} requires Tomcat. Run 'python helper.py tomcat {int(t)}' for deploy & run commands.")
+            print(f"[tomcat] Q{int(t)} requires Tomcat. Run 'python helper.py tomcat {int(t)}' for deploy & run commands.")
     except OSError as exc:
         print(f"[error] Could not write file: {exc}")
         sys.exit(1)
@@ -780,7 +780,7 @@ def cmd_copy(args):
         if success:
             print(f"[ok] {label} from '{s}' experiment {int(t):02d} copied to clipboard.")
             if _requires_tomcat(t, topic):
-                print(f"[tomcat] Exp {int(t):02d} requires Tomcat. Run 'python helper.py tomcat {int(t)}' for deploy & run commands.")
+                print(f"[tomcat] Q{int(t)} requires Tomcat. Run 'python helper.py tomcat {int(t)}' for deploy & run commands.")
         else:
             print("[warn] Could not access clipboard.")
             print("       Here is the code snippet:\n")
@@ -793,12 +793,12 @@ def cmd_copy(args):
         return
 
     success = _copy_to_clipboard(code.strip() + "\n")
-    display_id = f"Exp {int(t):02d}"
+    display_id = f"Q{int(t)}"
 
     if success:
         print(f"[ok] Code for '{s}' {display_id} copied to clipboard.")
         if _requires_tomcat(t, topic):
-            print(f"[tomcat] Exp {int(t):02d} requires Tomcat. Run 'python helper.py tomcat {int(t)}' for deploy & run commands.")
+            print(f"[tomcat] Q{int(t)} requires Tomcat. Run 'python helper.py tomcat {int(t)}' for deploy & run commands.")
     else:
         print("[warn] Could not access clipboard.")
         print("       Here is the code snippet:\n")

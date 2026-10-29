@@ -168,7 +168,7 @@ function cmdList(args) {
   console.log(DIVIDER);
   for (const num of validTopics(s)) {
     const topic = SUBJECTS[s][num];
-    const prefix = `Exp ${String(num).padStart(2, '0')}`;
+    const prefix = `Q${parseInt(num, 10)}`;
     const files = topicFiles(topic);
     const suffix = files.length > 1 ? ` (${files.length} files)` : '';
     console.log(`  [${prefix}]  ${topic.title}${suffix}`);
@@ -208,7 +208,7 @@ function cmdShow(args) {
     let selector = fileArg;
     if (selector === null) {
       // If no file selector specified, show index
-      console.log(`[Exp ${String(topicNum).padStart(2, '0')}] ${data.title}`);
+      console.log(`[Q${parseInt(topicNum, 10)}] ${data.title}`);
       console.log(`${files.length} files:\n`);
       files.forEach((f, idx) => {
         const lineCount = (f.code || '').trim().split('\n').length;
