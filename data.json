@@ -1,7 +1,7 @@
 {
     "fsjp": {
         "1": {
-            "title": "Exp 01: Student class with inputDetails() and displayDetails()",
+            "title": "Q1: Student Class (inputDetails / displayDetails)",
             "notes": "",
             "filename": "Student.java",
             "language": "java",
@@ -15,7 +15,7 @@
             ]
         },
         "2": {
-            "title": "Exp 02: Constructor Overloading",
+            "title": "Q2: Constructor Overloading",
             "notes": "",
             "filename": "Calculator.java",
             "language": "java",
@@ -29,7 +29,7 @@
             ]
         },
         "3": {
-            "title": "Exp 03: Method Overloading",
+            "title": "Q3: Method Overloading",
             "notes": "",
             "filename": "Calculator.java",
             "language": "java",
@@ -43,7 +43,7 @@
             ]
         },
         "4": {
-            "title": "Exp 04: Single Inheritance",
+            "title": "Q4: Single Inheritance",
             "notes": "",
             "filename": "SingleInheritance.java",
             "language": "java",
@@ -57,7 +57,7 @@
             ]
         },
         "5": {
-            "title": "Exp 05: Multilevel Inheritance",
+            "title": "Q5: Multilevel Inheritance",
             "notes": "",
             "filename": "MultilevelInheritance.java",
             "language": "java",
@@ -71,7 +71,7 @@
             ]
         },
         "6": {
-            "title": "Exp 06: Hierarchical Inheritance",
+            "title": "Q6: Hierarchical Inheritance",
             "notes": "",
             "filename": "HierarchicalInheritance.java",
             "language": "java",
@@ -85,7 +85,7 @@
             ]
         },
         "7": {
-            "title": "Exp 07: Servlet to display a welcome message (no web.xml)",
+            "title": "Q7: Servlet Welcome Message",
             "notes": "Run at: http://localhost:8080/YourProject/welcome (For Tomcat 10+, use jakarta.servlet instead of javax.servlet)",
             "filename": "WelcomeServlet.java",
             "language": "java",
@@ -99,7 +99,7 @@
             ]
         },
         "8": {
-            "title": "Exp 08: Servlet to accept a name from an HTML form (no web.xml)",
+            "title": "Q8: Servlet Form Input (Name Display)",
             "notes": "",
             "files": [
                 {
@@ -115,7 +115,7 @@
             ]
         },
         "9": {
-            "title": "Exp 09: JSP welcome message",
+            "title": "Q9: JSP Welcome Message",
             "notes": "",
             "filename": "welcome.jsp",
             "language": "jsp",
@@ -129,7 +129,7 @@
             ]
         },
         "10": {
-            "title": "Exp 10: JSP to display name, register number and department",
+            "title": "Q10: JSP Student Details (Name, Reg No, Department)",
             "notes": "",
             "filename": "details.jsp",
             "language": "jsp",
@@ -143,7 +143,7 @@
             ]
         },
         "11": {
-            "title": "Exp 11: JDBC application (insert, update, delete, display)",
+            "title": "Q11: JDBC Student Records (Insert, Update, Delete, Display)",
             "notes": "Run SQL in MySQL first: CREATE DATABASE college; USE college; CREATE TABLE student (roll INT PRIMARY KEY, name VARCHAR(50), marks FLOAT);",
             "files": [
                 {
@@ -159,7 +159,7 @@
             ]
         },
         "12": {
-            "title": "Exp 12: Student registration form with CSS",
+            "title": "Q12: Student Registration Form with CSS",
             "notes": "",
             "files": [
                 {
@@ -175,7 +175,7 @@
             ]
         },
         "13": {
-            "title": "Exp 13: College department webpage",
+            "title": "Q13: College Department Webpage",
             "notes": "",
             "files": [
                 {
@@ -191,7 +191,7 @@
             ]
         },
         "14": {
-            "title": "Exp 14: JavaScript email validation",
+            "title": "Q14: JavaScript Email Validation",
             "notes": "",
             "filename": "index.html",
             "language": "html",
@@ -205,7 +205,7 @@
             ]
         },
         "15": {
-            "title": "Exp 15: Student registration form validation",
+            "title": "Q15: Student Registration Form Validation (HTML + JavaScript)",
             "notes": "",
             "filename": "index.html",
             "language": "html",
@@ -219,7 +219,7 @@
             ]
         },
         "16": {
-            "title": "Exp 16: DOM: change background color every 5 seconds",
+            "title": "Q16: DOM Background Color Change Every 5 Seconds",
             "notes": "",
             "filename": "index.html",
             "language": "html",

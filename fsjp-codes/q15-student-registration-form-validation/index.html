@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Registration Validation</title>
+</head>
+<body>
+
+    <form onsubmit="return validate()">
+        Name: <input id="n"><br><br>
+        Email: <input id="e"><br><br>
+        Password: <input type="password" id="p"><br><br>
+        <input type="submit" value="Register">
+    </form>
+
+    <script>
+    function validate() {
+        let name = document.getElementById("n").value.trim();
+        let email = document.getElementById("e").value.trim();
+        let pass = document.getElementById("p").value;
+
+        if (name === "") { 
+            alert("Name is required"); 
+            return false; 
+        }
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { 
+            alert("Enter a valid email"); 
+            return false; 
+        }
+        if (pass.length < 6) { 
+            alert("Password must be at least 6 characters"); 
+            return false; 
+        }
+
+        alert("Registration successful!");
+        return true;
+    }
+    </script>
+
+</body>
+</html>

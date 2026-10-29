@@ -48,7 +48,7 @@ if ($Arg1 -eq "list") {
             if ($item.files -and $item.files.Count -gt 1) {
                 $suffix = " ($($item.files.Count) files)"
             }
-            Write-Host ("  [Exp {0:D2}]  {1}{2}" -f [int]$prop.Name, $item.title, $suffix)
+            Write-Host ("  [Q{0}]  {1}{2}" -f [int]$prop.Name, $item.title, $suffix)
         }
         Write-Host "============================================================"
     } else {
@@ -165,7 +165,7 @@ function Print-TomcatGuide([string]$expId) {
 
     Write-Host ""
     Write-Host "============================================================"
-    Write-Host ("  APACHE TOMCAT EXECUTION GUIDE -- Exp {0:D2}" -f $e)
+    Write-Host (" APACHE TOMCAT EXECUTION GUIDE -- Q{0}" -f [int]$e)
     Write-Host "============================================================"
     if ($tcPath) {
         Write-Host "Tomcat Location : $tcPath"
@@ -240,7 +240,7 @@ function Print-TomcatGuide([string]$expId) {
 if ($files.Count -gt 1) {
     if (-not $fileArg) {
         # Check if stdin is interactive
-        Write-Host "Exp $([int]$expNum): $($found.title)"
+        Write-Host "Q$([int]$expNum): $($found.title)"
         Write-Host "$($files.Count) files available:`n"
         $fNum = 1
         foreach ($f in $files) {
